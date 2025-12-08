@@ -2,8 +2,8 @@
    DATA LAGU (TIDAK DIUBAH)
 ====================== */
 const songs = {
-  0: { audio: "https://raw.githubusercontent.com/NdikzDatabase/Database/main/Database/1762559143736-x3crbj.jpg",
-       image: "https://raw.githubusercontent.com/NdikzDatabase/Database/main/Database/1762559143736-x3crbj.jpg", 
+  0: { audio: "https://raw.githubusercontent.com/PretyFX69/music-files2/refs/heads/main/1_5f18ebc5-01d0-495b-aaa5-a2e4e94bf3d8%20(1).jpg",
+       image: "https://raw.githubusercontent.com/PretyFX69/music-files2/refs/heads/main/1_5f18ebc5-01d0-495b-aaa5-a2e4e94bf3d8%20(1).jpg", 
        title: "Music not found", 
        artist: "Not artist", 
        views: 0 },
