@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contoh Pemisahan File</title>
+
+    <!-- Hubungkan CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg"></div>
+
+<header class="brand">🎧 CyberZain-MUSIC</header>
+
+<div class="container">
+  <aside class="side">
+    <input type="text" id="searchSong" placeholder="Cari lagu atau artis..." oninput="filterSongs()" />
+    <select id="songSelect" onchange="onSelectChange()">
+        <option value="">— Pilih Lagu —</option>
+    </select>
+  <div class="player">   <!-- Tombol Titik Tiga -->
+<!-- Menu Utama -->
+<button id="menuBtn" class="menu-btn">⋮</button>
+<div id="menuPanel" class="menu-panel">
+    <div class="menu-item" id="downloadMusic">Download Music</div>
+    <div class="menu-item" id="speedControl">Kecepatan Music</div>
+    <div class="menu-item" id="qualityMenuBtn">Kualitas Audio ▸</div>
+    <div class="menu-item" id="sleepTimeBtn">Sleep Time ▸</div>
+        <div class="menu-item" id="equalizerBtn">Equalizer ▸</div>
+        <div class="menu-item" id="openWebsite">Ubah Tampilan</div>
+    <div class="menu-item" id="contactOwner">Hubungi Pemilik</div>
+
+    <!-- Submenu Kualitas Audio -->
+    <div id="qualitySubmenu" class="submenu">
+        <div class="submenu-item" data-quality="96">96 kbps</div>
+        <div class="submenu-item" data-quality="128">128 kbps</div>
+        <div class="submenu-item" data-quality="192">192 kbps</div>
+        <div class="submenu-item" data-quality="320">320 kbps</div>
+    </div>
+
+    <!-- Submenu Sleep Timer -->
+    <div id="sleepSubmenu" class="submenu">
+        <div class="submenu-item" data-time="5">5 menit</div>
+        <div class="submenu-item" data-time="10">10 menit</div>
+        <div class="submenu-item" data-time="15">15 menit</div>
+        <div class="submenu-item" data-time="30">30 menit</div>
+        <div class="submenu-item" data-time="60">1 jam</div>
+    </div>
+
+    <!-- Menu Equalizer -->
+    <div id="equalizerSubmenu" class="submenu">
+        <div class="submenu-item" data-eq="bass">Bass (sedang perbaikan)</div>
+        <div class="submenu-item" data-eq="treble">Treble (sedang perbaikan)</div>
+        <div class="submenu-item" data-eq="flat">Flat (sedang perbaikan)</div>
+    </div>
+
+    <!-- Menu Report -->
+    <div class="menu-item" id="reportBtn">Report Lagu</div>
+</div>
+    <div class="cd-box">
+      <div id="cd" class="cd" style="background-image: url('https://raw.githubusercontent.com/NdikzDatabase/Database/main/Database/1762559143736-x3crbj.jpg')"></div>
+    </div>
+    <div class="visualizer" id="visualizer">
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+    </div>
+    <div class="yt-info">
+<div class="title-wrap">
+  <h2 id="nowTitle" class="title-scroll">Tidak ada lagu diputar</h2>
+</div>
+      <p id="nowArtist">—</p>
+    </div>
+    <div class="yt-bar" id="seekBar"><div id="progress"></div></div>
+    <div class="time-row"><span id="current">0:00</span><span id="duration">0:00</span></div>
+    <div class="controls">
+      <button id="prevBtn" title="Previous">⏮</button>
+      <button id="playBtn" title="Play/Pause">▶</button>
+      <button id="nextBtn" title="Next">⏭</button>
+    </div>
+    <audio id="audioPlayer" preload="metadata"></audio>
+  </div>
+
+    <button class="btn" id="toggleLoop">Mode: Mengganti Music Selanjutnya</button>
+    <div class="playlist" id="playlistBox" aria-live="polite"></div>
+  </aside>
+</div>
+    <script src="script.js"></script>
+</body>
+</html>
