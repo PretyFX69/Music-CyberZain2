@@ -16,9 +16,13 @@
 <div class="container">
   <aside class="side">
     <input type="text" id="searchSong" placeholder="Cari lagu atau artis..." oninput="filterSongs()" />
-    <select id="songSelect" onchange="onSelectChange()">
-        <option value="">— Pilih Lagu —</option>
-    </select>
+
+<select id="categorySelect">
+  <option value="">— Pilih Kategori —</option>
+  <option value="😝🤙🏻">Playlist Anda</option>
+  <option value="Lagu Terbaru">Lagu Terbaru</option>
+  <option value="Sedang Trend">Sedang Trend</option>
+</select>
   <div class="player">   <!-- Tombol Titik Tiga -->
 <!-- Menu Utama -->
 <button id="menuBtn" class="menu-btn">⋮</button>

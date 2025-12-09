@@ -1,6 +1,9 @@
 /* ======================
    DATA LAGU (TIDAK DIUBAH)
 ====================== */
+/* ======================
+   DATA LAGU (TIDAK DIUBAH)
+====================== */
 const songs = {
   0: { audio: "https://raw.githubusercontent.com/PretyFX69/music-files2/refs/heads/main/1_5f18ebc5-01d0-495b-aaa5-a2e4e94bf3d8%20(1).jpg",
        image: "https://raw.githubusercontent.com/PretyFX69/music-files2/refs/heads/main/1_5f18ebc5-01d0-495b-aaa5-a2e4e94bf3d8%20(1).jpg", 
@@ -369,7 +372,7 @@ const songs = {
         image: "https://raw.githubusercontent.com/PretyFX69/music-files/refs/heads/main/renearge.jpg", 
         title: "Renegade", 
         artist: "Aaryan Shah",
-        tags: ["😝🤙🏻"],
+        tags: ["😝🤙🏻",],
         views: 111300000},
   67: { audio: "https://github.com/PretyFX69/music-files/raw/refs/heads/main/Low%20Life.mp3", 
         image: "https://raw.githubusercontent.com/PretyFX69/music-files/refs/heads/main/low%20life.jpg", 
@@ -499,7 +502,7 @@ const durText = document.getElementById('duration');
 const nowTitle = document.getElementById('nowTitle');
 const nowArtist = document.getElementById('nowArtist');
 const playlistBox = document.getElementById('playlistBox');
-const songSelect = document.getElementById('songSelect');
+//const songSelect = document.getElementById('songSelect');
 const searchSong = document.getElementById('searchSong');
 const toggleLoopBtn = document.getElementById('toggleLoop');
 const visualBars = document.querySelectorAll('.bar');
@@ -584,20 +587,15 @@ function loadSongByIndex(i) {
 ====================== */
 function renderPlaylist(list, isFiltered = false) {
   playlistBox.innerHTML = "";
-  songSelect.innerHTML = '<option value="">— Pilih Lagu —</option>';
+  // songSelect.innerHTML = '<option value="">— Music Yang Tersedia —</option>';  ← HAPUS
 
   list.forEach((s, idx) => {
     const div = document.createElement('div');
     div.className = 'song-item';
 
-    // data-index semantics:
-    // - if filtered, set data-index to filtered pos (idx)
-    // - if full, set to playlist index (s.index if present, else idx)
     if (isFiltered) {
-      div.dataset.index = idx; // filtered position
+      div.dataset.index = idx;
     } else {
-      // full playlist render: store playlist index (s.id may be string key)
-      // find playlist index by matching id
       const playlistIndex = playlist.findIndex(p => String(p.id) === String(s.id));
       div.dataset.index = playlistIndex >= 0 ? playlistIndex : idx;
     }
@@ -612,17 +610,14 @@ function renderPlaylist(list, isFiltered = false) {
       </div>
     `;
 
-    // Click handler depends on whether we are rendering filtered results or full playlist
     div.addEventListener('click', () => {
       if (isFiltered) {
-        // idx is filtered position -> map to playlist index stored on object (we store index earlier)
         filteredMode = true;
         currentFilteredIndex = idx;
         const realIndex = list[idx].index;
         loadSongByIndex(realIndex);
         playAudio();
       } else {
-        // full playlist item: dataset.index is playlist index
         filteredMode = false;
         currentFilteredIndex = -1;
         const realIndex = Number(div.dataset.index);
@@ -633,18 +628,13 @@ function renderPlaylist(list, isFiltered = false) {
 
     playlistBox.appendChild(div);
 
-    // populate select with playlist entries (always use playlist array order)
-    const opt = document.createElement('option');
-    // if rendering filtered list, use the underlying playlist id
-    const optId = isFiltered ? list[idx].id : s.id;
-    const optArtist = isFiltered ? list[idx].artist : s.artist;
-    const optTitle = isFiltered ? list[idx].title : s.title;
-    opt.value = optId;
-    opt.textContent = `${optTitle} - ${optArtist}`;
-    songSelect.appendChild(opt);
+    // ❌ Bagian pembuatan option SongSelect — DIHAPUS
+    // const opt = document.createElement('option');
+    // opt.value = optId;
+    // opt.textContent = `${optTitle} - ${optArtist}`;
+    // songSelect.appendChild(opt);
   });
 
-  // After render, ensure highlighted item visible
   highlightPlaying();
 }
 
@@ -984,23 +974,96 @@ searchSong.addEventListener('keydown', (e) => {
 });
 
 /* ======================
-   SELECT CHANGE (dropdown)
+   CATEGORY SELECT (BARU)
+   - Menambahkan select kategori yang mengambil lagu berdasarkan tags:
+     ["Playlist Anda", "Lagu Terbaru", "Sedang Trend"]
+   - Jika elemen <select id="categorySelect"> tidak ada di HTML, kita buat otomatis
+====================== */
+let categorySelect = document.getElementById("categorySelect");
+if (!categorySelect) {
+  // try to create and insert it just above songSelect to avoid modifying other layout files
+  categorySelect = document.createElement("select");
+  categorySelect.id = "categorySelect";
+  categorySelect.innerHTML = `
+    <option value="">— Pilih Kategori —</option>
+    <option value="Playlist Anda">Playlist Anda</option>
+    <option value="Lagu Terbaru">Lagu Terbaru</option>
+    <option value="Sedang Trend">Sedang Trend</option>
+  `;
+  // insert before songSelect if possible, otherwise append to body
+  if (songSelect && songSelect.parentNode) {
+    songSelect.parentNode.insertBefore(categorySelect, songSelect);
+  } else {
+    document.body.insertBefore(categorySelect, document.body.firstChild);
+  }
+}
+
+function filterByCategory(tag) {
+  if (!tag) {
+    // Reset ke full playlist
+    filteredMode = false;
+    filteredList = [];
+    currentFilteredIndex = -1;
+    renderPlaylist(playlist, false);
+    return;
+  }
+
+  // build filteredList from playlist (keep original indices)
+  filteredList = playlist
+    .map((s, i) => ({ ...s, index: i }))
+    .filter(s => (s.tags || []).includes(tag));
+
+  filteredMode = true;
+  currentFilteredIndex = filteredList.length ? 0 : -1;
+
+  renderPlaylist(filteredList, true);
+
+  if (filteredList.length) {
+    highlightPlaying();
+  }
+}
+
+categorySelect.addEventListener("change", () => {
+  const tag = categorySelect.value;
+  // Clear search box when selecting category to avoid confusion
+  if (searchSong) searchSong.value = "";
+  filterByCategory(tag);
+});
+
+/* ======================
+   SELECT CHANGE (dropdown) - DISESUAIKAN AGAR SUPPORT KATEGORI
 ====================== */
 function onSelectChange() {
   const id = songSelect.value;
   if (!id) return;
+  const activeCategory = (categorySelect && categorySelect.value) ? categorySelect.value : null;
+
+  if (activeCategory) {
+    const listTagsMatch = filteredList.length && (filteredList[0].tags || []).includes(activeCategory);
+    if (!listTagsMatch) {
+      filterByCategory(activeCategory);
+    }
+
+    const pos = filteredList.findIndex(f => String(f.id) === String(id));
+    if (pos !== -1) {
+      filteredMode = true;
+      currentFilteredIndex = pos;
+      const realIndex = filteredList[currentFilteredIndex].index;
+      loadSongByIndex(realIndex);
+      playAudio();
+      return;
+    }
+  }
+
 
   filteredMode = false;
   currentFilteredIndex = -1;
   const idx = playlist.findIndex(p => String(p.id) === String(id));
-
   if (idx !== -1) {
     loadSongByIndex(idx);
     playAudio();
   }
 }
-songSelect.addEventListener('change', onSelectChange);
-
 /* ======================
    MENU & SUBMENU
 ====================== */
