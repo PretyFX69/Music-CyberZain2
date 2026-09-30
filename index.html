@@ -5,748 +5,430 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="theme-color" content="#ffffff" />
 <title>Pretv Chat</title>
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
-/* ============================================================
-   RESET & BASE
-   ============================================================ */
-*, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; height: 100%; }
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background: #f5f6f8;
-    color: #111;
-    -webkit-tap-highlight-color: transparent;
-    overscroll-behavior-y: none;
-}
-button { font-family: inherit; cursor: pointer; }
-input, textarea { font-family: inherit; }
-img { display: block; max-width: 100%; }
-
-:root {
-    --primary: #2f7cff;
-    --primary-dark: #1d5fd8;
-    --danger: #e74c3c;
-    --line: #e3e6ea;
-    --muted: #7a8087;
-    --bg: #ffffff;
-    --bg-soft: #f5f6f8;
-    --bubble-me: #2f7cff;
-    --bubble-other: #ffffff;
-    --text-me: #ffffff;
-    --text-other: #111;
-}
-
-.hidden { display: none !important; }
-.muted { color: var(--muted); }
-.small { font-size: 12px; }
-.strong { font-weight: 600; }
-
-/* ============================================================
-   ICON
-   ============================================================ */
-.icon {
-    width: 20px; height: 20px;
-    fill: none; stroke: currentColor;
-    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
-    flex: 0 0 auto;
-    pointer-events: none;
-}
-.icon-sm { width: 16px; height: 16px; }
-.icon-lg { width: 32px; height: 32px; }
-
-.spin { animation: spin 1s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* ============================================================
-   AVATAR
-   ============================================================ */
-.avatar {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 42px; height: 42px; border-radius: 50%;
-    background: #dbe7ff; color: #1d5fd8;
-    font-weight: 600; font-size: 14px;
-    object-fit: cover; overflow: hidden;
-    flex: 0 0 auto;
-}
-.avatar.sm { width: 34px; height: 34px; font-size: 12px; }
-.avatar.xl { width: 110px; height: 110px; font-size: 34px; border: 3px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
-
-/* ============================================================
-   AUTH SCREEN
-   ============================================================ */
-.auth-body {
-    min-height: 100dvh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px 18px;
-    background: linear-gradient(135deg, #eef3ff 0%, #f8f9fc 100%);
-}
-.auth-card {
-    width: 100%; max-width: 420px;
-    background: #fff;
-    border-radius: 22px;
-    padding: 28px 22px;
-    box-shadow: 0 20px 60px rgba(31, 60, 120, .10);
-}
-.brand { text-align: center; margin-bottom: 22px; }
-.brand .logo {
-    width: 64px; height: 64px; margin: 0 auto 12px;
-    border-radius: 18px;
-    background: linear-gradient(135deg, var(--primary), #6aa8ff);
-    color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 10px 30px rgba(47,124,255,.35);
-}
-.brand h1 { margin: 0 0 4px; font-size: 22px; font-weight: 700; }
-.brand p { margin: 0; }
-
-.tabs {
-    display: flex; gap: 6px; padding: 4px;
-    background: #f1f3f6; border-radius: 12px;
-    margin-bottom: 18px;
-}
-.tab {
-    flex: 1; padding: 10px; border: 0; border-radius: 9px;
-    background: transparent; color: var(--muted);
-    font-weight: 600; font-size: 14px;
-    transition: all .18s ease;
-}
-.tab.active { background: #fff; color: #111; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
-
-.form { display: flex; flex-direction: column; gap: 14px; }
-.form label {
-    display: flex; flex-direction: column; gap: 6px;
-    font-size: 13px; font-weight: 500; color: #333;
-}
-.input-wrap {
-    display: flex; align-items: center; gap: 8px;
-    border: 1px solid var(--line); border-radius: 12px;
-    padding: 0 12px; background: #fff;
-    transition: border-color .15s;
-}
-.input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47,124,255,.12); }
-.input-wrap .icon { color: var(--muted); }
-.input-wrap input {
-    flex: 1; border: 0; outline: 0; background: transparent;
-    padding: 12px 0; font-size: 15px; color: #111;
-}
-.error { color: var(--danger); font-size: 13px; margin: 0; min-height: 16px; }
-
-.btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    padding: 12px 16px; border: 1px solid var(--line);
-    border-radius: 12px; background: #fff; color: #333;
-    font-size: 14px; font-weight: 600;
-    transition: transform .05s ease, background .15s;
-}
-.btn:active { transform: scale(.98); }
-.btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
-.btn.primary:hover { background: var(--primary-dark); }
-.btn.danger { background: #fdecea; color: var(--danger); border-color: #f7c8c0; }
-.btn:disabled { opacity: .6; cursor: not-allowed; }
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:#f5f6f8;color:#111;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+button{font-family:inherit;cursor:pointer}
+input,textarea{font-family:inherit}
+img{display:block;max-width:100%}
+:root{--primary:#2f7cff;--primary-dark:#1d5fd8;--danger:#e74c3c;--line:#e3e6ea;--muted:#7a8087;--bg:#fff;--bg-soft:#f5f6f8;--bubble-me:#2f7cff;--bubble-other:#fff;--text-me:#fff;--text-other:#111;--wa-green:#25d366;--wa-dark:#075e54}
+.hidden{display:none !important}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.strong{font-weight:600}
+.icon{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto;pointer-events:none}
+.icon-sm{width:16px;height:16px}
+.icon-lg{width:32px;height:32px}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes slideUp{from{transform:translateY(100%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes swFill{from{width:0%}to{width:100%}}
+.avatar{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:#dbe7ff;color:#1d5fd8;font-weight:600;font-size:14px;object-fit:cover;overflow:hidden;flex:0 0 auto}
+.avatar.sm{width:34px;height:34px;font-size:12px}
+.avatar.xl{width:110px;height:110px;font-size:34px;border:3px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+.auth-body{min-height:100dvh;display:flex;align-items:center;justify-content:center;padding:24px 18px;background:linear-gradient(135deg,#eef3ff 0%,#f8f9fc 100%)}
+.auth-card{width:100%;max-width:420px;background:#fff;border-radius:22px;padding:28px 22px;box-shadow:0 20px 60px rgba(31,60,120,.10)}
+.brand{text-align:center;margin-bottom:22px}
+.brand .logo{width:64px;height:64px;margin:0 auto 12px;border-radius:18px;background:linear-gradient(135deg,var(--primary),#6aa8ff);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px rgba(47,124,255,.35)}
+.brand h1{margin:0 0 4px;font-size:22px;font-weight:700}
+.brand p{margin:0}
+.tabs{display:flex;gap:6px;padding:4px;background:#f1f3f6;border-radius:12px;margin-bottom:18px}
+.tab{flex:1;padding:10px;border:0;border-radius:9px;background:transparent;color:var(--muted);font-weight:600;font-size:14px;transition:all .18s ease}
+.tab.active{background:#fff;color:#111;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.form{display:flex;flex-direction:column;gap:14px}
+.form label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#333}
+.input-wrap{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:#fff;transition:border-color .15s}
+.input-wrap:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px rgba(47,124,255,.12)}
+.input-wrap .icon{color:var(--muted)}
+.input-wrap input{flex:1;border:0;outline:0;background:transparent;padding:12px 0;font-size:15px;color:#111}
+.error{color:var(--danger);font-size:13px;margin:0;min-height:16px}
+.info-box{background:#eef5ff;border:1px solid #cfe0ff;color:#1d5fd8;border-radius:10px;padding:10px 12px;font-size:12px;line-height:1.5}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:#fff;color:#333;font-size:14px;font-weight:600;transition:transform .05s ease,background .15s}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.primary:hover{background:var(--primary-dark)}
+.btn.danger{background:#fdecea;color:var(--danger);border-color:#f7c8c0}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.app-body{height:100dvh;display:flex;flex-direction:column;background:var(--bg-soft);overflow:hidden}
+#app-screen{display:flex;flex-direction:column;height:100dvh}
+#app-screen.hidden{display:none !important}
+.view{display:none;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.view.active{display:flex}
+.topbar{display:flex;align-items:center;gap:10px;padding:14px 16px;background:#fff;border-bottom:1px solid var(--line);min-height:56px;position:sticky;top:0;z-index:5}
+.topbar h1{margin:0;font-size:20px;font-weight:700;flex:1}
+.icon-btn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border:0;background:transparent;border-radius:10px;color:#333;transition:background .15s;cursor:pointer}
+.icon-btn:hover{background:#f0f2f5}
+.search{display:flex;align-items:center;gap:8px;margin:12px 16px;padding:10px 14px;background:#fff;border-radius:12px;border:1px solid var(--line)}
+.search-ico{color:var(--muted)}
+.search input{flex:1;border:0;outline:0;background:transparent;font-size:15px}
+.search-results{margin:0 16px 12px;background:#fff;border-radius:12px;border:1px solid var(--line);overflow:hidden}
+.sr-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #f0f2f5;cursor:pointer}
+.sr-item:last-child{border-bottom:0}
+.sr-item:hover{background:#f7f9fc}
+.chat-list{flex:1;overflow-y:auto;padding:0 12px 100px}
+.chat-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;background:#fff;margin-bottom:8px;cursor:pointer;transition:background .15s}
+.chat-item:hover{background:#f7f9fc}
+.chat-item .body{flex:1;min-width:0}
+.chat-item .row1{display:flex;align-items:center;gap:8px;margin-bottom:3px}
+.chat-item .name{font-weight:600;font-size:15px;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-item .time{font-size:11px;color:var(--muted);flex:0 0 auto}
+.chat-item .preview{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.badge{background:var(--primary);color:#fff;font-size:11px;font-weight:600;padding:2px 7px;border-radius:999px;margin-left:6px}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:40px 20px;text-align:center;color:var(--muted)}
+.empty p{margin:0}
+.conv{background:#f5f6f8}
+.conv-top{gap:10px}
+.conv-meta{flex:1;min-width:0}
+.conv-name{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.conv-status{margin-top:1px}
+.messages{flex:1;overflow-y:auto;padding:16px 12px 12px;display:flex;flex-direction:column;gap:6px;background:radial-gradient(circle at 20% 10%,#eef3ff 0%,transparent 40%),radial-gradient(circle at 80% 90%,#fff3ec 0%,transparent 40%),#f5f6f8}
+.msg{max-width:78%;padding:9px 13px;border-radius:16px;font-size:15px;line-height:1.35;word-wrap:break-word;overflow-wrap:anywhere;position:relative;align-self:flex-start;background:var(--bubble-other);color:var(--text-other);box-shadow:0 1px 1px rgba(0,0,0,.04);animation:msgIn .22s ease;user-select:none;-webkit-user-select:none}
+.msg.me{align-self:flex-end;background:var(--bubble-me);color:var(--text-me);border-bottom-right-radius:6px;cursor:pointer}
+.msg.other{border-bottom-left-radius:6px}
+.msg .meta{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;opacity:.75;margin-top:3px}
+.msg .tick{display:inline-flex}
+.msg .tick .icon{width:14px;height:14px}
+.msg .media-wrap{margin:-5px -5px 5px;border-radius:12px;overflow:hidden}
+.msg .media-wrap img{display:block;max-height:320px;object-fit:cover}
+.msg video{max-width:260px;max-height:320px;border-radius:12px;margin:-3px -3px 4px}
+.typing-bar{padding:6px 16px;font-size:12px;color:var(--muted);font-style:italic;background:#f5f6f8}
+.upload-progress{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;color:var(--primary);background:#f5f6f8}
+.new-msg{position:absolute;bottom:90px;right:18px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:0;border-radius:999px;background:var(--primary);color:#fff;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(47,124,255,.4);z-index:20}
+.composer{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid var(--line)}
+.composer label.icon-btn{width:42px;height:42px;flex:0 0 auto}
+.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:22px;padding:10px 16px;font-size:15px;line-height:1.4;outline:0;max-height:120px;min-height:42px;background:#f5f6f8;transition:background .15s}
+.composer textarea:focus{background:#fff;border-color:var(--primary)}
+.send-btn{width:42px;height:42px;flex:0 0 auto;border:0;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(47,124,255,.35)}
+.send-btn:hover{background:var(--primary-dark)}
+.send-btn:disabled{opacity:.5}
 
 /* ============================================================
-   APP SCREEN
+   STATUS (WA-STYLE) - REVAMPED
    ============================================================ */
-.app-body {
-    height: 100dvh; display: flex; flex-direction: column;
-    background: var(--bg-soft); overflow: hidden;
-}
-#app-screen { display: flex; flex-direction: column; height: 100dvh; }
-#app-screen.hidden { display: none !important; }
+.status-header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px;background:#fff}
+.status-header-bar h1{margin:0;font-size:22px;font-weight:700;color:#075e54}
+.status-updates{flex:1;overflow-y:auto;padding-bottom:100px}
+.status-section-title{padding:14px 16px 8px;font-size:12px;font-weight:700;color:#7a8087;text-transform:uppercase;letter-spacing:.6px}
+.status-scroll{display:flex;gap:10px;overflow-x:auto;padding:4px 16px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+.status-scroll::-webkit-scrollbar{display:none}
+.status-tile{flex:0 0 auto;width:108px;height:180px;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 2px 10px rgba(0,0,0,.14);transition:transform .12s ease;scroll-snap-align:start;border:3px solid #25d366}
+.status-tile:active{transform:scale(.96)}
+.status-tile.seen{border-color:#cfd8dc}
+.status-tile.mine{border-color:#25d366}
+.status-tile .tile-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#1a1a2e}
+.status-tile .tile-bg img,.status-tile .tile-bg video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.status-tile .tile-bg .tile-text{color:#fff;font-size:13px;line-height:1.35;padding:14px;text-align:center;font-weight:500;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
+.status-tile .tile-empty{color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:38px;opacity:.85}
+.status-tile .tile-gradient{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 45%,rgba(0,0,0,.78) 100%);pointer-events:none}
+.status-tile .tile-avatar{position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;border:2px solid #fff;overflow:hidden;background:#dbe7ff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d5fd8;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.status-tile .tile-avatar img{width:100%;height:100%;object-fit:cover}
+.status-tile .tile-plus{position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;border:2px solid #fff}
+.status-tile .tile-name{position:absolute;left:8px;right:8px;bottom:8px;color:#fff;font-size:12px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
+.status-tile .tile-time{position:absolute;left:8px;right:8px;bottom:24px;color:rgba(255,255,255,.85);font-size:10px;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-.view { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
-.view.active { display: flex; }
-
-.topbar {
-    display: flex; align-items: center; gap: 10px;
-    padding: 14px 16px; background: #fff;
-    border-bottom: 1px solid var(--line);
-    min-height: 56px;
-    position: sticky; top: 0; z-index: 5;
-}
-.topbar h1 { margin: 0; font-size: 20px; font-weight: 700; flex: 1; }
-
-.icon-btn {
-    width: 40px; height: 40px;
-    display: inline-flex; align-items: center; justify-content: center;
-    border: 0; background: transparent; border-radius: 10px; color: #333;
-    transition: background .15s;
-    cursor: pointer;
-}
-.icon-btn:hover { background: #f0f2f5; }
+/* MY STATUS PAGE */
+.my-status-page{position:fixed;inset:0;z-index:9600;background:#fff;display:flex;flex-direction:column;animation:fadeIn .2s ease}
+.my-status-page.hidden{display:none !important}
+.my-status-list{flex:1;overflow-y:auto;padding-bottom:120px}
+.my-status-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .15s}
+.my-status-row:hover{background:#f7f9fc}
+.ms-thumb{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#e3e6ea;position:relative;border:2.5px solid #25d366;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ms-thumb img,.ms-thumb video{width:100%;height:100%;object-fit:cover}
+.ms-thumb .ms-thumb-text{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:6px;font-size:9px;text-align:center;color:#fff;background:linear-gradient(135deg,#25d366,#128c7e);overflow:hidden;font-weight:500;line-height:1.2}
+.ms-body{flex:1;min-width:0}
+.ms-title{font-size:15px;font-weight:600;color:#111;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.ms-title .ms-heart{color:#25d366;font-size:14px}
+.ms-sub{font-size:12px;color:#7a8087;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ms-menu-btn{width:38px;height:38px;border:0;background:transparent;border-radius:50%;color:#7a8087;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.ms-menu-btn:hover{background:#f0f2f5}
+.my-status-footer{padding:16px 24px 20px;font-size:12.5px;color:#7a8087;text-align:center;border-top:1px solid #f0f2f5;line-height:1.55}
+.my-status-footer i{margin-right:5px;color:#25d366}
+.my-status-fabs{position:absolute;right:20px;bottom:30px;display:flex;flex-direction:column;gap:12px;z-index:10}
+.fab{width:54px;height:54px;border-radius:16px;border:0;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.18);transition:transform .12s}
+.fab:active{transform:scale(.94)}
+.fab-edit{background:#fff;color:#111}
+.fab-add{background:#25d366;color:#fff}
+.my-status-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:60px 24px;color:#7a8087;text-align:center}
+.my-status-empty i{font-size:40px;color:#cfd8dc}
 
 /* ============================================================
-   CHAT LIST
+   FULLSCREEN STATUS VIEWER
    ============================================================ */
-.search {
-    display: flex; align-items: center; gap: 8px;
-    margin: 12px 16px; padding: 10px 14px;
-    background: #fff; border-radius: 12px;
-    border: 1px solid var(--line);
-}
-.search-ico { color: var(--muted); }
-.search input { flex: 1; border: 0; outline: 0; background: transparent; font-size: 15px; }
+.sw-viewer{position:fixed;inset:0;z-index:9800;background:#000;display:flex;flex-direction:column;animation:fadeIn .2s ease}
+.sw-viewer.closing{animation:fadeOut .22s ease forwards}
+.sw-progress{position:absolute;top:8px;left:8px;right:8px;display:flex;gap:3px;z-index:10}
+.sw-bar{flex:1;height:3px;background:rgba(255,255,255,.32);border-radius:2px;overflow:hidden}
+.sw-bar-fill{height:100%;background:#fff;width:0;border-radius:2px}
+.sw-bar.active .sw-bar-fill{animation:swFill var(--sw-dur,5s) linear forwards}
+.sw-bar.done .sw-bar-fill{width:100% !important;animation:none}
+.sw-viewer.paused .sw-bar.active .sw-bar-fill{animation-play-state:paused}
+.sw-header{position:absolute;top:20px;left:8px;right:8px;display:flex;align-items:center;gap:10px;padding:8px;z-index:9;color:#fff}
+.sw-header .avatar{width:36px;height:36px;font-size:13px;border:1px solid rgba(255,255,255,.3)}
+.sw-header .meta{flex:1;min-width:0}
+.sw-header .name{font-weight:600;font-size:14px;text-shadow:0 1px 3px rgba(0,0,0,.6)}
+.sw-header .time{font-size:11px;opacity:.85;margin-top:1px}
+.sw-header .sw-btn{width:36px;height:36px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.sw-header .sw-btn:hover{background:rgba(255,255,255,.15)}
+.sw-content{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.sw-content img,.sw-content video{max-width:100%;max-height:100%;object-fit:contain;background:#000}
+.sw-text{color:#fff;font-size:22px;line-height:1.4;padding:40px 30px;text-align:center;font-weight:500;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.sw-caption{position:absolute;left:0;right:0;bottom:0;padding:20px 24px 40px;color:#fff;font-size:16px;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.6));text-shadow:0 1px 3px rgba(0,0,0,.7)}
+.sw-nav{position:absolute;top:60px;bottom:0;width:35%;z-index:8;cursor:pointer}
+.sw-nav.left{left:0}
+.sw-nav.right{right:0}
+.sw-controls{position:absolute;bottom:0;left:0;right:0;padding:14px 20px 24px;display:flex;gap:14px;justify-content:center;background:linear-gradient(transparent,rgba(0,0,0,.7));z-index:9}
+.sw-ctrl-btn{display:inline-flex;align-items:center;gap:6px;padding:10px 18px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px;font-weight:500;backdrop-filter:blur(6px)}
+.sw-ctrl-btn:hover{background:rgba(255,255,255,.22)}
+.sw-ctrl-btn.danger{background:rgba(231,76,60,.85);border-color:transparent}
 
-.search-results {
-    margin: 0 16px 12px;
-    background: #fff; border-radius: 12px;
-    border: 1px solid var(--line);
-    overflow: hidden;
-}
-.sr-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 14px; border-bottom: 1px solid #f0f2f5;
-    cursor: pointer;
-}
-.sr-item:last-child { border-bottom: 0; }
-.sr-item:hover { background: #f7f9fc; }
+/* ACTION SHEET */
+.action-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9700;background:#fff;border-radius:20px 20px 0 0;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));animation:slideUp .22s cubic-bezier(.2,.9,.3,1);box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+.action-sheet.closing{animation:slideUp .2s ease reverse forwards}
+.action-sheet .handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:6px auto 8px}
+.action-sheet .as-title{padding:6px 20px 10px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
+.action-sheet .as-btn{display:flex;align-items:center;gap:12px;padding:14px 20px;width:100%;border:0;background:transparent;font-size:15px;color:#333;text-align:left}
+.action-sheet .as-btn:hover{background:#f5f6f8}
+.action-sheet .as-btn.danger{color:var(--danger)}
+.action-sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9650;animation:fadeIn .2s ease}
 
-.chat-list { flex: 1; overflow-y: auto; padding: 0 12px 100px; }
-.chat-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px; border-radius: 14px;
-    background: #fff; margin-bottom: 8px;
-    cursor: pointer;
-    transition: background .15s;
-}
-.chat-item:hover { background: #f7f9fc; }
-.chat-item .body { flex: 1; min-width: 0; }
-.chat-item .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
-.chat-item .name { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.chat-item .time { font-size: 11px; color: var(--muted); flex: 0 0 auto; }
-.chat-item .preview {
-    font-size: 13px; color: var(--muted);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.badge {
-    background: var(--primary); color: #fff;
-    font-size: 11px; font-weight: 600;
-    padding: 2px 7px; border-radius: 999px;
-    margin-left: 6px;
-}
-
-.empty {
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 8px; padding: 40px 20px; text-align: center;
-    color: var(--muted);
-}
-.empty p { margin: 0; }
-
-/* ============================================================
-   CONVERSATION
-   ============================================================ */
-.conv { background: #f5f6f8; }
-.conv-top { gap: 10px; }
-.conv-meta { flex: 1; min-width: 0; }
-.conv-name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.conv-status { margin-top: 1px; }
-
-.messages {
-    flex: 1; overflow-y: auto;
-    padding: 16px 12px 12px;
-    display: flex; flex-direction: column; gap: 6px;
-    background:
-        radial-gradient(circle at 20% 10%, #eef3ff 0%, transparent 40%),
-        radial-gradient(circle at 80% 90%, #fff3ec 0%, transparent 40%),
-        #f5f6f8;
-}
-.msg {
-    max-width: 78%;
-    padding: 9px 13px;
-    border-radius: 16px;
-    font-size: 15px; line-height: 1.35;
-    word-wrap: break-word; overflow-wrap: anywhere;
-    position: relative;
-    align-self: flex-start;
-    background: var(--bubble-other); color: var(--text-other);
-    box-shadow: 0 1px 1px rgba(0,0,0,.04);
-}
-.msg.me {
-    align-self: flex-end;
-    background: var(--bubble-me); color: var(--text-me);
-    border-bottom-right-radius: 6px;
-}
-.msg.other { border-bottom-left-radius: 6px; }
-.msg .meta {
-    display: flex; align-items: center; justify-content: flex-end; gap: 4px;
-    font-size: 11px; opacity: .75;
-    margin-top: 3px;
-}
-.msg .tick { display: inline-flex; }
-.msg .tick .icon { width: 14px; height: 14px; }
-.msg .media-wrap { margin: -5px -5px 5px; border-radius: 12px; overflow: hidden; }
-.msg .media-wrap img { display: block; max-height: 320px; object-fit: cover; }
-.msg video { max-width: 260px; max-height: 320px; border-radius: 12px; margin: -3px -3px 4px; }
-
-.typing-bar {
-    padding: 6px 16px;
-    font-size: 12px; color: var(--muted); font-style: italic;
-    background: #f5f6f8;
-}
-.upload-progress {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 16px; font-size: 13px; color: var(--primary);
-    background: #f5f6f8;
-}
-
-.new-msg {
-    position: absolute; bottom: 90px; right: 18px;
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 8px 14px; border: 0; border-radius: 999px;
-    background: var(--primary); color: #fff;
-    font-size: 13px; font-weight: 600;
-    box-shadow: 0 6px 20px rgba(47,124,255,.4);
-    z-index: 20;
-}
-
-.composer {
-    display: flex; align-items: flex-end; gap: 8px;
-    padding: 10px 12px;
-    background: #fff;
-    border-top: 1px solid var(--line);
-}
-.composer label.icon-btn {
-    width: 42px; height: 42px; flex: 0 0 auto;
-}
-.composer textarea {
-    flex: 1; resize: none;
-    border: 1px solid var(--line); border-radius: 22px;
-    padding: 10px 16px; font-size: 15px; line-height: 1.4;
-    outline: 0; max-height: 120px; min-height: 42px;
-    background: #f5f6f8;
-    transition: background .15s;
-}
-.composer textarea:focus { background: #fff; border-color: var(--primary); }
-.send-btn {
-    width: 42px; height: 42px; flex: 0 0 auto;
-    border: 0; border-radius: 50%;
-    background: var(--primary); color: #fff;
-    display: inline-flex; align-items: center; justify-content: center;
-    box-shadow: 0 4px 12px rgba(47,124,255,.35);
-}
-.send-btn:hover { background: var(--primary-dark); }
-.send-btn:disabled { opacity: .5; }
-
-/* ============================================================
-   STATUS
-   ============================================================ */
-.card {
-    background: #fff; border-radius: 16px;
-    margin: 12px 16px; padding: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,.04);
-}
-.status-me-head {
-    display: flex; align-items: center; gap: 12px;
-}
-.status-me-head > div { flex: 1; }
-
-.status-list { flex: 1; overflow-y: auto; padding: 0 12px 100px; }
-.status-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px; border-radius: 14px;
-    background: #fff; margin-bottom: 8px;
-    cursor: pointer;
-}
-.status-item:hover { background: #f7f9fc; }
-.status-ring {
-    padding: 3px; border-radius: 50%;
-    background: linear-gradient(135deg, #2f7cff, #a86bff);
-    display: inline-flex;
-}
-.status-ring .avatar { border: 2px solid #fff; width: 46px; height: 46px; }
-.status-meta { flex: 1; min-width: 0; }
-
-/* ============================================================
-   PROFILE
-   ============================================================ */
-.profile-card { padding: 22px 18px; }
-.profile-head { display: flex; justify-content: center; margin-bottom: 20px; }
-.profile-avatar-wrap { position: relative; display: inline-block; }
-.avatar-edit {
-    position: absolute; right: 2px; bottom: 2px;
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--primary); color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    border: 3px solid #fff; cursor: pointer;
-    box-shadow: 0 3px 10px rgba(47,124,255,.4);
-}
-.avatar-edit.uploading { opacity: .5; pointer-events: none; }
-.profile-fields { display: flex; flex-direction: column; gap: 14px; }
-.profile-fields label {
-    display: flex; flex-direction: column; gap: 6px;
-    font-size: 13px; font-weight: 500; color: #333;
-}
-.profile-fields input,
-.profile-fields textarea {
-    border: 1px solid var(--line); border-radius: 12px;
-    padding: 11px 14px; font-size: 15px; outline: 0;
-    background: #fff; resize: vertical;
-}
-.profile-fields input[readonly] { background: #f5f6f8; color: var(--muted); }
-.profile-fields input:focus,
-.profile-fields textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47,124,255,.12); }
-.profile-card > .btn.danger { margin-top: 16px; width: 100%; }
-
-/* ============================================================
-   BOTTOM NAV
-   ============================================================ */
-.bottom-nav {
-    display: flex;
-    background: #fff;
-    border-top: 1px solid var(--line);
-    padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
-    position: sticky; bottom: 0; z-index: 10;
-}
-.nav-btn {
-    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
-    padding: 6px; border: 0; background: transparent;
-    color: var(--muted); font-size: 11px; font-weight: 500;
-}
-.nav-btn.active { color: var(--primary); }
-.nav-btn .icon { width: 22px; height: 22px; }
-
-/* ============================================================
-   MODAL
-   ============================================================ */
-.modal {
-    position: fixed; inset: 0; z-index: 9000;
-    background: rgba(0,0,0,.5);
-    display: flex; align-items: center; justify-content: center;
-    padding: 20px;
-}
-.modal.hidden { display: none; }
-.modal-card {
-    background: #fff; border-radius: 18px;
-    padding: 22px; max-width: 360px; width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,.25);
-}
-.modal-card h3 { margin: 8px 0 4px; font-size: 18px; }
-.modal-card p { margin: 4px 0; }
-.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
-.modal-actions .btn { flex: 1; }
-.modal-card .avatar.xl { margin: 0 auto 8px; }
-
-.status-modal { max-width: 480px; text-align: left; padding: 16px; }
-.status-viewer-head {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 12px;
-}
-.status-viewer-head > div { flex: 1; }
-#sv-content img { width: 100%; border-radius: 12px; max-height: 60vh; object-fit: contain; }
-#sv-content video { width: 100%; border-radius: 12px; max-height: 60vh; }
-.status-text { font-size: 16px; padding: 20px 8px; text-align: center; }
-
-.status-picker { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
-.picker-btn { flex-direction: column; padding: 14px 8px; gap: 6px; font-size: 13px; }
-
-/* ============================================================
-   TOAST
-   ============================================================ */
-.toast {
-    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-    background: #111; color: #fff;
-    padding: 10px 18px; border-radius: 999px;
-    font-size: 13px; font-weight: 500;
-    z-index: 9500;
-    box-shadow: 0 8px 24px rgba(0,0,0,.3);
-    max-width: 90vw;
-}
-#toast.hidden,
-.toast.hidden {
-    display: none !important;
-    pointer-events: none !important;
-}
-
-/* ============================================================
-   FIX: cegah svg/icon nutup klik
-   ============================================================ */
-.icon, .icon svg, .icon use { pointer-events: none; }
-#pretv-logout-modal button {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-}
+/* CARD & GENERAL */
+.card{background:#fff;border-radius:16px;margin:12px 16px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.profile-card{padding:22px 18px}
+.profile-head{display:flex;justify-content:center;margin-bottom:20px}
+.profile-avatar-wrap{position:relative;display:inline-block}
+.avatar-edit{position:absolute;right:2px;bottom:2px;width:34px;height:34px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;border:3px solid #fff;cursor:pointer;box-shadow:0 3px 10px rgba(47,124,255,.4)}
+.avatar-edit.uploading{opacity:.5;pointer-events:none}
+.profile-fields{display:flex;flex-direction:column;gap:14px}
+.profile-fields label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:500;color:#333}
+.profile-fields input,.profile-fields textarea{border:1px solid var(--line);border-radius:12px;padding:11px 14px;font-size:15px;outline:0;background:#fff;resize:vertical;width:100%}
+.profile-fields input[readonly]{background:#f5f6f8;color:var(--muted)}
+.profile-fields input:focus,.profile-fields textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(47,124,255,.12)}
+.profile-card > .btn.danger{margin-top:16px;width:100%}
+.profile-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px}
+.admin-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:24px}
+.section-title{font-size:13px;font-weight:700;color:#333;margin:8px 0 4px;padding-top:12px;border-top:1px solid var(--line);display:flex;align-items:center;gap:6px}
+.section-title i{color:var(--primary)}
+.bottom-nav{display:flex;background:#fff;border-top:1px solid var(--line);padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));position:sticky;bottom:0;z-index:10}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:500}
+.nav-btn.active{color:var(--primary)}
+.nav-btn .icon{width:22px;height:22px}
+.modal{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn .18s ease}
+.modal.hidden{display:none}
+.modal-card{background:#fff;border-radius:18px;padding:22px;max-width:360px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:popIn .22s cubic-bezier(.2,.9,.3,1)}
+.modal-card h3{margin:8px 0 4px;font-size:18px}
+.modal-card p{margin:4px 0}
+.modal-actions{display:flex;gap:8px;margin-top:16px}
+.modal-actions .btn{flex:1}
+.modal-card .avatar.xl{margin:0 auto 8px}
+.status-picker{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+.picker-btn{flex-direction:column;padding:14px 8px;gap:6px;font-size:13px}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:500;z-index:9500;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;animation:slideUp .2s ease;display:flex;align-items:center;gap:8px}
+#toast.hidden,.toast.hidden{display:none !important;pointer-events:none !important}
+.icon,.icon svg,.icon use{pointer-events:none}
+#pretv-logout-modal button{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 </style>
 </head>
 <body>
 
-<!-- ============================================================
-     SVG SPRITE
-     ============================================================ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <defs>
-        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
-        <symbol id="i-status" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></symbol>
-        <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
-        <symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
-        <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
-        <symbol id="i-attach" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
-        <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
-        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
-        <symbol id="i-video" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
-        <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
-        <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
-        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></symbol>
-        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
-        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
-        <symbol id="i-check-check" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
-        <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
-        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
-        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
-        <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
-        <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
-        <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
-    </defs>
+<defs>
+<symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+<symbol id="i-status" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+<symbol id="i-attach" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+<symbol id="i-video" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+<symbol id="i-check-check" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
+<symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></symbol>
+</defs>
 </svg>
 
-<!-- ============================================================
-     AUTH SCREEN
-     ============================================================ -->
 <main id="auth-screen" class="auth-body">
-    <div class="auth-card">
-        <div class="brand">
-            <div class="logo">
-                <svg class="icon icon-lg"><use href="#i-chat"/></svg>
-            </div>
-            <h1>Pretv Chat</h1>
-            <p class="muted">Chat real-time. Ringan. Aman.</p>
-        </div>
-
-        <div class="tabs">
-            <button class="tab active" data-tab="login">Masuk</button>
-            <button class="tab" data-tab="register">Daftar</button>
-        </div>
-
-        <form id="login-form" class="form">
-            <label>Username
-                <span class="input-wrap">
-                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
-                    <input name="username" type="text" placeholder="@username" autocomplete="username" required />
-                </span>
-            </label>
-            <label>Password
-                <span class="input-wrap">
-                    <svg class="icon icon-sm"><use href="#i-lock"/></svg>
-                    <input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
-                </span>
-            </label>
-            <button class="btn primary" type="submit">Masuk</button>
-            <p class="error" id="login-error"></p>
-        </form>
-
-        <form id="register-form" class="form hidden">
-            <label>Username
-                <span class="input-wrap">
-                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
-                    <input name="username" type="text" placeholder="@username" autocomplete="username" required />
-                </span>
-            </label>
-            <label>Nama tampilan
-                <span class="input-wrap">
-                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
-                    <input name="display_name" type="text" placeholder="Nama kamu" />
-                </span>
-            </label>
-            <label>Password
-                <span class="input-wrap">
-                    <svg class="icon icon-sm"><use href="#i-lock"/></svg>
-                    <input name="password" type="password" placeholder="Min. 4 karakter" autocomplete="new-password" required />
-                </span>
-            </label>
-            <button class="btn primary" type="submit">Daftar</button>
-            <p class="error" id="register-error"></p>
-        </form>
-    </div>
+<div class="auth-card">
+<div class="brand">
+<div class="logo"><svg class="icon icon-lg"><use href="#i-chat"/></svg></div>
+<h1>Pretv Chat</h1>
+<p class="muted">Chat real-time. Ringan. Aman.</p>
+</div>
+<div class="tabs">
+<button class="tab active" data-tab="login">Masuk</button>
+<button class="tab" data-tab="register">Daftar</button>
+</div>
+<form id="login-form" class="form">
+<label>Username<span class="input-wrap"><svg class="icon icon-sm"><use href="#i-user"/></svg><input name="username" type="text" placeholder="@username" autocomplete="username" required /></span></label>
+<label>Password<span class="input-wrap"><svg class="icon icon-sm"><use href="#i-lock"/></svg><input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required /></span></label>
+<button class="btn primary" type="submit">Masuk</button>
+<p class="error" id="login-error"></p>
+</form>
+<form id="register-form" class="form hidden">
+<label>Username<span class="input-wrap"><svg class="icon icon-sm"><use href="#i-user"/></svg><input name="username" type="text" placeholder="@username" autocomplete="username" required /></span></label>
+<label>Nama tampilan<span class="input-wrap"><svg class="icon icon-sm"><use href="#i-user"/></svg><input name="display_name" type="text" placeholder="Nama kamu" /></span></label>
+<label>Password<span class="input-wrap"><svg class="icon icon-sm"><use href="#i-lock"/></svg><input name="password" type="password" placeholder="Min. 4 karakter" autocomplete="new-password" required /></span></label>
+<button class="btn primary" type="submit">Daftar</button>
+<p class="error" id="register-error"></p>
+</form>
+</div>
 </main>
 
-<!-- ============================================================
-     APP SCREEN
-     ============================================================ -->
 <div id="app-screen" class="app-body hidden">
 
-    <!-- VIEW: CHAT LIST -->
-    <section id="view-chat" class="view active">
-        <header class="topbar"><h1>Chat</h1></header>
-        <div class="search">
-            <svg class="icon icon-sm search-ico"><use href="#i-search"/></svg>
-            <input id="search-input" type="text" placeholder="Cari pengguna atau chat" />
-        </div>
-        <div id="search-results" class="search-results hidden"></div>
-        <div id="chat-list" class="chat-list">
-            <div class="empty">
-                <svg class="icon icon-lg muted"><use href="#i-chat"/></svg>
-                <p>Belum ada percakapan.</p>
-                <p class="muted small">Cari pengguna untuk memulai chat.</p>
-            </div>
-        </div>
-    </section>
+<section id="view-chat" class="view active">
+<header class="topbar"><h1>Chat</h1></header>
+<div class="search">
+<svg class="icon icon-sm search-ico"><use href="#i-search"/></svg>
+<input id="search-input" type="text" placeholder="Cari pengguna atau chat" />
+</div>
+<div id="search-results" class="search-results hidden"></div>
+<div id="chat-list" class="chat-list">
+<div class="empty"><svg class="icon icon-lg muted"><use href="#i-chat"/></svg><p>Belum ada percakapan.</p><p class="muted small">Cari pengguna untuk memulai chat.</p></div>
+</div>
+</section>
 
-    <!-- VIEW: CONVERSATION -->
-    <section id="view-conv" class="view conv">
-        <header class="topbar conv-top">
-            <button id="conv-back" class="icon-btn" aria-label="Kembali">
-                <svg class="icon"><use href="#i-back"/></svg>
-            </button>
-            <span id="conv-avatar" class="avatar sm"></span>
-            <div class="conv-meta">
-                <div id="conv-name" class="conv-name">—</div>
-                <div id="conv-status" class="muted small">—</div>
-            </div>
-            <button id="conv-profile" class="icon-btn" aria-label="Info">
-                <svg class="icon"><use href="#i-info"/></svg>
-            </button>
-        </header>
+<section id="view-conv" class="view conv">
+<header class="topbar conv-top">
+<button id="conv-back" class="icon-btn" aria-label="Kembali"><svg class="icon"><use href="#i-back"/></svg></button>
+<span id="conv-avatar" class="avatar sm"></span>
+<div class="conv-meta">
+<div id="conv-name" class="conv-name">—</div>
+<div id="conv-status" class="muted small">—</div>
+</div>
+<button id="conv-profile" class="icon-btn" aria-label="Info"><svg class="icon"><use href="#i-info"/></svg></button>
+</header>
+<div id="messages" class="messages"></div>
+<button id="new-msg-indicator" class="new-msg hidden"><svg class="icon icon-sm"><use href="#i-arrow-down"/></svg><span>0</span> pesan baru</button>
+<div id="typing-bar" class="typing-bar hidden"></div>
+<form id="composer" class="composer">
+<label class="icon-btn" aria-label="Lampiran"><svg class="icon"><use href="#i-attach"/></svg><input id="file-input" type="file" accept="image/*,video/*" hidden /></label>
+<textarea id="composer-input" rows="1" placeholder="Tulis pesan..."></textarea>
+<button id="send-btn" type="submit" class="send-btn" aria-label="Kirim"><svg class="icon"><use href="#i-send"/></svg></button>
+</form>
+<div id="upload-progress" class="upload-progress hidden"><svg class="icon icon-sm spin"><use href="#i-upload"/></svg> Mengunggah media...</div>
+</section>
 
-        <div id="messages" class="messages"></div>
+<section id="view-status" class="view">
+<div class="status-header-bar">
+<h1>Status</h1>
+<button id="add-status" class="icon-btn" aria-label="Tambah"><svg class="icon"><use href="#i-camera"/></svg></button>
+</div>
+<div class="status-updates">
+<div class="status-section-title">Status</div>
+<div id="status-list" class="status-scroll"></div>
+</div>
+</section>
 
-        <button id="new-msg-indicator" class="new-msg hidden">
-            <svg class="icon icon-sm"><use href="#i-arrow-down"/></svg>
-            <span>0</span> pesan baru
-        </button>
+<section id="view-profile" class="view">
+<header class="topbar"><h1>Profil</h1></header>
+<div class="profile-scroll">
+<div class="profile-card card">
+<div class="profile-head">
+<div class="profile-avatar-wrap">
+<span id="me-avatar" class="avatar xl"></span>
+<label class="avatar-edit" for="avatar-input" title="Ganti foto"><svg class="icon icon-sm"><use href="#i-camera"/></svg></label>
+<input id="avatar-input" type="file" accept="image/*" hidden />
+</div>
+</div>
+<div class="profile-fields">
+<label>Nama tampilan<input id="field-display_name" type="text" /></label>
+<label>Username<input id="field-username" type="text" readonly /></label>
+<label>Tentang<textarea id="field-about" rows="3"></textarea></label>
+<button id="save-profile" class="btn primary"><svg class="icon icon-sm"><use href="#i-check"/></svg> Simpan perubahan</button>
+<p id="profile-msg" class="muted small"></p>
+<div class="section-title"><i class="fa-solid fa-lock"></i> Ganti Password</div>
+<label>Password lama<input id="pw-old" type="password" placeholder="Password saat ini" autocomplete="current-password" /></label>
+<label>Password baru<input id="pw-new" type="password" placeholder="Min. 4 karakter" autocomplete="new-password" /></label>
+<label>Ulangi password baru<input id="pw-confirm" type="password" placeholder="Ulangi password baru" autocomplete="new-password" /></label>
+<button id="change-password" class="btn"><svg class="icon icon-sm"><use href="#i-lock"/></svg> Ganti Password</button>
+<p id="pw-msg" class="muted small"></p>
+</div>
+<button id="logout-btn" class="btn danger"><svg class="icon icon-sm"><use href="#i-logout"/></svg> Logout</button>
+</div>
+</div>
+</section>
 
-        <div id="typing-bar" class="typing-bar hidden"></div>
+<section id="view-admin" class="view">
+<header class="topbar"><h1>Admin Panel</h1></header>
+<div class="admin-scroll">
+<div class="profile-card card">
+<div class="info-box" style="margin-bottom:16px"><b><i class="fa-solid fa-shield-halved"></i> Konfigurasi Upload</b><br>Data disimpan di tabel <code>app_config</code>. Hanya user <b>pretvfx</b> yang bisa akses.</div>
+<div class="profile-fields">
+<label>GitHub Token (PAT)<input id="cfg-github_token" type="text" placeholder="ghp_..." autocomplete="off" /></label>
+<label>Owner / Username GitHub<input id="cfg-github_owner" type="text" placeholder="username" /></label>
+<label>Nama Repo<input id="cfg-github_repo" type="text" placeholder="upload-gambar" /></label>
+<label>Branch<input id="cfg-github_branch" type="text" placeholder="main" /></label>
+<button id="admin-save" class="btn primary"><svg class="icon icon-sm"><use href="#i-check"/></svg> Simpan Konfigurasi</button>
+<button id="admin-test" class="btn" type="button"><svg class="icon icon-sm"><use href="#i-upload"/></svg> Test Upload</button>
+<p id="admin-msg" class="muted small"></p>
+</div>
+</div>
+</div>
+</section>
 
-        <form id="composer" class="composer">
-            <label class="icon-btn" aria-label="Lampiran">
-                <svg class="icon"><use href="#i-attach"/></svg>
-                <input id="file-input" type="file" accept="image/*,video/*" hidden />
-            </label>
-            <textarea id="composer-input" rows="1" placeholder="Tulis pesan..."></textarea>
-            <button id="send-btn" type="submit" class="send-btn" aria-label="Kirim">
-                <svg class="icon"><use href="#i-send"/></svg>
-            </button>
-        </form>
-        <div id="upload-progress" class="upload-progress hidden">
-            <svg class="icon icon-sm spin"><use href="#i-upload"/></svg>
-            Mengunggah media...
-        </div>
-    </section>
-
-    <!-- VIEW: STATUS -->
-    <section id="view-status" class="view">
-        <header class="topbar"><h1>Status</h1></header>
-        <div class="status-me card">
-            <div class="status-me-head">
-                <span id="me-avatar-status" class="avatar"></span>
-                <div>
-                    <div class="strong">Status saya</div>
-                    <div id="my-status-count" class="muted small">Ketuk untuk menambahkan</div>
-                </div>
-                <button id="add-status" class="icon-btn" aria-label="Tambah status">
-                    <svg class="icon"><use href="#i-plus"/></svg>
-                </button>
-            </div>
-        </div>
-        <div id="status-list" class="status-list">
-            <div class="empty">
-                <svg class="icon icon-lg muted"><use href="#i-status"/></svg>
-                <p class="muted">Belum ada status terbaru.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- VIEW: PROFILE -->
-    <section id="view-profile" class="view">
-        <header class="topbar"><h1>Profil</h1></header>
-        <div class="profile-card card">
-            <div class="profile-head">
-                <div class="profile-avatar-wrap">
-                    <span id="me-avatar" class="avatar xl"></span>
-                    <label class="avatar-edit" for="avatar-input" title="Ganti foto">
-                        <svg class="icon icon-sm"><use href="#i-camera"/></svg>
-                    </label>
-                    <input id="avatar-input" type="file" accept="image/*" hidden />
-                </div>
-            </div>
-            <div class="profile-fields">
-                <label>Nama tampilan
-                    <input id="field-display_name" type="text" />
-                </label>
-                <label>Username
-                    <input id="field-username" type="text" readonly />
-                </label>
-                <label>Tentang
-                    <textarea id="field-about" rows="3"></textarea>
-                </label>
-                <button id="save-profile" class="btn primary">
-                    <svg class="icon icon-sm"><use href="#i-check"/></svg>
-                    Simpan perubahan
-                </button>
-                <p id="profile-msg" class="muted small"></p>
-            </div>
-            <button id="logout-btn" class="btn danger">
-                <svg class="icon icon-sm"><use href="#i-logout"/></svg>
-                Logout
-            </button>
-        </div>
-    </section>
-
-    <!-- BOTTOM NAV -->
-    <nav class="bottom-nav" id="bottom-nav">
-        <button class="nav-btn active" data-view="chat">
-            <svg class="icon"><use href="#i-chat"/></svg>
-            <span>Chat</span>
-        </button>
-        <button class="nav-btn" data-view="status">
-            <svg class="icon"><use href="#i-status"/></svg>
-            <span>Status</span>
-        </button>
-        <button class="nav-btn" data-view="profile">
-            <svg class="icon"><use href="#i-user"/></svg>
-            <span>Profil</span>
-        </button>
-    </nav>
+<nav class="bottom-nav" id="bottom-nav">
+<button class="nav-btn active" data-view="chat"><svg class="icon"><use href="#i-chat"/></svg><span>Chat</span></button>
+<button class="nav-btn" data-view="status"><svg class="icon"><use href="#i-status"/></svg><span>Status</span></button>
+<button class="nav-btn" data-view="profile"><svg class="icon"><use href="#i-user"/></svg><span>Profil</span></button>
+<button class="nav-btn hidden" data-view="admin" id="nav-admin"><svg class="icon"><use href="#i-shield"/></svg><span>Admin</span></button>
+</nav>
 </div>
 
-<!-- MODAL: USER -->
+<!-- MY STATUS PAGE -->
+<div id="my-status-page" class="my-status-page hidden">
+<header class="topbar">
+<button class="icon-btn" id="ms-back" aria-label="Kembali"><svg class="icon"><use href="#i-back"/></svg></button>
+<h1 style="margin:0;font-size:20px;font-weight:700;flex:1">Status saya</h1>
+</header>
+<div class="my-status-list" id="my-status-list"></div>
+<div class="my-status-footer">
+<i class="fa-solid fa-lock"></i>Status Anda <b>terenkripsi secara end-to-end</b>. Status akan hilang setelah 24 jam.
+</div>
+<div class="my-status-fabs">
+<button class="fab fab-edit" id="ms-edit" aria-label="Tulis"><i class="fa-solid fa-pen"></i></button>
+<button class="fab fab-add" id="ms-add" aria-label="Tambah"><i class="fa-solid fa-camera"></i></button>
+</div>
+</div>
+
 <div id="modal-user" class="modal hidden">
-    <div class="modal-card">
-        <span id="mu-avatar" class="avatar xl"></span>
-        <h3 id="mu-name">—</h3>
-        <p id="mu-username" class="muted">—</p>
-        <p id="mu-about" class="small">—</p>
-        <div class="modal-actions">
-            <button id="mu-close" class="btn">
-                <svg class="icon icon-sm"><use href="#i-close"/></svg> Tutup
-            </button>
-            <button id="mu-chat" class="btn primary">
-                <svg class="icon icon-sm"><use href="#i-chat"/></svg> Kirim pesan
-            </button>
-        </div>
-    </div>
+<div class="modal-card">
+<span id="mu-avatar" class="avatar xl"></span>
+<h3 id="mu-name">—</h3>
+<p id="mu-username" class="muted">—</p>
+<p id="mu-about" class="small">—</p>
+<div class="modal-actions">
+<button id="mu-close" class="btn"><svg class="icon icon-sm"><use href="#i-close"/></svg> Tutup</button>
+<button id="mu-chat" class="btn primary"><svg class="icon icon-sm"><use href="#i-chat"/></svg> Kirim pesan</button>
 </div>
-
-<!-- MODAL: STATUS VIEWER -->
-<div id="modal-status" class="modal hidden">
-    <div class="modal-card status-modal">
-        <div class="status-viewer-head">
-            <span id="sv-avatar" class="avatar sm"></span>
-            <div>
-                <div id="sv-name" class="strong">—</div>
-                <div id="sv-time" class="muted small">—</div>
-            </div>
-            <button id="sv-close" class="icon-btn" aria-label="Tutup">
-                <svg class="icon"><use href="#i-close"/></svg>
-            </button>
-        </div>
-        <div id="sv-content"></div>
-    </div>
+</div>
 </div>
 
 <div id="toast" class="toast hidden"></div>
 
-<!-- ============================================================
-     SCRIPTS
-     ============================================================ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* ============================================================
-   1. SUPABASE CLIENT
-   ============================================================ */
 const SUPABASE_URL = 'https://dyxhqsykaamhbgktjwkw.supabase.co';
 const SUPABASE_ANON_KEY = 'sb_publishable_mavPX5DNtbxoRs8kGT3xfw_6Zsu8wns';
+const ADMIN_USERNAME = 'pretvfx';
 
 let _sb = null;
 function initSupabase() {
@@ -759,58 +441,61 @@ function initSupabase() {
 }
 
 /* ============================================================
-   2. API HYBRID (Supabase direct + GitHub upload)
+   CONFIG MODULE
+   ============================================================ */
+const Config = (function () {
+    let cache = null;
+    async function load(force) {
+        if (cache && !force) return cache;
+        const sb = await initSupabase();
+        const { data, error } = await sb.from('app_config').select('key, value');
+        if (error) throw new Error('Gagal memuat config: ' + error.message);
+        const cfg = {};
+        (data || []).forEach(r => { cfg[r.key] = r.value; });
+        cache = cfg;
+        return cfg;
+    }
+    function get(key, fallback = '') { if (!cache) return fallback; return (cache[key] != null ? cache[key] : fallback); }
+    async function set(key, value) {
+        const sb = await initSupabase();
+        const { error } = await sb.from('app_config').upsert({ key, value: String(value == null ? '' : value), updated_at: new Date().toISOString() }, { onConflict: 'key' });
+        if (error) throw new Error('Gagal simpan config: ' + error.message);
+        if (!cache) cache = {};
+        cache[key] = String(value == null ? '' : value);
+    }
+    async function setMany(obj) { for (const [k, v] of Object.entries(obj)) await set(k, v); }
+    function snapshot() { return cache ? { ...cache } : null; }
+    return { load, get, set, setMany, snapshot };
+})();
+
+/* ============================================================
+   API
    ============================================================ */
 const TOKEN_KEY = 'pretv_token';
 
-const GITHUB = {
-    token: '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',
-    owner: 'danadiyaksanasif-afk',
-    repo: 'upload-gambar',
-    branch: 'main'
-};
-
 function publicUser(u) {
     if (!u) return null;
-    return {
-        id: u.id,
-        username: u.username,
-        display_name: u.display_name,
-        avatar_url: u.avatar_url || null,
-        about: u.about || '',
-        online: !!u.online,
-        last_seen: u.last_seen,
-        created_at: u.created_at
-    };
+    return { id: u.id, username: u.username, display_name: u.display_name, avatar_url: u.avatar_url || null, about: u.about || '', online: !!u.online, last_seen: u.last_seen, created_at: u.created_at };
 }
-
 async function sha256(text) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(text)));
     return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
 }
-
 function sessionUser() {
-    try { return JSON.parse(localStorage.getItem(TOKEN_KEY) || 'null'); }
-    catch { return null; }
+    try { return JSON.parse(localStorage.getItem(TOKEN_KEY) || 'null'); } catch { return null; }
 }
 
 const API = {
     get token() { return localStorage.getItem(TOKEN_KEY); },
     set token(v) { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); },
-
     async db() { return initSupabase(); },
-    me() {
-        const s = sessionUser();
-        if (!s?.id) throw new Error('Silakan login.');
-        return s;
-    },
+    me() { const s = sessionUser(); if (!s?.id) throw new Error('Silakan login.'); return s; },
 
     async call(method, url, body, isForm = false) {
         const path = String(url).split('?')[0];
         const qs = new URLSearchParams(String(url).includes('?') ? String(url).split('?')[1] : '');
         const sb = await this.db();
 
-        // ---- REGISTER ----
         if (path === '/api/chat/register' && method === 'POST') {
             const username = String(body.username || '').trim().replace(/^@/, '').toLowerCase();
             const password = String(body.password || '');
@@ -822,15 +507,13 @@ const API = {
             if (e1) throw new Error(e1.message);
             if (exist) throw new Error('Username sudah digunakan.');
             const hash = await sha256(password);
-            const { data, error } = await sb.from('chat_users')
-                .insert([{ username, password_hash: hash, display_name }]).select('*').single();
+            const { data, error } = await sb.from('chat_users').insert([{ username, password_hash: hash, display_name }]).select('*').single();
             if (error) throw new Error(error.message);
             const user = publicUser(data);
             this.token = JSON.stringify(user);
             return { success: true, token: this.token, user };
         }
 
-        // ---- LOGIN ----
         if (path === '/api/chat/login' && method === 'POST') {
             const username = String(body.username || '').trim().replace(/^@/, '').toLowerCase();
             const password = String(body.password || '');
@@ -845,7 +528,6 @@ const API = {
             return { success: true, token: this.token, user };
         }
 
-        // ---- ME ----
         if (path === '/api/chat/me') {
             const me = this.me();
             const { data, error } = await sb.from('chat_users').select('*').eq('id', me.id).maybeSingle();
@@ -855,30 +537,36 @@ const API = {
             return { success: true, user };
         }
 
-        // ---- LOGOUT ----
         if (path === '/api/chat/logout' && method === 'POST') {
-            try {
-                const me = this.me();
-                await sb.from('chat_users').update({ online: false, last_seen: new Date().toISOString() }).eq('id', me.id);
-            } catch (_) {}
+            try { const me = this.me(); await sb.from('chat_users').update({ online: false, last_seen: new Date().toISOString() }).eq('id', me.id); } catch (_) {}
             this.token = null;
             return { success: true };
         }
 
-        // ---- SEARCH USERS ----
+        if (path === '/api/chat/password' && method === 'PUT') {
+            const me = this.me();
+            const oldPw = String(body.old_password || '');
+            const newPw = String(body.new_password || '');
+            if (newPw.length < 4) throw new Error('Password baru minimal 4 karakter.');
+            const { data, error } = await sb.from('chat_users').select('password_hash').eq('id', me.id).maybeSingle();
+            if (error || !data) throw new Error('User tidak ditemukan.');
+            const oldHash = await sha256(oldPw);
+            if (data.password_hash !== oldHash) throw new Error('Password lama salah.');
+            const newHash = await sha256(newPw);
+            const { error: e2 } = await sb.from('chat_users').update({ password_hash: newHash }).eq('id', me.id);
+            if (e2) throw new Error(e2.message);
+            return { success: true };
+        }
+
         if (path === '/api/chat/users/search') {
             const me = this.me();
             const q = String(qs.get('q') || '').trim().toLowerCase().replace(/^@/, '');
             if (!q) return { success: true, data: [] };
-            const { data, error } = await sb.from('chat_users')
-                .select('id, username, display_name, avatar_url, about, online, last_seen')
-                .or(`username.ilike.%${q}%,display_name.ilike.%${q}%`)
-                .neq('id', me.id).limit(20);
+            const { data, error } = await sb.from('chat_users').select('id, username, display_name, avatar_url, about, online, last_seen').or(`username.ilike.%${q}%,display_name.ilike.%${q}%`).neq('id', me.id).limit(20);
             if (error) throw new Error(error.message);
             return { success: true, data: (data || []).map(publicUser) };
         }
 
-        // ---- GET USER BY USERNAME ----
         if (path.startsWith('/api/chat/users/') && method === 'GET') {
             const username = decodeURIComponent(path.split('/').pop()).replace(/^@/, '').toLowerCase();
             const { data, error } = await sb.from('chat_users').select('*').eq('username', username).maybeSingle();
@@ -886,7 +574,6 @@ const API = {
             return { success: true, user: publicUser(data) };
         }
 
-        // ---- UPDATE PROFILE ----
         if (path === '/api/chat/profile' && method === 'PUT') {
             const me = this.me();
             const patch = {};
@@ -899,7 +586,6 @@ const API = {
             return { success: true, user };
         }
 
-        // ---- CONVERSATIONS ----
         if (path === '/api/chat/conversations' && method === 'GET') {
             return { success: true, data: await this._listConversations() };
         }
@@ -911,28 +597,21 @@ const API = {
             const { data: mine } = await sb.from('conversation_members').select('conversation_id').eq('user_id', me.id);
             const ids = (mine || []).map(x => x.conversation_id);
             if (ids.length) {
-                const { data: shared } = await sb.from('conversation_members')
-                    .select('conversation_id').eq('user_id', otherId).in('conversation_id', ids).limit(1);
+                const { data: shared } = await sb.from('conversation_members').select('conversation_id').eq('user_id', otherId).in('conversation_id', ids).limit(1);
                 if (shared?.length) return { success: true, conversation_id: shared[0].conversation_id, existed: true };
             }
-            const { data: conv, error: cErr } = await sb.from('conversations')
-                .insert([{ last_sender_id: me.id }]).select('*').single();
+            const { data: conv, error: cErr } = await sb.from('conversations').insert([{ last_sender_id: me.id }]).select('*').single();
             if (cErr) throw new Error(cErr.message);
-            const { error: mErr } = await sb.from('conversation_members').insert([
-                { conversation_id: conv.id, user_id: me.id },
-                { conversation_id: conv.id, user_id: otherId }
-            ]);
+            const { error: mErr } = await sb.from('conversation_members').insert([{ conversation_id: conv.id, user_id: me.id }, { conversation_id: conv.id, user_id: otherId }]);
             if (mErr) throw new Error(mErr.message);
             return { success: true, conversation_id: conv.id, existed: false };
         }
 
-        // ---- MESSAGES ----
         const msgMatch = path.match(/^\/api\/chat\/conversations\/([^/]+)\/messages$/);
         if (msgMatch && method === 'GET') {
             const convId = msgMatch[1];
             const limit = Math.min(parseInt(qs.get('limit') || '40', 10) || 40, 100);
-            const { data, error } = await sb.from('messages').select('*')
-                .eq('conversation_id', convId).order('created_at', { ascending: false }).limit(limit);
+            const { data, error } = await sb.from('messages').select('*').eq('conversation_id', convId).order('created_at', { ascending: false }).limit(limit);
             if (error) throw new Error(error.message);
             return { success: true, data: (data || []).reverse() };
         }
@@ -942,47 +621,37 @@ const API = {
             const message_type = String(body.message_type || 'text').toLowerCase();
             const content = String(body.content || '').trim();
             const media_url = body.media_url || null;
-            const { data: others } = await sb.from('conversation_members')
-                .select('user_id').eq('conversation_id', convId).neq('user_id', me.id);
+            const { data: others } = await sb.from('conversation_members').select('user_id').eq('conversation_id', convId).neq('user_id', me.id);
             const receiver_id = others?.[0]?.user_id || null;
-            const { data: msg, error } = await sb.from('messages').insert([{
-                conversation_id: convId,
-                sender_id: me.id,
-                receiver_id,
-                message_type,
-                content: content || null,
-                media_url
-            }]).select('*').single();
+            const { data: msg, error } = await sb.from('messages').insert([{ conversation_id: convId, sender_id: me.id, receiver_id, message_type, content: content || null, media_url }]).select('*').single();
             if (error) throw new Error(error.message);
-            const preview = message_type === 'text' ? content.slice(0, 80)
-                : (message_type === 'image' ? '📷 Foto' : '🎬 Video');
-            await sb.from('conversations').update({
-                last_message_at: msg.created_at,
-                last_message_preview: preview,
-                last_sender_id: me.id
-            }).eq('id', convId);
+            const preview = message_type === 'text' ? content.slice(0, 80) : (message_type === 'image' ? 'Foto' : 'Video');
+            await sb.from('conversations').update({ last_message_at: msg.created_at, last_message_preview: preview, last_sender_id: me.id }).eq('id', convId);
             return { success: true, message: msg };
         }
 
-        // ---- MARK READ ----
+        const delMsgMatch = path.match(/^\/api\/chat\/messages\/([^/]+)$/);
+        if (delMsgMatch && method === 'DELETE') {
+            const msgId = delMsgMatch[1];
+            const { data: msg, error: e1 } = await sb.from('messages').select('*').eq('id', msgId).maybeSingle();
+            if (e1 || !msg) throw new Error('Pesan tidak ditemukan.');
+            if (msg.media_url) { try { await this._githubDelete(msg.media_url); } catch (e) { console.warn('Gagal hapus GitHub:', e.message); } }
+            const { error: e2 } = await sb.from('messages').delete().eq('id', msgId);
+            if (e2) throw new Error(e2.message);
+            return { success: true };
+        }
+
         if (path.match(/^\/api\/chat\/conversations\/[^/]+\/read$/) && method === 'POST') {
             const me = this.me();
             const convId = path.split('/')[4];
             const now = new Date().toISOString();
-            await sb.from('messages').update({ read_at: now })
-                .eq('conversation_id', convId).eq('receiver_id', me.id).is('read_at', null);
+            await sb.from('messages').update({ read_at: now }).eq('conversation_id', convId).eq('receiver_id', me.id).is('read_at', null);
             return { success: true };
         }
 
-        // ---- STATUS ----
         if (path === '/api/chat/statuses' && method === 'GET') {
-            let r = await sb.from('statuses').select('*')
-                .gt('expires_at', new Date().toISOString())
-                .order('created_at', { ascending: false }).limit(80);
-            if (r.error) {
-                r = await sb.from('statuses').select('*')
-                    .order('created_at', { ascending: false }).limit(80);
-            }
+            let r = await sb.from('statuses').select('*').gt('expires_at', new Date().toISOString()).order('created_at', { ascending: false }).limit(80);
+            if (r.error) { r = await sb.from('statuses').select('*').order('created_at', { ascending: false }).limit(80); }
             if (r.error) throw new Error(r.error.message);
             const data = r.data || [];
             const ids = [...new Set(data.map(s => s.user_id))];
@@ -998,18 +667,41 @@ const API = {
             const type = String(body.type || 'text').toLowerCase();
             const content = String(body.content || '').trim();
             const media_url = body.media_url || null;
-            const { data, error } = await sb.from('statuses').insert([{
-                user_id: me.id, type, content: content || null, media_url
-            }]).select('*').single();
+            const { data, error } = await sb.from('statuses').insert([{ user_id: me.id, type, content: content || null, media_url }]).select('*').single();
             if (error) throw new Error(error.message);
             return { success: true, status: data };
         }
 
-        // ---- UPLOAD (GitHub dari browser) ----
+        const delStatusMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)$/);
+        if (delStatusMatch && method === 'DELETE') {
+            const stId = delStatusMatch[1];
+            const { data: st, error: e1 } = await sb.from('statuses').select('*').eq('id', stId).maybeSingle();
+            if (e1 || !st) throw new Error('Status tidak ditemukan.');
+            if (st.media_url) { try { await this._githubDelete(st.media_url); } catch (e) { console.warn('Gagal hapus GitHub:', e.message); } }
+            const { error: e2 } = await sb.from('statuses').delete().eq('id', stId);
+            if (e2) throw new Error(e2.message);
+            return { success: true };
+        }
+
+        // Increment view count (best-effort, requires `views` column in statuses table)
+        const viewMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)\/view$/);
+        if (viewMatch && method === 'POST') {
+            const stId = viewMatch[1];
+            try {
+                const { data: st } = await sb.from('statuses').select('views').eq('id', stId).maybeSingle();
+                const cur = (st && typeof st.views === 'number') ? st.views : 0;
+                await sb.from('statuses').update({ views: cur + 1 }).eq('id', stId);
+            } catch (_) { /* kolom views tidak ada — abaikan */ }
+            return { success: true };
+        }
+
         if (path.startsWith('/api/chat/upload') && isForm) {
             const me = this.me();
             const file = body.get ? (body.get('file') || body.get('image') || body.get('video')) : null;
             if (!file) throw new Error('File tidak ditemukan.');
+            const isVideo = String(file.type || '').startsWith('video/');
+            const maxBytes = 20 * 1024 * 1024;
+            if (file.size > maxBytes) throw new Error(isVideo ? 'Video terlalu besar (maks 20MB).' : 'File terlalu besar (maks 20MB).');
             let folder = 'chat';
             if (path.includes('avatar')) folder = 'avatars';
             if (path.includes('status')) folder = 'statuses';
@@ -1021,7 +713,7 @@ const API = {
                 this.token = JSON.stringify(user);
                 return { success: true, avatar_url: url, user };
             }
-            return { success: true, url };
+            return { success: true, url, message_type: isVideo ? 'video' : 'image' };
         }
 
         throw new Error('Endpoint tidak didukung: ' + path);
@@ -1034,36 +726,30 @@ const API = {
         if (error) throw new Error(error.message);
         const ids = (members || []).map(m => m.conversation_id);
         if (!ids.length) return [];
-        const { data: convs, error: cErr } = await sb.from('conversations').select('*').in('id', ids)
-            .order('last_message_at', { ascending: false });
+        const { data: convs, error: cErr } = await sb.from('conversations').select('*').in('id', ids).order('last_message_at', { ascending: false });
         if (cErr) throw new Error(cErr.message);
-        const { data: allMembers } = await sb.from('conversation_members')
-            .select('conversation_id, user_id').in('conversation_id', ids);
+        const { data: allMembers } = await sb.from('conversation_members').select('conversation_id, user_id').in('conversation_id', ids);
         const otherIds = [...new Set((allMembers || []).filter(m => m.user_id !== me.id).map(m => m.user_id))];
         const usersMap = {};
         if (otherIds.length) {
-            const { data: users } = await sb.from('chat_users')
-                .select('id, username, display_name, avatar_url, online, last_seen').in('id', otherIds);
+            const { data: users } = await sb.from('chat_users').select('id, username, display_name, avatar_url, online, last_seen').in('id', otherIds);
             (users || []).forEach(u => { usersMap[u.id] = publicUser(u); });
         }
         const out = [];
         for (const c of (convs || [])) {
-            const other = (allMembers || [])
-                .filter(m => m.conversation_id === c.id && m.user_id !== me.id)
-                .map(m => usersMap[m.user_id]).filter(Boolean)[0] || null;
-            out.push({
-                id: c.id,
-                last_message_at: c.last_message_at,
-                last_message_preview: c.last_message_preview || '',
-                last_sender_id: c.last_sender_id,
-                other_user: other,
-                unread_count: 0
-            });
+            const other = (allMembers || []).filter(m => m.conversation_id === c.id && m.user_id !== me.id).map(m => usersMap[m.user_id]).filter(Boolean)[0] || null;
+            out.push({ id: c.id, last_message_at: c.last_message_at, last_message_preview: c.last_message_preview || '', last_sender_id: c.last_sender_id, other_user: other, unread_count: 0 });
         }
         return out;
     },
 
     async _githubUpload(file, folder, prefix) {
+        await Config.load();
+        const token = Config.get('github_token');
+        const owner = Config.get('github_owner');
+        const repo = Config.get('github_repo');
+        const branch = Config.get('github_branch', 'main') || 'main';
+        if (!token || !owner || !repo) throw new Error('Upload belum dikonfigurasi. Hubungi admin.');
         const name = String(file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
         const ext = (name.match(/\.([a-z0-9]{1,8})$/i) || [, 'bin'])[1].toLowerCase();
         const repoPath = `${folder}/${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 10)}.${ext}`;
@@ -1072,23 +758,48 @@ const API = {
         let binary = '';
         for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
         const content = btoa(binary);
-        const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${repoPath.split('/').map(encodeURIComponent).join('/')}`;
+        const encodedPath = repoPath.split('/').map(encodeURIComponent).join('/');
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${encodedPath}`;
         const res = await fetch(apiUrl, {
             method: 'PUT',
-            headers: {
-                'Accept': 'application/vnd.github+json',
-                'Authorization': `Bearer ${GITHUB.token}`,
-                'X-GitHub-Api-Version': '2022-11-28'
-            },
-            body: JSON.stringify({
-                message: `Pretv Chat media: ${repoPath}`,
-                content,
-                branch: GITHUB.branch
-            })
+            headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' },
+            body: JSON.stringify({ message: `Pretv Chat media: ${repoPath}`, content, branch })
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error('GitHub upload gagal: ' + (json.message || res.status));
-        return `https://raw.githubusercontent.com/${GITHUB.owner}/${GITHUB.repo}/${GITHUB.branch}/${repoPath.split('/').map(encodeURIComponent).join('/')}`;
+        return `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${encodedPath}`;
+    },
+
+    async _githubDelete(rawUrl) {
+        await Config.load();
+        const token = Config.get('github_token');
+        const owner = Config.get('github_owner');
+        const repo = Config.get('github_repo');
+        const branch = Config.get('github_branch', 'main') || 'main';
+        if (!token || !owner || !repo) return;
+        const prefix = `https://raw.githubusercontent.com/${owner}/${repo}/`;
+        if (!rawUrl.startsWith(prefix)) return;
+        const rest = rawUrl.slice(prefix.length);
+        const parts = rest.split('/');
+        const fileBranch = parts.shift();
+        const filePath = parts.join('/');
+        if (!filePath) return;
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
+        const getRes = await fetch(`${apiUrl}?ref=${fileBranch}`, {
+            headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' }
+        });
+        if (!getRes.ok) return;
+        const info = await getRes.json();
+        if (!info.sha) return;
+        const delRes = await fetch(apiUrl, {
+            method: 'DELETE',
+            headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' },
+            body: JSON.stringify({ message: `Pretv Chat delete: ${filePath}`, sha: info.sha, branch: fileBranch })
+        });
+        if (!delRes.ok) {
+            const j = await delRes.json().catch(() => ({}));
+            throw new Error('GitHub delete gagal: ' + (j.message || delRes.status));
+        }
     },
 
     get(url) { return this.call('GET', url); },
@@ -1099,7 +810,7 @@ const API = {
 };
 
 /* ============================================================
-   3. UTILITIES
+   UTILITIES
    ============================================================ */
 function showToast(msg, ms = 2500) {
     const el = document.getElementById('toast');
@@ -1109,9 +820,7 @@ function showToast(msg, ms = 2500) {
     clearTimeout(el._t);
     el._t = setTimeout(() => el.classList.add('hidden'), ms);
 }
-function initials(name = '') {
-    return String(name || '?').trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase();
-}
+function initials(name = '') { return String(name || '?').trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase(); }
 function avatarHTML(user) {
     if (user?.avatar_url) return `<img class="avatar" src="${user.avatar_url}" alt="" loading="lazy" />`;
     return `<span class="avatar">${initials(user?.display_name || user?.username)}</span>`;
@@ -1125,96 +834,54 @@ function timeAgo(iso) {
     if (diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
     return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
 }
-function timeShort(iso) {
-    if (!iso) return '';
-    return new Date(iso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-}
-function escapeHtml(s) {
-    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
+function timeShort(iso) { if (!iso) return ''; return new Date(iso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); }
+function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
 
 /* ============================================================
-   4. WS MANAGER (Supabase Realtime)
+   WS MANAGER
    ============================================================ */
 const WSManager = (function () {
     let listeners = {};
     let channel = null;
-
-    function emit(type, payload) {
-        (listeners[type] || []).forEach(fn => {
-            try { fn(payload); } catch (e) { console.error(e); }
-        });
-    }
-
+    function emit(type, payload) { (listeners[type] || []).forEach(fn => { try { fn(payload); } catch (e) { console.error(e); } }); }
     function mapMsg(m) {
         if (!m) return m;
-        return {
-            id: m.id,
-            conversation_id: m.conversation_id,
-            sender_id: m.sender_id,
-            receiver_id: m.receiver_id || null,
-            message_type: m.message_type || m.media_type || 'text',
-            content: m.content || m.body || '',
-            media_url: m.media_url || null,
-            created_at: m.created_at,
-            read_at: m.read_at || null
-        };
+        return { id: m.id, conversation_id: m.conversation_id, sender_id: m.sender_id, receiver_id: m.receiver_id || null, message_type: m.message_type || m.media_type || 'text', content: m.content || m.body || '', media_url: m.media_url || null, created_at: m.created_at, read_at: m.read_at || null };
     }
-
     async function connect() {
         try {
             const sb = await initSupabase();
-            if (channel) { try { await sb.removeChannel(channel); } catch (_) {} channel = null; }
-
+            if (channel) { try { await sb.removeChannel(channel); } catch (_) { } channel = null; }
             channel = sb.channel('pretv-public')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (p) => {
-                    emit('message:new', { message: mapMsg(p.new) });
-                })
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (p) => emit('message:new', { message: mapMsg(p.new) }))
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages' }, (p) => {
-                    if (p.new && p.new.read_at) {
-                        emit('message:read', {
-                            conversation_id: p.new.conversation_id,
-                            reader_id: p.new.receiver_id,
-                            read_at: p.new.read_at
-                        });
-                    }
+                    if (p.new && p.new.read_at) emit('message:read', { conversation_id: p.new.conversation_id, reader_id: p.new.receiver_id, read_at: p.new.read_at });
                 })
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'statuses' }, () => {
-                    emit('status:new', {});
-                })
-                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'chat_users' }, (p) => {
-                    if (p.new) emit('presence', { user_id: p.new.id, online: !!p.new.online, last_seen: p.new.last_seen });
-                })
-                .subscribe();
-        } catch (e) {
-            console.warn('[realtime]', e.message || e);
-        }
+                .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'messages' }, (p) => emit('message:delete', { message: { id: p.old.id, conversation_id: p.old.conversation_id } }))
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'statuses' }, () => emit('status:new', {}))
+                .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'statuses' }, () => emit('status:delete', {}))
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'chat_users' }, (p) => { if (p.new) emit('presence', { user_id: p.new.id, online: !!p.new.online, last_seen: p.new.last_seen }); })
+                .subscribe((status, err) => {
+                    if (status === 'SUBSCRIBED') console.log('[realtime] Terhubung.');
+                    else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') console.warn('[realtime] Gagal:', status, err && err.message);
+                });
+        } catch (e) { console.warn('[realtime]', e.message || e); }
     }
-
-    function on(type, fn) {
-        if (!listeners[type]) listeners[type] = [];
-        listeners[type].push(fn);
-    }
-    function send() { /* typing nanti */ }
+    function on(type, fn) { if (!listeners[type]) listeners[type] = []; listeners[type].push(fn); }
+    function send() { }
     function close() { channel = null; }
-
     return { connect, on, send, close };
 })();
 
 /* ============================================================
-   5. AUTH MODULE
+   AUTH MODULE
    ============================================================ */
 const AuthModule = (function () {
     function init() {
         const loginForm = document.getElementById('login-form');
         const registerForm = document.getElementById('register-form');
         if (!loginForm) return;
-
-        // Kalau sudah login, langsung tampilkan app
-        if (API.token) {
-            API.get('/api/chat/me').then(() => showApp()).catch(() => { API.token = null; });
-        }
-
+        if (API.token) { API.get('/api/chat/me').then(() => showApp()).catch(() => { API.token = null; }); }
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {
                 document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
@@ -1223,9 +890,7 @@ const AuthModule = (function () {
                 registerForm.classList.toggle('hidden', isLogin);
             });
         });
-
         const cleanUsername = u => String(u || '').trim().replace(/^@/, '').toLowerCase();
-
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = loginForm.querySelector('button');
@@ -1236,20 +901,12 @@ const AuthModule = (function () {
             btn.textContent = 'Memproses...';
             try {
                 const fd = new FormData(loginForm);
-                const data = await API.post('/api/chat/login', {
-                    username: cleanUsername(fd.get('username')),
-                    password: fd.get('password')
-                });
+                const data = await API.post('/api/chat/login', { username: cleanUsername(fd.get('username')), password: fd.get('password') });
                 API.token = data.token;
                 showApp();
-            } catch (e) {
-                err.textContent = e.message || 'Login gagal.';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = prev;
-            }
+            } catch (e) { err.textContent = e.message || 'Login gagal.'; }
+            finally { btn.disabled = false; btn.textContent = prev; }
         });
-
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const btn = registerForm.querySelector('button');
@@ -1267,15 +924,10 @@ const AuthModule = (function () {
                 });
                 API.token = data.token;
                 showApp();
-            } catch (e) {
-                err.textContent = e.message || 'Daftar gagal.';
-            } finally {
-                btn.disabled = false;
-                btn.textContent = prev;
-            }
+            } catch (e) { err.textContent = e.message || 'Daftar gagal.'; }
+            finally { btn.disabled = false; btn.textContent = prev; }
         });
     }
-
     function showApp() {
         document.getElementById('auth-screen').classList.add('hidden');
         document.getElementById('app-screen').classList.remove('hidden');
@@ -1283,19 +935,291 @@ const AuthModule = (function () {
         document.body.classList.add('app-body');
         App.boot();
     }
-
     function showAuth() {
         document.getElementById('auth-screen').classList.remove('hidden');
         document.getElementById('app-screen').classList.add('hidden');
         document.body.classList.add('auth-body');
         document.body.classList.remove('app-body');
     }
-
     return { init, showApp, showAuth };
 })();
 
 /* ============================================================
-   6. CHAT MODULE
+   ADMIN MODULE
+   ============================================================ */
+const AdminModule = (function () {
+    let state = null, bound = false;
+    function init(s) {
+        state = s;
+        if (bound) return;
+        bound = true;
+        const saveBtn = document.getElementById('admin-save');
+        const testBtn = document.getElementById('admin-test');
+        if (saveBtn) saveBtn.addEventListener('click', onSave);
+        if (testBtn) testBtn.addEventListener('click', onTestUpload);
+    }
+    function isAdmin() { return state && state.me && state.me.username === ADMIN_USERNAME; }
+    function showNavIfAdmin() {
+        const btn = document.getElementById('nav-admin');
+        if (!btn) return;
+        if (isAdmin()) btn.classList.remove('hidden');
+        else btn.classList.add('hidden');
+    }
+    async function loadForm() {
+        if (!isAdmin()) { showToast('Akses ditolak.'); App.switchView('chat'); return; }
+        try {
+            await Config.load(true);
+            const c = Config.snapshot() || {};
+            document.getElementById('cfg-github_token').value = c.github_token || '';
+            document.getElementById('cfg-github_owner').value = c.github_owner || '';
+            document.getElementById('cfg-github_repo').value = c.github_repo || '';
+            document.getElementById('cfg-github_branch').value = c.github_branch || 'main';
+            setMsg('');
+        } catch (e) { setMsg('Gagal memuat: ' + e.message, true); }
+    }
+    async function onSave() {
+        if (!isAdmin()) return;
+        const token = document.getElementById('cfg-github_token').value.trim();
+        const owner = document.getElementById('cfg-github_owner').value.trim();
+        const repo = document.getElementById('cfg-github_repo').value.trim();
+        const branch = document.getElementById('cfg-github_branch').value.trim() || 'main';
+        if (!token || !owner || !repo) { setMsg('Token, owner, dan repo wajib diisi.', true); return; }
+        const btn = document.getElementById('admin-save');
+        btn.disabled = true;
+        setMsg('Menyimpan...', false);
+        try {
+            await Config.setMany({ github_token: token, github_owner: owner, github_repo: repo, github_branch: branch });
+            await Config.load(true);
+            setMsg('Tersimpan pada ' + new Date().toLocaleString('id-ID'), false);
+            showToast('Konfigurasi disimpan.');
+        } catch (e) { setMsg('Gagal: ' + e.message, true); }
+        finally { btn.disabled = false; }
+    }
+    async function onTestUpload() {
+        if (!isAdmin()) return;
+        const btn = document.getElementById('admin-test');
+        btn.disabled = true;
+        setMsg('Test upload...', false);
+        try {
+            const blob = new Blob(['hello from pretv chat admin test'], { type: 'text/plain' });
+            const file = new File([blob], 'test.txt', { type: 'text/plain' });
+            const url = await API._githubUpload(file, 'test', 'admin');
+            setMsg('Test berhasil: ' + url, false);
+            showToast('Test upload OK!');
+        } catch (e) { setMsg('Test gagal: ' + e.message, true); showToast('Test upload gagal'); }
+        finally { btn.disabled = false; }
+    }
+    function setMsg(text, isError) {
+        const el = document.getElementById('admin-msg');
+        if (!el) return;
+        el.textContent = text || '';
+        el.className = isError ? 'error small' : 'muted small';
+    }
+    return { init, loadForm, showNavIfAdmin, isAdmin };
+})();
+
+/* ============================================================
+   STATUS VIEWER
+   ============================================================ */
+const StatusViewer = (function () {
+    let state = null;
+    let overlay = null;
+    let group = [];
+    let idx = 0;
+    let timer = null;
+    let duration = 5000;
+    let paused = false;
+
+    function init(s) { state = s; }
+
+    function open(statuses, startIdx) {
+        group = statuses.slice();
+        idx = startIdx || 0;
+        if (overlay) overlay.remove();
+        overlay = document.createElement('div');
+        overlay.className = 'sw-viewer';
+        overlay.innerHTML = `
+            <div class="sw-progress" id="sw-progress"></div>
+            <div class="sw-header">
+                <span id="sw-avatar"></span>
+                <div class="meta">
+                    <div class="name" id="sw-name">—</div>
+                    <div class="time" id="sw-time">—</div>
+                </div>
+                <button class="sw-btn" id="sw-more"><svg class="icon"><use href="#i-more"/></svg></button>
+                <button class="sw-btn" id="sw-close"><svg class="icon"><use href="#i-close"/></svg></button>
+            </div>
+            <div class="sw-content" id="sw-content"></div>
+            <div class="sw-nav left" id="sw-prev"></div>
+            <div class="sw-nav right" id="sw-next"></div>
+            <div class="sw-controls hidden" id="sw-controls">
+                <button class="sw-ctrl-btn" id="sw-download"><svg class="icon icon-sm"><use href="#i-download"/></svg> Simpan</button>
+                <button class="sw-ctrl-btn danger" id="sw-delete"><svg class="icon icon-sm"><use href="#i-trash"/></svg> Hapus</button>
+            </div>`;
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('#sw-progress').innerHTML = group.map((_, i) => `<div class="sw-bar" data-i="${i}"><div class="sw-bar-fill"></div></div>`).join('');
+        overlay.querySelector('#sw-close').onclick = close;
+        overlay.querySelector('#sw-next').onclick = next;
+        overlay.querySelector('#sw-prev').onclick = prev;
+        overlay.querySelector('#sw-more').onclick = () => overlay.querySelector('#sw-controls').classList.toggle('hidden');
+
+        const content = overlay.querySelector('#sw-content');
+        const pause = () => {
+            paused = true;
+            overlay.classList.add('paused');
+            const vid = content.querySelector('video');
+            if (vid && !vid.paused) vid.pause();
+        };
+        const resume = () => {
+            paused = false;
+            overlay.classList.remove('paused');
+            const vid = content.querySelector('video');
+            if (vid && vid.paused) vid.play().catch(() => {});
+        };
+        content.addEventListener('pointerdown', pause);
+        content.addEventListener('pointerup', resume);
+        content.addEventListener('pointercancel', resume);
+        content.addEventListener('pointerleave', resume);
+
+        let startX = 0, startY = 0;
+        content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+        content.addEventListener('touchend', (e) => {
+            const dx = (e.changedTouches[0].clientX - startX);
+            const dy = (e.changedTouches[0].clientY - startY);
+            if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
+                if (dx < 0) next(); else prev();
+            }
+        }, { passive: true });
+
+        render();
+    }
+
+    function render() {
+        const s = group[idx];
+        if (!s) return close();
+        const u = s.user || {};
+        const av = overlay.querySelector('#sw-avatar');
+        if (u.avatar_url) av.outerHTML = `<img id="sw-avatar" class="avatar" src="${u.avatar_url}" alt="" />`;
+        else av.outerHTML = `<span id="sw-avatar" class="avatar">${initials(u.display_name || u.username)}</span>`;
+        overlay.querySelector('#sw-name').textContent = (u.display_name || u.username) || '—';
+        overlay.querySelector('#sw-time').textContent = timeAgo(s.created_at);
+
+        // Increment view count (best-effort, only for other people's statuses)
+        if (s.user_id && state.me && s.user_id !== state.me.id && s.id && !s._counted) {
+            s._counted = true;
+            API.post('/api/chat/statuses/' + s.id + '/view', {}).catch(() => {});
+        }
+
+        const c = overlay.querySelector('#sw-content');
+        if (s.type === 'image' && s.media_url) {
+            c.innerHTML = `<img src="${s.media_url}" alt="" />`;
+        } else if (s.type === 'video' && s.media_url) {
+            // Autoplay tanpa kontrol — muted dulu untuk bypass block, lalu coba unmute
+            c.innerHTML = `<video src="${s.media_url}" playsinline webkit-playsinline preload="auto" autoplay></video>`;
+            const vid = c.querySelector('video');
+            vid.muted = true;
+            const tryPlay = () => {
+                vid.play().then(() => {
+                    // coba unmute setelah play berhasil
+                    try { vid.muted = false; } catch (_) {}
+                }).catch(() => {
+                    vid.muted = true;
+                    vid.play().catch(() => {});
+                });
+            };
+            if (vid.readyState >= 2) tryPlay();
+            else vid.addEventListener('loadeddata', tryPlay, { once: true });
+            // Fallback kalau loadeddata tidak ke-fire
+            setTimeout(() => { if (vid.paused) tryPlay(); }, 600);
+        } else {
+            c.innerHTML = `<div class="sw-text">${escapeHtml(s.content || '')}</div>`;
+        }
+        if (s.type !== 'text' && s.content) c.insertAdjacentHTML('beforeend', `<div class="sw-caption">${escapeHtml(s.content)}</div>`);
+
+        const delBtn = overlay.querySelector('#sw-delete');
+        if (state.me && s.user_id === state.me.id) delBtn.classList.remove('hidden');
+        else delBtn.classList.add('hidden');
+        overlay.querySelector('#sw-download').onclick = () => {
+            if (s.media_url) window.open(s.media_url, '_blank');
+            else showToast('Tidak ada media');
+        };
+        delBtn.onclick = async () => {
+            if (!confirm('Hapus status ini?')) return;
+            try {
+                await API.del('/api/chat/statuses/' + s.id);
+                showToast('Status dihapus.');
+                group.splice(idx, 1);
+                if (!group.length) return close();
+                if (idx >= group.length) idx = group.length - 1;
+                if (state.currentView === 'status') StatusModule.loadStatuses();
+                render();
+            } catch (e) { showToast(e.message); }
+        };
+
+        duration = s.type === 'video' ? 15000 : 5000;
+        const bars = overlay.querySelectorAll('.sw-bar');
+        bars.forEach((b, i) => {
+            const fill = b.querySelector('.sw-bar-fill');
+            b.classList.remove('active', 'done');
+            b.style.removeProperty('--sw-dur');
+            fill.style.animation = 'none';
+            fill.style.width = '0';
+            void fill.offsetWidth;
+            if (i < idx) b.classList.add('done');
+            else if (i === idx) {
+                b.classList.add('active');
+                b.style.setProperty('--sw-dur', (duration / 1000) + 's');
+                fill.style.animation = '';
+            }
+        });
+
+        if (timer) { clearTimeout(timer); timer = null; }
+        const vid = c.querySelector('video');
+        if (vid && s.type === 'video') {
+            const fill = bars[idx].querySelector('.sw-bar-fill');
+            fill.style.animation = 'none';
+            const upd = () => {
+                if (paused) return;
+                if (!vid.duration || !isFinite(vid.duration)) return;
+                fill.style.width = Math.min(100, (vid.currentTime / vid.duration) * 100) + '%';
+            };
+            vid.addEventListener('timeupdate', upd);
+            vid.addEventListener('loadedmetadata', upd);
+            vid.addEventListener('play', upd);
+            vid.onended = () => next();
+        } else {
+            timer = setTimeout(() => next(), duration);
+        }
+    }
+
+    function next() {
+        if (idx + 1 < group.length) { idx++; render(); }
+        else close();
+    }
+    function prev() {
+        if (idx > 0) { idx--; render(); }
+        else {
+            const bar = overlay.querySelectorAll('.sw-bar')[idx];
+            if (bar) { const f = bar.querySelector('.sw-bar-fill'); f.style.animation = 'none'; f.style.width = '0'; void f.offsetWidth; f.style.animation = ''; }
+        }
+    }
+
+    function close() {
+        if (timer) { clearTimeout(timer); timer = null; }
+        if (!overlay) return;
+        const el = overlay;
+        overlay = null;
+        el.classList.add('closing');
+        setTimeout(() => el.remove(), 220);
+        if (state.currentView === 'status') StatusModule.loadStatuses();
+    }
+
+    return { init, open, close };
+})();
+
+/* ============================================================
+   CHAT MODULE
    ============================================================ */
 const ChatModule = (function () {
     let state, list, msgsEl, composer, input, fileInput, sendBtn, typingBar, newMsgIndicator;
@@ -1315,22 +1239,72 @@ const ChatModule = (function () {
         document.getElementById('conv-profile').addEventListener('click', openOtherProfile);
         document.getElementById('search-input').addEventListener('input', debounce(onSearch, 300));
         composer.addEventListener('submit', onSendText);
-        input.addEventListener('keydown', e => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSendText(e); }
-        });
+        input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSendText(e); } });
         input.addEventListener('input', autoGrow);
         fileInput.addEventListener('change', onSendMedia);
-        newMsgIndicator.addEventListener('click', () => {
-            scrollToBottom(true);
-            newMsgIndicator.classList.add('hidden');
+        newMsgIndicator.addEventListener('click', () => { scrollToBottom(true); newMsgIndicator.classList.add('hidden'); });
+
+        // Tap bubble kita → buka menu hapus
+        msgsEl.addEventListener('click', (e) => {
+            const msgEl = e.target.closest('.msg');
+            if (!msgEl) return;
+            // Kalau lagi klik video player, biarkan
+            if (e.target.closest('video')) return;
+            if (!msgEl.classList.contains('me')) return;
+            const id = msgEl.dataset.id;
+            if (!id || String(id).startsWith('tmp-')) return;
+            openMessageMenu(id);
         });
+        msgsEl.addEventListener('contextmenu', e => { if (e.target.closest('.msg.me')) e.preventDefault(); });
     }
 
-    function autoGrow() {
-        input.style.height = 'auto';
-        input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    function openMessageMenu(msgId) {
+        const m = state.messages.find(x => String(x.id) === String(msgId));
+        if (!m) return;
+        const mine = m.sender_id === state.me.id;
+
+        const backdrop = document.createElement('div');
+        backdrop.className = 'action-sheet-backdrop';
+        const sheet = document.createElement('div');
+        sheet.className = 'action-sheet';
+        sheet.innerHTML = `
+            <div class="handle"></div>
+            <div class="as-title">${mine ? 'Pesan kamu' : 'Pesan dari ' + escapeHtml(state.currentOtherUser?.display_name || '')}</div>
+            <button class="as-btn" data-act="close"><svg class="icon icon-sm"><use href="#i-close"/></svg> Tutup</button>
+            ${m.media_url ? `<button class="as-btn" data-act="open"><svg class="icon icon-sm"><use href="#i-download"/></svg> Buka media</button>` : ''}
+            ${mine ? `<button class="as-btn danger" data-act="delete"><svg class="icon icon-sm"><use href="#i-trash"/></svg> Hapus pesan</button>` : ''}
+        `;
+        document.body.appendChild(backdrop);
+        document.body.appendChild(sheet);
+
+        const closeSheet = () => {
+            sheet.classList.add('closing');
+            backdrop.style.animation = 'fadeOut .2s ease forwards';
+            setTimeout(() => { sheet.remove(); backdrop.remove(); }, 210);
+        };
+        backdrop.onclick = closeSheet;
+        sheet.onclick = async (e) => {
+            const btn = e.target.closest('button[data-act]');
+            if (!btn) return;
+            const act = btn.dataset.act;
+            if (act === 'close') return closeSheet();
+            if (act === 'open') { window.open(m.media_url, '_blank'); return closeSheet(); }
+            if (act === 'delete') {
+                closeSheet();
+                if (!confirm('Hapus pesan ini? File media juga akan dihapus dari GitHub.')) return;
+                try {
+                    await API.del('/api/chat/messages/' + m.id);
+                    state.messages = state.messages.filter(x => String(x.id) !== String(m.id));
+                    const el = msgsEl.querySelector(`.msg[data-id="${m.id}"]`);
+                    if (el) { el.style.transition = 'opacity .2s, transform .2s'; el.style.opacity = '0'; el.style.transform = 'translateX(30px)'; setTimeout(() => el.remove(), 200); }
+                    loadConversations();
+                    showToast('Pesan dihapus.');
+                } catch (err) { showToast(err.message || 'Gagal hapus.'); }
+            }
+        };
     }
 
+    function autoGrow() { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 120) + 'px'; }
     function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
 
     async function loadConversations() {
@@ -1349,21 +1323,9 @@ const ChatModule = (function () {
         list.innerHTML = state.chatList.map(c => {
             const u = c.other_user || {};
             const badge = c.unread_count ? `<span class="badge">${c.unread_count}</span>` : '';
-            return `
-                <div class="chat-item" data-id="${c.id}">
-                    ${avatarHTML(u)}
-                    <div class="body">
-                        <div class="row1">
-                            <div class="name">${escapeHtml(u.display_name || u.username || '—')}${badge}</div>
-                            <div class="time">${c.last_message_at ? timeShort(c.last_message_at) : ''}</div>
-                        </div>
-                        <div class="preview">${escapeHtml(c.last_message_preview || 'Mulai percakapan')}</div>
-                    </div>
-                </div>`;
+            return `<div class="chat-item" data-id="${c.id}">${avatarHTML(u)}<div class="body"><div class="row1"><div class="name">${escapeHtml(u.display_name || u.username || '—')}${badge}</div><div class="time">${c.last_message_at ? timeShort(c.last_message_at) : ''}</div></div><div class="preview">${escapeHtml(c.last_message_preview || 'Mulai percakapan')}</div></div></div>`;
         }).join('');
-        list.querySelectorAll('.chat-item').forEach(el => {
-            el.addEventListener('click', () => openConv(el.dataset.id));
-        });
+        list.querySelectorAll('.chat-item').forEach(el => { el.addEventListener('click', () => openConv(el.dataset.id)); });
     }
 
     async function openConv(convId) {
@@ -1371,30 +1333,22 @@ const ChatModule = (function () {
         if (!conv) return;
         state.currentConversation = { id: convId };
         state.currentOtherUser = conv.other_user;
-
         document.getElementById('conv-name').textContent = conv.other_user?.display_name || conv.other_user?.username || '—';
-        document.getElementById('conv-status').textContent = conv.other_user?.online ? 'online'
-            : (conv.other_user?.last_seen ? 'terakhir dilihat ' + timeAgo(conv.other_user.last_seen) : '');
-
+        document.getElementById('conv-status').textContent = conv.other_user?.online ? 'online' : (conv.other_user?.last_seen ? 'terakhir dilihat ' + timeAgo(conv.other_user.last_seen) : '');
         const av = document.getElementById('conv-avatar');
         const u = conv.other_user || {};
-        if (u.avatar_url) {
-            av.outerHTML = `<img id="conv-avatar" class="avatar sm" src="${u.avatar_url}" alt="" />`;
-        } else {
-            av.outerHTML = `<span id="conv-avatar" class="avatar sm">${initials(u.display_name || u.username)}</span>`;
-        }
-
+        if (u.avatar_url) av.outerHTML = `<img id="conv-avatar" class="avatar sm" src="${u.avatar_url}" alt="" />`;
+        else av.outerHTML = `<span id="conv-avatar" class="avatar sm">${initials(u.display_name || u.username)}</span>`;
         document.getElementById('view-chat').classList.remove('active');
         document.getElementById('view-conv').classList.add('active');
         document.getElementById('bottom-nav').classList.add('hidden');
-
         msgsEl.innerHTML = '';
         try {
             const { data } = await API.get(`/api/chat/conversations/${convId}/messages?limit=40`);
             state.messages = data || [];
             renderMessages();
             scrollToBottom(false);
-            API.post(`/api/chat/conversations/${convId}/read`, {}).catch(() => {});
+            API.post(`/api/chat/conversations/${convId}/read`, {}).catch(() => { });
             const c = state.chatList.find(x => x.id === convId);
             if (c) { c.unread_count = 0; renderConversations(); }
         } catch (e) { showToast(e.message); }
@@ -1410,29 +1364,19 @@ const ChatModule = (function () {
         loadConversations();
     }
 
-    function renderMessages() {
-        msgsEl.innerHTML = state.messages.map(renderMessage).join('');
-    }
+    function renderMessages() { msgsEl.innerHTML = state.messages.map(renderMessage).join(''); }
 
     function renderMessage(m) {
         const me = m.sender_id === state.me.id;
         const cls = me ? 'me' : 'other';
         let inner = '';
-
-        if (m.message_type === 'image' && m.media_url) {
-            inner = `<div class="media-wrap"><img src="${m.media_url}" alt="" loading="lazy" /></div>`;
-        } else if (m.message_type === 'video' && m.media_url) {
-            inner = `<video src="${m.media_url}" controls preload="metadata"></video>`;
-        }
+        if (m.message_type === 'image' && m.media_url) inner = `<div class="media-wrap"><img src="${m.media_url}" alt="" loading="lazy" /></div>`;
+        else if (m.message_type === 'video' && m.media_url) inner = `<video src="${m.media_url}" controls preload="metadata"></video>`;
         if (m.content) inner += `<div>${escapeHtml(m.content)}</div>`;
-
         let tick = '';
-        if (me) {
-            tick = m.read_at
-                ? `<span class="tick read" title="Dibaca"><svg class="icon"><use href="#i-check-check"/></svg></span>`
-                : `<span class="tick sent" title="Terkirim"><svg class="icon"><use href="#i-check"/></svg></span>`;
-        }
-
+        if (me) tick = m.read_at
+            ? `<span class="tick read" title="Dibaca"><svg class="icon"><use href="#i-check-check"/></svg></span>`
+            : `<span class="tick sent" title="Terkirim"><svg class="icon"><use href="#i-check"/></svg></span>`;
         return `<div class="msg ${cls}" data-id="${m.id}">${inner}<div class="meta"><span>${timeShort(m.created_at)}</span>${tick}</div></div>`;
     }
 
@@ -1440,31 +1384,20 @@ const ChatModule = (function () {
         if (e) e.preventDefault();
         const text = input.value.trim();
         if (!text || !state.currentConversation) return;
-
         const tempId = 'tmp-' + Date.now();
-        const optimistic = {
-            id: tempId,
-            conversation_id: state.currentConversation.id,
-            sender_id: state.me.id,
-            message_type: 'text',
-            content: text,
-            created_at: new Date().toISOString()
-        };
+        const optimistic = { id: tempId, conversation_id: state.currentConversation.id, sender_id: state.me.id, message_type: 'text', content: text, created_at: new Date().toISOString() };
         state.messages.push(optimistic);
         msgsEl.insertAdjacentHTML('beforeend', renderMessage(optimistic));
         scrollToBottom(true);
         input.value = ''; autoGrow();
-
         try {
-            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, {
-                message_type: 'text', content: text
-            });
+            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, { message_type: 'text', content: text });
             const idx = state.messages.findIndex(m => m.id === tempId);
             if (idx >= 0) state.messages[idx] = message;
             renderMessages(); scrollToBottom(true);
             loadConversations();
         } catch (e) {
-            showToast('Gagal mengirim pesan. Coba lagi.');
+            showToast('Gagal mengirim pesan.');
             const idx = state.messages.findIndex(m => m.id === tempId);
             if (idx >= 0) state.messages.splice(idx, 1);
             renderMessages();
@@ -1475,47 +1408,41 @@ const ChatModule = (function () {
         const file = e.target.files?.[0];
         if (!file || !state.currentConversation) return;
         fileInput.value = '';
-
         const prog = document.getElementById('upload-progress');
         prog.classList.remove('hidden');
         sendBtn.disabled = true;
-
         try {
             const fd = new FormData();
             fd.append('file', file);
             const { url } = await API.upload('/api/chat/upload/chat', fd);
             const type = file.type.startsWith('video') ? 'video' : 'image';
-            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, {
-                message_type: type, media_url: url, content: ''
-            });
+            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, { message_type: type, media_url: url, content: '' });
             state.messages.push(message);
             msgsEl.insertAdjacentHTML('beforeend', renderMessage(message));
             scrollToBottom(true);
             loadConversations();
-        } catch (e) {
-            showToast('Gagal mengirim media. Coba lagi.');
-        } finally {
-            prog.classList.add('hidden');
-            sendBtn.disabled = false;
-        }
+        } catch (e) { showToast(e.message || 'Gagal mengirim media.'); }
+        finally { prog.classList.add('hidden'); sendBtn.disabled = false; }
     }
 
     function onNewMessage(m) {
         loadConversations();
         if (!state.currentConversation || state.currentConversation.id !== m.conversation_id) return;
         if (state.messages.find(x => x.id === m.id)) return;
-
         state.messages.push(m);
         msgsEl.insertAdjacentHTML('beforeend', renderMessage(m));
         const nearBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight < 120;
         if (nearBottom) scrollToBottom(true);
-        else {
-            newMsgIndicator.querySelector('span').textContent = '1';
-            newMsgIndicator.classList.remove('hidden');
-        }
-        if (m.receiver_id === state.me.id) {
-            API.post(`/api/chat/conversations/${m.conversation_id}/read`, {}).catch(() => {});
-        }
+        else { newMsgIndicator.querySelector('span').textContent = '1'; newMsgIndicator.classList.remove('hidden'); }
+        if (m.receiver_id === state.me.id) API.post(`/api/chat/conversations/${m.conversation_id}/read`, {}).catch(() => { });
+    }
+
+    function onMessageDelete(d) {
+        const id = d.message?.id;
+        if (!id) return;
+        state.messages = state.messages.filter(x => String(x.id) !== String(id));
+        const el = msgsEl.querySelector(`.msg[data-id="${id}"]`);
+        if (el) { el.style.transition = 'opacity .2s, transform .2s'; el.style.opacity = '0'; el.style.transform = 'translateX(30px)'; setTimeout(() => el.remove(), 200); }
     }
 
     function onMessageRead(data) {
@@ -1523,20 +1450,17 @@ const ChatModule = (function () {
         state.messages.forEach(m => { if (m.sender_id === state.me.id && !m.read_at) m.read_at = data.read_at; });
         renderMessages();
     }
-
     function onTyping(data) {
         if (!state.currentConversation || state.currentConversation.id !== data.conversation_id) return;
         if (data.user_id === state.me.id) return;
         typingBar.textContent = data.is_typing ? `${data.username} sedang mengetik...` : '';
         typingBar.classList.toggle('hidden', !data.is_typing);
     }
-
     function onPresenceUpdate(data) {
         if (state.currentOtherUser?.id === data.user_id) {
             state.currentOtherUser.online = data.online;
             state.currentOtherUser.last_seen = data.last_seen;
-            document.getElementById('conv-status').textContent = data.online ? 'online'
-                : ('terakhir dilihat ' + timeAgo(data.last_seen));
+            document.getElementById('conv-status').textContent = data.online ? 'online' : ('terakhir dilihat ' + timeAgo(data.last_seen));
         }
     }
 
@@ -1546,22 +1470,9 @@ const ChatModule = (function () {
         if (!q) { box.classList.add('hidden'); box.innerHTML = ''; return; }
         try {
             const { data } = await API.get('/api/chat/users/search?q=' + encodeURIComponent(q));
-            if (!data.length) {
-                box.innerHTML = `<div class="empty"><p class="muted small">Tidak ada hasil.</p></div>`;
-                box.classList.remove('hidden');
-                return;
-            }
-            box.innerHTML = data.map(u => `
-                <div class="sr-item" data-username="${u.username}">
-                    ${avatarHTML(u)}
-                    <div>
-                        <div class="strong">${escapeHtml(u.display_name)}</div>
-                        <div class="muted small">@${escapeHtml(u.username)}</div>
-                    </div>
-                </div>`).join('');
-            box.querySelectorAll('.sr-item').forEach(el => {
-                el.addEventListener('click', () => openUserModal(el.dataset.username));
-            });
+            if (!data.length) { box.innerHTML = `<div class="empty"><p class="muted small">Tidak ada hasil.</p></div>`; box.classList.remove('hidden'); return; }
+            box.innerHTML = data.map(u => `<div class="sr-item" data-username="${u.username}">${avatarHTML(u)}<div><div class="strong">${escapeHtml(u.display_name)}</div><div class="muted small">@${escapeHtml(u.username)}</div></div></div>`).join('');
+            box.querySelectorAll('.sr-item').forEach(el => { el.addEventListener('click', () => openUserModal(el.dataset.username)); });
             box.classList.remove('hidden');
         } catch (e) { showToast(e.message); }
     }
@@ -1576,7 +1487,6 @@ const ChatModule = (function () {
             const av = document.getElementById('mu-avatar');
             if (user.avatar_url) av.outerHTML = `<img id="mu-avatar" class="avatar xl" src="${user.avatar_url}" alt="" />`;
             else av.outerHTML = `<span id="mu-avatar" class="avatar xl">${initials(user.display_name)}</span>`;
-
             modal.classList.remove('hidden');
             document.getElementById('mu-close').onclick = () => modal.classList.add('hidden');
             document.getElementById('mu-chat').onclick = async () => {
@@ -1592,36 +1502,31 @@ const ChatModule = (function () {
         } catch (e) { showToast(e.message); }
     }
 
-    function openOtherProfile() {
-        if (!state.currentOtherUser) return;
-        openUserModal(state.currentOtherUser.username);
-    }
+    function openOtherProfile() { if (!state.currentOtherUser) return; openUserModal(state.currentOtherUser.username); }
+    function scrollToBottom(smooth) { msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); }
 
-    function scrollToBottom(smooth) {
-        msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
-    }
-
-    return { init, loadConversations, onNewMessage, onMessageRead, onTyping, onPresenceUpdate };
+    return { init, loadConversations, onNewMessage, onMessageDelete, onMessageRead, onTyping, onPresenceUpdate, openStatusPicker: () => StatusModule.openStatusPicker() };
 })();
 
 /* ============================================================
-   7. STATUS MODULE
+   STATUS MODULE (REVAMPED)
    ============================================================ */
 const StatusModule = (function () {
     let state = null;
+    let pickerTarget = 'status'; // 'status' atau 'my-status'
 
     function init(s) {
         state = s;
         const addBtn = document.getElementById('add-status');
-        if (addBtn) addBtn.addEventListener('click', openStatusPicker);
-        const closeBtn = document.getElementById('sv-close');
-        if (closeBtn) closeBtn.addEventListener('click', () => {
-            document.getElementById('modal-status').classList.add('hidden');
-        });
-        const statusModal = document.getElementById('modal-status');
-        if (statusModal) statusModal.addEventListener('click', (e) => {
-            if (e.target === statusModal) statusModal.classList.add('hidden');
-        });
+        if (addBtn) addBtn.addEventListener('click', () => openStatusPicker('status'));
+
+        // Tombol back halaman My Status
+        const msBack = document.getElementById('ms-back');
+        if (msBack) msBack.addEventListener('click', () => closeMyStatusPage());
+        const msEdit = document.getElementById('ms-edit');
+        if (msEdit) msEdit.addEventListener('click', () => openTextComposer());
+        const msAdd = document.getElementById('ms-add');
+        if (msAdd) msAdd.addEventListener('click', () => openStatusPicker('my-status'));
     }
 
     async function loadStatuses() {
@@ -1629,79 +1534,195 @@ const StatusModule = (function () {
             const { data } = await API.get('/api/chat/statuses');
             state.statuses = data || [];
             renderStatuses();
-        } catch (e) {
-            showToast(e.message || 'Gagal memuat status.');
-        }
+            if (!document.getElementById('my-status-page').classList.contains('hidden')) {
+                renderMyStatusPage();
+            }
+        } catch (e) { showToast(e.message || 'Gagal memuat status.'); }
     }
 
     function renderStatuses() {
         const box = document.getElementById('status-list');
-        const countEl = document.getElementById('my-status-count');
         if (!box) return;
 
         const mine = state.statuses.filter(s => s.user_id === state.me.id);
-        if (countEl) {
-            countEl.textContent = mine.length ? `${mine.length} status aktif` : 'Ketuk untuk menambahkan';
-        }
-
         const others = state.statuses.filter(s => s.user_id !== state.me.id);
-        if (!others.length) {
-            box.innerHTML = `<div class="empty"><svg class="icon icon-lg muted"><use href="#i-status"/></svg><p class="muted">Belum ada status terbaru.</p></div>`;
+
+        // Group others per-user
+        const byUser = {};
+        others.forEach(s => { (byUser[s.user_id] = byUser[s.user_id] || []).push(s); });
+        Object.values(byUser).forEach(arr => arr.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)));
+
+        const ordered = Object.entries(byUser).sort((a, b) => {
+            const la = new Date(a[1][a[1].length - 1].created_at).getTime();
+            const lb = new Date(b[1][b[1].length - 1].created_at).getTime();
+            return lb - la;
+        });
+
+        // Tile "Status saya"
+        const me = state.me || {};
+        const mySorted = mine.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        const myLatest = mySorted[mySorted.length - 1];
+        const myPreview = myLatest ? renderTilePreview(myLatest) : `<div class="tile-empty"><i class="fa-solid fa-plus"></i></div>`;
+        const myAvatarHTML = me.avatar_url
+            ? `<img src="${me.avatar_url}" alt="" />`
+            : initials(me.display_name || me.username);
+
+        let html = `
+            <div class="status-tile ${myLatest ? 'mine' : 'mine-new'}" data-uid="__me__" id="my-status-tile">
+                <div class="tile-bg">${myPreview}</div>
+                <div class="tile-gradient"></div>
+                <div class="tile-avatar">${myAvatarHTML}<span class="tile-plus"><i class="fa-solid fa-plus"></i></span></div>
+                ${myLatest ? `<div class="tile-time">${timeAgo(myLatest.created_at)}</div>` : ''}
+                <div class="tile-name">Status saya</div>
+            </div>
+        `;
+
+        // Tile orang lain
+        html += ordered.map(([uid, arr]) => {
+            const u = arr[0].user || {};
+            const latest = arr[arr.length - 1];
+            const preview = renderTilePreview(latest);
+            const name = escapeHtml((u.display_name || u.username || '—').split(' ')[0]);
+            const time = timeAgo(latest.created_at);
+            return `<div class="status-tile" data-uid="${uid}">
+                        <div class="tile-bg">${preview}</div>
+                        <div class="tile-gradient"></div>
+                        <div class="tile-avatar">${u.avatar_url ? `<img src="${u.avatar_url}" alt="" />` : initials(u.display_name || u.username)}</div>
+                        <div class="tile-time">${time}</div>
+                        <div class="tile-name">${name}</div>
+                    </div>`;
+        }).join('');
+
+        box.innerHTML = html;
+
+        box.querySelectorAll('.status-tile').forEach(el => {
+            el.addEventListener('click', () => {
+                const uid = el.dataset.uid;
+                if (uid === '__me__') {
+                    if (!mySorted.length) return openStatusPicker('my-status');
+                    openMyStatusPage();
+                    return;
+                }
+                const arr = byUser[uid];
+                if (arr && arr.length) StatusViewer.open(arr, 0);
+            });
+        });
+    }
+
+    function renderTilePreview(s) {
+        if (s.type === 'image' && s.media_url) return `<img src="${s.media_url}" alt="" loading="lazy" />`;
+        if (s.type === 'video' && s.media_url) return `<video src="${s.media_url}#t=0.1" preload="metadata" muted playsinline></video>`;
+        return `<div class="tile-text">${escapeHtml(s.content || '')}</div>`;
+    }
+
+    /* ---------- MY STATUS PAGE ---------- */
+    function openMyStatusPage() {
+        document.getElementById('my-status-page').classList.remove('hidden');
+        renderMyStatusPage();
+    }
+    function closeMyStatusPage() {
+        document.getElementById('my-status-page').classList.add('hidden');
+    }
+    function renderMyStatusPage() {
+        const listEl = document.getElementById('my-status-list');
+        if (!listEl) return;
+        const mine = state.statuses
+            .filter(s => s.user_id === state.me.id)
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+        if (!mine.length) {
+            listEl.innerHTML = `<div class="my-status-empty"><i class="fa-regular fa-clock"></i><p class="muted">Belum ada status. Ketuk tombol kamera untuk menambahkan.</p></div>`;
             return;
         }
 
-        const grouped = {};
-        others.forEach(s => {
-            const key = s.user_id;
-            if (!grouped[key] || new Date(s.created_at) > new Date(grouped[key].created_at)) {
-                grouped[key] = s;
-            }
-        });
-
-        box.innerHTML = Object.values(grouped).map(s => {
-            const u = s.user || {};
-            const name = escapeHtml(u.display_name || u.username || '—');
-            return `
-                <div class="status-item" data-id="${s.id}">
-                    <div class="status-ring">${avatarHTML(u)}</div>
-                    <div class="status-meta">
-                        <div class="strong">${name}</div>
-                        <div class="muted small">${timeAgo(s.created_at)}</div>
-                    </div>
-                </div>`;
+        listEl.innerHTML = mine.map(s => {
+            const views = (typeof s.views === 'number') ? s.views : 0;
+            const when = timeAgo(s.created_at);
+            const timeFull = new Date(s.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }).replace('.', ':');
+            const thumb = s.type === 'image' && s.media_url
+                ? `<img src="${s.media_url}" alt="" />`
+                : s.type === 'video' && s.media_url
+                    ? `<video src="${s.media_url}#t=0.1" preload="metadata" muted playsinline></video>`
+                    : `<div class="ms-thumb-text">${escapeHtml((s.content || '').slice(0, 40))}</div>`;
+            return `<div class="my-status-row" data-id="${s.id}">
+                        <div class="ms-thumb">${thumb}</div>
+                        <div class="ms-body">
+                            <div class="ms-title">${views}x dilihat</div>
+                            <div class="ms-sub">${escapeHtml(timeFull)} &bull; ${escapeHtml(when)}</div>
+                        </div>
+                        <button class="ms-menu-btn" data-menu="${s.id}" aria-label="Menu"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    </div>`;
         }).join('');
 
-        box.querySelectorAll('.status-item').forEach(el => {
-            el.addEventListener('click', () => openStatus(el.dataset.id));
+        // Klik row → viewer
+        listEl.querySelectorAll('.my-status-row').forEach(row => {
+            row.addEventListener('click', (e) => {
+                if (e.target.closest('.ms-menu-btn')) return;
+                const id = row.dataset.id;
+                const sorted = mine.slice().sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                const idx = sorted.findIndex(x => x.id === id);
+                StatusViewer.open(sorted, idx >= 0 ? idx : 0);
+            });
+        });
+
+        // Menu 3-titik
+        listEl.querySelectorAll('.ms-menu-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openStatusItemMenu(btn.dataset.menu);
+            });
         });
     }
 
-    function openStatus(id) {
-        const s = state.statuses.find(x => x.id === id);
+    function openStatusItemMenu(statusId) {
+        const s = state.statuses.find(x => String(x.id) === String(statusId));
         if (!s) return;
-        const modal = document.getElementById('modal-status');
-        if (!modal) return;
-
-        const av = document.getElementById('sv-avatar');
-        const u = s.user || {};
-        if (u.avatar_url) av.outerHTML = `<img id="sv-avatar" class="avatar sm" src="${u.avatar_url}" alt="" />`;
-        else av.outerHTML = `<span id="sv-avatar" class="avatar sm">${initials(u.display_name || u.username)}</span>`;
-
-        document.getElementById('sv-name').textContent = (u.display_name || u.username) || '—';
-        document.getElementById('sv-time').textContent = timeAgo(s.created_at);
-
-        const c = document.getElementById('sv-content');
-        if (s.type === 'image' && s.media_url) {
-            c.innerHTML = `<img src="${s.media_url}" alt="" />`;
-        } else if (s.type === 'video' && s.media_url) {
-            c.innerHTML = `<video src="${s.media_url}" controls autoplay playsinline></video>`;
-        } else {
-            c.innerHTML = `<div class="status-text">${escapeHtml(s.content || '')}</div>`;
-        }
-        modal.classList.remove('hidden');
+        const backdrop = document.createElement('div');
+        backdrop.className = 'action-sheet-backdrop';
+        const sheet = document.createElement('div');
+        sheet.className = 'action-sheet';
+        sheet.innerHTML = `
+            <div class="handle"></div>
+            <div class="as-title">Status &bull; ${escapeHtml(timeAgo(s.created_at))}</div>
+            <button class="as-btn" data-act="view"><svg class="icon icon-sm"><use href="#i-eye"/></svg> Lihat status</button>
+            <button class="as-btn danger" data-act="delete"><svg class="icon icon-sm"><use href="#i-trash"/></svg> Hapus status</button>
+            <button class="as-btn" data-act="close"><svg class="icon icon-sm"><use href="#i-close"/></svg> Tutup</button>
+        `;
+        document.body.appendChild(backdrop);
+        document.body.appendChild(sheet);
+        const closeSheet = () => {
+            sheet.classList.add('closing');
+            backdrop.style.animation = 'fadeOut .2s ease forwards';
+            setTimeout(() => { sheet.remove(); backdrop.remove(); }, 210);
+        };
+        backdrop.onclick = closeSheet;
+        sheet.onclick = async (e) => {
+            const btn = e.target.closest('button[data-act]');
+            if (!btn) return;
+            const act = btn.dataset.act;
+            if (act === 'close') return closeSheet();
+            if (act === 'view') {
+                closeSheet();
+                const mine = state.statuses.filter(x => x.user_id === state.me.id).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                const idx = mine.findIndex(x => x.id === s.id);
+                StatusViewer.open(mine, idx >= 0 ? idx : 0);
+                return;
+            }
+            if (act === 'delete') {
+                closeSheet();
+                if (!confirm('Hapus status ini?')) return;
+                try {
+                    await API.del('/api/chat/statuses/' + s.id);
+                    showToast('Status dihapus.');
+                    await loadStatuses();
+                } catch (err) { showToast(err.message || 'Gagal hapus.'); }
+            }
+        };
     }
 
-    function openStatusPicker() {
+    /* ---------- PICKER & COMPOSER ---------- */
+    function openStatusPicker(target) {
+        pickerTarget = target || 'status';
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
@@ -1709,22 +1730,13 @@ const StatusModule = (function () {
                 <h3>Status baru</h3>
                 <p class="muted small">Pilih tipe status</p>
                 <div class="status-picker">
-                    <button class="btn picker-btn" data-type="text">
-                        <svg class="icon icon-sm"><use href="#i-chat"/></svg> Teks
-                    </button>
-                    <button class="btn picker-btn" data-type="image">
-                        <svg class="icon icon-sm"><use href="#i-image"/></svg> Foto
-                    </button>
-                    <button class="btn picker-btn" data-type="video">
-                        <svg class="icon icon-sm"><use href="#i-video"/></svg> Video
-                    </button>
+                    <button class="btn picker-btn" data-type="text"><svg class="icon icon-sm"><use href="#i-chat"/></svg> Teks</button>
+                    <button class="btn picker-btn" data-type="image"><svg class="icon icon-sm"><use href="#i-image"/></svg> Foto</button>
+                    <button class="btn picker-btn" data-type="video"><svg class="icon icon-sm"><use href="#i-video"/></svg> Video</button>
                 </div>
-                <button class="btn" data-cancel style="width:100%;margin-top:4px">
-                    <svg class="icon icon-sm"><use href="#i-close"/></svg> Batal
-                </button>
+                <button class="btn" data-cancel style="width:100%;margin-top:4px"><svg class="icon icon-sm"><use href="#i-close"/></svg> Batal</button>
             </div>`;
         document.body.appendChild(modal);
-
         modal.addEventListener('click', (e) => {
             if (e.target === modal || e.target.closest('[data-cancel]')) { modal.remove(); return; }
             const btn = e.target.closest('button[data-type]');
@@ -1743,22 +1755,16 @@ const StatusModule = (function () {
         modal.innerHTML = `
             <div class="modal-card">
                 <h3>Tulis status</h3>
-                <textarea id="status-text-input" rows="4"
-                    placeholder="Apa yang sedang kamu pikirkan?"
+                <textarea id="status-text-input" rows="4" placeholder="Apa yang sedang kamu pikirkan?"
                     style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-size:15px;outline:none;resize:none;font-family:inherit;box-sizing:border-box"></textarea>
                 <div class="modal-actions">
-                    <button class="btn" data-cancel>
-                        <svg class="icon icon-sm"><use href="#i-close"/></svg> Batal
-                    </button>
-                    <button class="btn primary" data-submit>
-                        <svg class="icon icon-sm"><use href="#i-send"/></svg> Posting
-                    </button>
+                    <button class="btn" data-cancel><svg class="icon icon-sm"><use href="#i-close"/></svg> Batal</button>
+                    <button class="btn primary" data-submit><svg class="icon icon-sm"><use href="#i-send"/></svg> Posting</button>
                 </div>
             </div>`;
         document.body.appendChild(modal);
         const input = modal.querySelector('#status-text-input');
         input.focus();
-
         modal.addEventListener('click', async (e) => {
             if (e.target === modal || e.target.closest('[data-cancel]')) { modal.remove(); return; }
             if (e.target.closest('button[data-submit]')) {
@@ -1769,12 +1775,10 @@ const StatusModule = (function () {
                 try {
                     await API.post('/api/chat/statuses', { type: 'text', content: text });
                     modal.remove();
-                    loadStatuses();
-                    showToast('Status berhasil diposting.');
-                } catch (err) {
-                    showToast(err.message || 'Gagal memposting status.');
-                    btn.disabled = false;
-                }
+                    await loadStatuses();
+                    if (pickerTarget === 'my-status') renderMyStatusPage();
+                    showToast('Status diposting.');
+                } catch (err) { showToast(err.message || 'Gagal posting.'); btn.disabled = false; }
             }
         });
     }
@@ -1786,10 +1790,7 @@ const StatusModule = (function () {
         inp.onchange = async () => {
             const f = inp.files && inp.files[0];
             if (!f) return;
-            if (f.size > 50 * 1024 * 1024) {
-                showToast('File terlalu besar. Maksimal 50 MB.');
-                return;
-            }
+            if (f.size > 20 * 1024 * 1024) { showToast('File terlalu besar. Maksimal 20 MB.'); return; }
             const prog = showUploadToast('Mengunggah status...');
             try {
                 const fd = new FormData();
@@ -1797,12 +1798,10 @@ const StatusModule = (function () {
                 const { url } = await API.upload('/api/chat/upload/status', fd);
                 await API.post('/api/chat/statuses', { type, media_url: url });
                 prog.remove();
-                loadStatuses();
-                showToast('Status berhasil diposting.');
-            } catch (err) {
-                prog.remove();
-                showToast(err.message || 'Gagal mengunggah status.');
-            }
+                await loadStatuses();
+                if (pickerTarget === 'my-status') renderMyStatusPage();
+                showToast('Status diposting.');
+            } catch (err) { prog.remove(); showToast(err.message || 'Gagal upload.'); }
         };
         inp.click();
     }
@@ -1815,38 +1814,27 @@ const StatusModule = (function () {
         return el;
     }
 
-    return { init, loadStatuses, openStatus };
+    return { init, loadStatuses, openStatusPicker };
 })();
 
 /* ============================================================
-   8. PROFILE MODULE
+   PROFILE MODULE
    ============================================================ */
 const ProfileModule = (function () {
-    let state = null;
-    let bound = false;
+    let state = null, bound = false;
 
     function init(s) {
         state = s;
         const avatarInput = document.getElementById('avatar-input');
-        if (avatarInput) {
-            avatarInput.removeEventListener('change', uploadAvatar);
-            avatarInput.addEventListener('change', uploadAvatar);
-        }
-
+        if (avatarInput) { avatarInput.removeEventListener('change', uploadAvatar); avatarInput.addEventListener('change', uploadAvatar); }
         if (bound) return;
         bound = true;
-
         document.addEventListener('click', (e) => {
             const editLabel = e.target.closest('label.avatar-edit, label[for="avatar-input"]');
-            if (editLabel) {
-                e.preventDefault();
-                const inp = document.getElementById('avatar-input');
-                if (inp) inp.click();
-                return;
-            }
+            if (editLabel) { e.preventDefault(); const inp = document.getElementById('avatar-input'); if (inp) inp.click(); return; }
             if (e.target.closest('#save-profile')) { e.preventDefault(); saveProfile(); return; }
+            if (e.target.closest('#change-password')) { e.preventDefault(); changePassword(); return; }
             if (e.target.closest('#logout-btn')) { e.preventDefault(); confirmLogout(); return; }
-
             const overlay = e.target.closest('#pretv-logout-modal');
             if (overlay) {
                 if (e.target.id === 'pretv-logout-modal') { overlay.remove(); return; }
@@ -1860,35 +1848,25 @@ const ProfileModule = (function () {
         let me = state.me;
         try {
             const res = await API.get('/api/chat/me');
-            if (res && res.user) {
-                me = res.user;
-                state.me = me;
-                try { localStorage.setItem('pretv_me', JSON.stringify(me)); } catch (_) {}
-            }
+            if (res && res.user) { me = res.user; state.me = me; try { localStorage.setItem('pretv_me', JSON.stringify(me)); } catch (_) { } }
         } catch (e) {
-            console.warn('[profile] load /me gagal:', e.message);
-            try {
-                const cached = JSON.parse(localStorage.getItem('pretv_me') || 'null');
-                if (cached) { me = cached; state.me = me; }
-            } catch (_) {}
-            if (!me) {
-                showToast('Sesi tidak valid. Silakan login ulang.');
-                setMsg('Gagal memuat profil: ' + (e.message || 'unknown'), true);
-                return;
-            }
+            console.warn('[profile]', e.message);
+            try { const cached = JSON.parse(localStorage.getItem('pretv_me') || 'null'); if (cached) { me = cached; state.me = me; } } catch (_) { }
+            if (!me) { showToast('Sesi tidak valid.'); setMsg('Gagal memuat profil.', true); return; }
         }
-
         const u = me || {};
         renderAvatar('me-avatar', u.avatar_url, u.display_name || u.username, 'xl');
-        renderAvatar('me-avatar-status', u.avatar_url, u.display_name || u.username, '');
-
-        const nameF  = document.getElementById('field-display_name');
-        const userF  = document.getElementById('field-username');
+        const nameF = document.getElementById('field-display_name');
+        const userF = document.getElementById('field-username');
         const aboutF = document.getElementById('field-about');
-        if (nameF)  nameF.value  = u.display_name || u.username || '';
-        if (userF)  userF.value  = u.username ? ('@' + u.username) : '';
+        if (nameF) nameF.value = u.display_name || u.username || '';
+        if (userF) userF.value = u.username ? ('@' + u.username) : '';
         if (aboutF) aboutF.value = u.about || '';
         setMsg('');
+        const po = document.getElementById('pw-old'); if (po) po.value = '';
+        const pn = document.getElementById('pw-new'); if (pn) pn.value = '';
+        const pc = document.getElementById('pw-confirm'); if (pc) pc.value = '';
+        setPwMsg('');
     }
 
     function renderAvatar(id, url, name, sizeClass) {
@@ -1897,213 +1875,158 @@ const ProfileModule = (function () {
         const cls = ('avatar ' + (sizeClass || '')).trim();
         const parent = el.parentNode;
         if (!parent) return;
-
         if (url) {
             if (el.tagName === 'IMG') { el.src = url; el.className = cls; el.alt = ''; }
-            else {
-                const img = document.createElement('img');
-                img.id = id; img.className = cls; img.src = url; img.alt = '';
-                parent.replaceChild(img, el);
-            }
+            else { const img = document.createElement('img'); img.id = id; img.className = cls; img.src = url; img.alt = ''; parent.replaceChild(img, el); }
         } else {
             const initial = initials(name);
             if (el.tagName === 'SPAN') { el.className = cls; el.textContent = initial; }
-            else {
-                const span = document.createElement('span');
-                span.id = id; span.className = cls; span.textContent = initial;
-                parent.replaceChild(span, el);
-            }
+            else { const span = document.createElement('span'); span.id = id; span.className = cls; span.textContent = initial; parent.replaceChild(span, el); }
         }
     }
 
     async function uploadAvatar(e) {
         const f = e.target.files && e.target.files[0];
         if (!f) return;
-        if (f.size > 5 * 1024 * 1024) {
-            setMsg('Foto terlalu besar. Maksimal 5 MB.', true);
-            showToast('Foto terlalu besar (maks 5 MB)');
-            e.target.value = '';
-            return;
-        }
-        if (!f.type.startsWith('image/')) {
-            setMsg('File harus berupa gambar.', true);
-            showToast('File harus berupa gambar');
-            e.target.value = '';
-            return;
-        }
-
+        if (f.size > 5 * 1024 * 1024) { setMsg('Foto terlalu besar. Maksimal 5 MB.', true); showToast('Foto terlalu besar (maks 5 MB)'); e.target.value = ''; return; }
+        if (!f.type.startsWith('image/')) { setMsg('File harus berupa gambar.', true); showToast('File harus gambar'); e.target.value = ''; return; }
         setMsg('Mengunggah foto...', false);
         const editLabel = document.querySelector('label.avatar-edit');
         if (editLabel) editLabel.classList.add('uploading');
-
         try {
-            const fd = new FormData();
-            fd.append('file', f);
+            const fd = new FormData(); fd.append('file', f);
             const res = await API.upload('/api/chat/upload/avatar', fd);
-            if (res && res.user) {
-                state.me = res.user;
-                try { localStorage.setItem('pretv_me', JSON.stringify(res.user)); } catch (_) {}
-            } else if (res && res.avatar_url && state.me) {
-                state.me.avatar_url = res.avatar_url;
-                try { localStorage.setItem('pretv_me', JSON.stringify(state.me)); } catch (_) {}
-            }
+            if (res && res.user) { state.me = res.user; try { localStorage.setItem('pretv_me', JSON.stringify(res.user)); } catch (_) { } }
             await loadProfile();
-            setMsg('Foto profil berhasil diperbarui.');
-            showToast('Foto profil diperbarui');
-        } catch (err) {
-            console.error('[avatar]', err);
-            setMsg(err.message || 'Gagal mengunggah foto profil.', true);
-            showToast(err.message || 'Gagal upload foto');
-        } finally {
-            if (editLabel) editLabel.classList.remove('uploading');
-            e.target.value = '';
-        }
+            setMsg('Foto profil diperbarui.');
+            showToast('Foto diperbarui');
+        } catch (err) { setMsg(err.message || 'Gagal upload.', true); showToast(err.message || 'Gagal upload foto'); }
+        finally { if (editLabel) editLabel.classList.remove('uploading'); e.target.value = ''; }
     }
 
     async function saveProfile() {
-        const nameF  = document.getElementById('field-display_name');
+        const nameF = document.getElementById('field-display_name');
         const aboutF = document.getElementById('field-about');
         if (!nameF) return;
-
         const display_name = String(nameF.value || '').trim();
         const about = String(aboutF ? aboutF.value : '').trim();
-
         if (!display_name) { setMsg('Nama tampilan tidak boleh kosong.', true); return; }
-        if (display_name.length > 60) { setMsg('Nama tampilan maksimal 60 karakter.', true); return; }
+        if (display_name.length > 60) { setMsg('Nama maksimal 60 karakter.', true); return; }
         if (about.length > 300) { setMsg('Tentang maksimal 300 karakter.', true); return; }
-
         const btn = document.getElementById('save-profile');
         const original = btn ? btn.innerHTML : '';
         if (btn) { btn.disabled = true; btn.innerHTML = 'Menyimpan...'; }
-        setMsg('Menyimpan perubahan...', false);
-
+        setMsg('Menyimpan...', false);
         try {
             const res = await API.put('/api/chat/profile', { display_name, about });
             const user = res && res.user;
-            if (user) {
-                state.me = user;
-                try { localStorage.setItem('pretv_me', JSON.stringify(user)); } catch (_) {}
-            }
+            if (user) { state.me = user; try { localStorage.setItem('pretv_me', JSON.stringify(user)); } catch (_) { } }
             await loadProfile();
-            setMsg('Perubahan berhasil disimpan.');
+            setMsg('Perubahan disimpan.');
             showToast('Profil disimpan');
-        } catch (err) {
-            console.error('[profile save]', err);
-            setMsg(err.message || 'Gagal menyimpan perubahan.', true);
-            showToast(err.message || 'Gagal simpan profil');
-        } finally {
-            if (btn) { btn.disabled = false; btn.innerHTML = original || 'Simpan perubahan'; }
-        }
+        } catch (err) { setMsg(err.message || 'Gagal simpan.', true); showToast(err.message || 'Gagal simpan'); }
+        finally { if (btn) { btn.disabled = false; btn.innerHTML = original || 'Simpan perubahan'; } }
+    }
+
+    async function changePassword() {
+        const oldPw = document.getElementById('pw-old').value;
+        const newPw = document.getElementById('pw-new').value;
+        const confPw = document.getElementById('pw-confirm').value;
+        if (!oldPw || !newPw || !confPw) { setPwMsg('Semua field wajib diisi.', true); return; }
+        if (newPw.length < 4) { setPwMsg('Password baru minimal 4 karakter.', true); return; }
+        if (newPw !== confPw) { setPwMsg('Konfirmasi password tidak sama.', true); return; }
+        if (newPw === oldPw) { setPwMsg('Password baru harus beda dari yang lama.', true); return; }
+        const btn = document.getElementById('change-password');
+        const original = btn ? btn.innerHTML : '';
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Menyimpan...'; }
+        setPwMsg('Memproses...', false);
+        try {
+            await API.put('/api/chat/password', { old_password: oldPw, new_password: newPw });
+            setPwMsg('Password berhasil diganti.', false);
+            showToast('Password diganti');
+            document.getElementById('pw-old').value = '';
+            document.getElementById('pw-new').value = '';
+            document.getElementById('pw-confirm').value = '';
+        } catch (err) { setPwMsg(err.message || 'Gagal ganti password.', true); showToast(err.message || 'Gagal'); }
+        finally { if (btn) { btn.disabled = false; btn.innerHTML = original || 'Ganti Password'; } }
     }
 
     function confirmLogout() {
         const existing = document.getElementById('pretv-logout-modal');
         if (existing) existing.remove();
-
         const overlay = document.createElement('div');
         overlay.id = 'pretv-logout-modal';
-        overlay.style.cssText = [
-            'position:fixed', 'inset:0', 'z-index:99999',
-            'background:rgba(0,0,0,.5)',
-            'display:flex', 'align-items:center', 'justify-content:center',
-            'padding:20px', 'box-sizing:border-box'
-        ].join(';');
-
-        overlay.innerHTML = `
-            <div style="background:#fff;border-radius:16px;padding:20px;
-                        max-width:340px;width:100%;box-sizing:border-box;
-                        box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:inherit;">
-                <h3 style="margin:0 0 8px;font-size:17px;font-weight:600;color:#111;">Keluar dari akun?</h3>
-                <p style="margin:0 0 18px;color:#666;font-size:14px;line-height:1.4;">
-                    Anda perlu login kembali untuk menggunakan chat.
-                </p>
-                <div style="display:flex;gap:8px;">
-                    <button type="button" data-cancel
-                        style="flex:1;padding:11px 14px;border:1px solid #ddd;border-radius:10px;
-                               background:#fff;color:#333;font-size:14px;font-weight:500;cursor:pointer;">
-                        Batal
-                    </button>
-                    <button type="button" data-confirm
-                        style="flex:1;padding:11px 14px;border:none;border-radius:10px;
-                               background:#e74c3c;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
-                        Logout
-                    </button>
-                </div>
-            </div>`;
+        overlay.style.cssText = ['position:fixed', 'inset:0', 'z-index:99999', 'background:rgba(0,0,0,.5)', 'display:flex', 'align-items:center', 'justify-content:center', 'padding:20px', 'box-sizing:border-box'].join(';');
+        overlay.style.animation = 'fadeIn .18s ease';
+        overlay.innerHTML = `<div style="background:#fff;border-radius:16px;padding:20px;max-width:340px;width:100%;box-sizing:border-box;box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:inherit;animation:popIn .22s cubic-bezier(.2,.9,.3,1)">
+            <h3 style="margin:0 0 8px;font-size:17px;font-weight:600;color:#111;">Keluar dari akun?</h3>
+            <p style="margin:0 0 18px;color:#666;font-size:14px;line-height:1.4;">Anda perlu login kembali untuk menggunakan chat.</p>
+            <div style="display:flex;gap:8px;">
+                <button type="button" data-cancel style="flex:1;padding:11px 14px;border:1px solid #ddd;border-radius:10px;background:#fff;color:#333;font-size:14px;font-weight:500;cursor:pointer;">Batal</button>
+                <button type="button" data-confirm style="flex:1;padding:11px 14px;border:none;border-radius:10px;background:#e74c3c;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">Logout</button>
+            </div></div>`;
         document.body.appendChild(overlay);
     }
 
     async function doLogout() {
         const btn = document.getElementById('logout-btn');
         if (btn) { btn.disabled = true; btn.textContent = 'Keluar...'; }
-        try { await API.post('/api/chat/logout', {}); } catch (_) {}
-        try { WSManager.close(); } catch (_) {}
+        try { await API.post('/api/chat/logout', {}); } catch (_) { }
+        try { WSManager.close(); } catch (_) { }
         API.token = null;
-        try {
-            localStorage.removeItem('pretv_token');
-            localStorage.removeItem('pretv_me');
-            sessionStorage.clear();
-        } catch (_) {}
-        // Kembali ke auth screen (single file, tidak reload)
+        try { localStorage.removeItem('pretv_token'); localStorage.removeItem('pretv_me'); sessionStorage.clear(); } catch (_) { }
+        const navAdmin = document.getElementById('nav-admin');
+        if (navAdmin) navAdmin.classList.add('hidden');
         AuthModule.showAuth();
         if (btn) { btn.disabled = false; btn.innerHTML = '<svg class="icon icon-sm"><use href="#i-logout"/></svg> Logout'; }
     }
 
-    function onPresenceUpdate() {}
-
+    function onPresenceUpdate() { }
     function setMsg(text, isError) {
         const el = document.getElementById('profile-msg');
         if (!el) return;
         if (!text) { el.textContent = ''; el.className = 'muted small'; return; }
-        el.textContent = text;
-        el.className = isError ? 'error small' : 'muted small';
+        el.textContent = text; el.className = isError ? 'error small' : 'muted small';
+    }
+    function setPwMsg(text, isError) {
+        const el = document.getElementById('pw-msg');
+        if (!el) return;
+        if (!text) { el.textContent = ''; el.className = 'muted small'; return; }
+        el.textContent = text; el.className = isError ? 'error small' : 'muted small';
     }
 
     return { init, loadProfile, onPresenceUpdate };
 })();
 
 /* ============================================================
-   9. APP — BOOT & NAVIGATION
+   APP
    ============================================================ */
 const App = (function () {
     const state = {
-        me: null,
-        currentView: 'chat',
-        currentConversation: null,
-        currentOtherUser: null,
-        chatList: [],
-        messages: [],
-        statuses: [],
-        typingUsers: {},
-        onlineUsers: {}
+        me: null, currentView: 'chat', currentConversation: null, currentOtherUser: null,
+        chatList: [], messages: [], statuses: [], typingUsers: {}, onlineUsers: {}
     };
-
     let booted = false;
 
     async function boot() {
         if (booted) return;
         booted = true;
-
         if (!API.token) { AuthModule.showAuth(); return; }
-
         try {
             const { user } = await API.get('/api/chat/me');
             state.me = user;
             localStorage.setItem('pretv_me', JSON.stringify(user));
-        } catch (e) {
-            API.token = null;
-            AuthModule.showAuth();
-            return;
-        }
-
+        } catch (e) { API.token = null; AuthModule.showAuth(); return; }
+        try { await Config.load(); } catch (e) { console.warn('[config]', e.message); }
         WSManager.connect();
         bindNav();
         bindGlobalWS();
-
         ChatModule.init(state);
         StatusModule.init(state);
         ProfileModule.init(state);
-
+        AdminModule.init(state);
+        StatusViewer.init(state);
+        AdminModule.showNavIfAdmin();
         switchView('chat');
         ChatModule.loadConversations();
     }
@@ -2115,6 +2038,7 @@ const App = (function () {
     }
 
     function switchView(view) {
+        if (view === 'admin' && !AdminModule.isAdmin()) { showToast('Akses ditolak.'); view = 'chat'; }
         state.currentView = view;
         document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
@@ -2122,38 +2046,28 @@ const App = (function () {
         if (el) el.classList.add('active');
         if (view === 'status') StatusModule.loadStatuses();
         if (view === 'profile') ProfileModule.loadProfile();
+        if (view === 'admin') AdminModule.loadForm();
     }
 
     function bindGlobalWS() {
-        WSManager.on('presence', (d) => {
-            state.onlineUsers[d.user_id] = d.online;
-            ChatModule.onPresenceUpdate(d);
-            ProfileModule.onPresenceUpdate(d);
-        });
+        WSManager.on('presence', (d) => { state.onlineUsers[d.user_id] = d.online; ChatModule.onPresenceUpdate(d); ProfileModule.onPresenceUpdate(d); });
         WSManager.on('message:new', (d) => ChatModule.onNewMessage(d.message));
+        WSManager.on('message:delete', (d) => ChatModule.onMessageDelete(d));
         WSManager.on('message:read', (d) => ChatModule.onMessageRead(d));
         WSManager.on('typing', (d) => ChatModule.onTyping(d));
-        WSManager.on('status:new', () => {
-            if (state.currentView === 'status') StatusModule.loadStatuses();
-        });
+        WSManager.on('status:new', () => { if (state.currentView === 'status') StatusModule.loadStatuses(); });
+        WSManager.on('status:delete', () => { if (state.currentView === 'status') StatusModule.loadStatuses(); });
     }
 
     return { state, boot, switchView };
 })();
 
-/* ============================================================
-   10. START
-   ============================================================ */
 document.addEventListener('DOMContentLoaded', () => {
     AuthModule.init();
-    // Kalau token ada tapi auth.js tidak auto-showApp (misal error), paksa boot
     if (API.token) {
-        // cek cepat: kalau view app masih hidden, coba boot
         setTimeout(() => {
             const appHidden = document.getElementById('app-screen').classList.contains('hidden');
-            if (appHidden && API.token) {
-                API.get('/api/chat/me').then(() => AuthModule.showApp()).catch(() => {});
-            }
+            if (appHidden && API.token) API.get('/api/chat/me').then(() => AuthModule.showApp()).catch(() => { });
         }, 300);
     }
 });
