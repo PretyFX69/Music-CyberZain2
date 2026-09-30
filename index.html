@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <meta name="theme-color" content="#ffffff" />
-<title>Pretv Chat</title>
+<title>Pretvfx-Chat</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -13,7 +13,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica N
 button{font-family:inherit;cursor:pointer}
 input,textarea{font-family:inherit}
 img{display:block;max-width:100%}
-:root{--primary:#2f7cff;--primary-dark:#1d5fd8;--danger:#e74c3c;--line:#e3e6ea;--muted:#7a8087;--bg:#fff;--bg-soft:#f5f6f8;--bubble-me:#2f7cff;--bubble-other:#fff;--text-me:#fff;--text-other:#111;--wa-green:#25d366;--wa-dark:#075e54}
+:root{--primary:#2f7cff;--primary-dark:#1d5fd8;--danger:#e74c3c;--line:#e3e6ea;--muted:#7a8087;--bg:#fff;--bg-soft:#f5f6f8;--bubble-me:#2f7cff;--bubble-other:#fff;--text-me:#fff;--text-other:#111;--wa-green:var(--primary);--wa-dark:var(--primary-dark)}
 .hidden{display:none !important}
 .muted{color:var(--muted)}
 .small{font-size:12px}
@@ -87,22 +87,32 @@ img{display:block;max-width:100%}
 .conv-meta{flex:1;min-width:0}
 .conv-name{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .conv-status{margin-top:1px}
-.messages{flex:1;overflow-y:auto;padding:16px 12px 12px;display:flex;flex-direction:column;gap:6px;background:radial-gradient(circle at 20% 10%,#eef3ff 0%,transparent 40%),radial-gradient(circle at 80% 90%,#fff3ec 0%,transparent 40%),#f5f6f8}
-.msg{max-width:78%;padding:9px 13px;border-radius:16px;font-size:15px;line-height:1.35;word-wrap:break-word;overflow-wrap:anywhere;position:relative;align-self:flex-start;background:var(--bubble-other);color:var(--text-other);box-shadow:0 1px 1px rgba(0,0,0,.04);animation:msgIn .22s ease;user-select:none;-webkit-user-select:none}
-.msg.me{align-self:flex-end;background:var(--bubble-me);color:var(--text-me);border-bottom-right-radius:6px;cursor:pointer}
-.msg.other{border-bottom-left-radius:6px}
+.messages{flex:1;overflow-y:auto;padding:18px 12px 14px;display:flex;flex-direction:column;gap:7px;background:radial-gradient(circle at 20% 10%,rgba(47,124,255,.09) 0%,transparent 36%),radial-gradient(circle at 80% 90%,rgba(110,150,255,.07) 0%,transparent 40%),#f6f8fb}
+.msg{max-width:80%;padding:9px 13px;border-radius:18px;font-size:15px;line-height:1.4;word-wrap:break-word;overflow-wrap:anywhere;position:relative;align-self:flex-start;background:var(--bubble-other);color:var(--text-other);box-shadow:0 1px 1px rgba(0,0,0,.04);animation:msgIn .22s ease;user-select:none;-webkit-user-select:none}
+.msg.me{align-self:flex-end;background:linear-gradient(135deg,#2f7cff,#3f89ff);color:var(--text-me);border-bottom-right-radius:7px;cursor:pointer;box-shadow:0 3px 10px rgba(47,124,255,.16)}
+.msg.other{border-bottom-left-radius:7px;box-shadow:0 2px 8px rgba(30,50,80,.06)}
 .msg .meta{display:flex;align-items:center;justify-content:flex-end;gap:4px;font-size:11px;opacity:.75;margin-top:3px}
 .msg .tick{display:inline-flex}
 .msg .tick .icon{width:14px;height:14px}
 .msg .media-wrap{margin:-5px -5px 5px;border-radius:12px;overflow:hidden}
 .msg .media-wrap img{display:block;max-height:320px;object-fit:cover}
 .msg video{max-width:260px;max-height:320px;border-radius:12px;margin:-3px -3px 4px}
+.msg .media-wrap{position:relative;cursor:pointer}
+.msg .media-wrap img{width:100%;max-width:320px;max-height:420px;object-fit:cover;border-radius:12px}
+.msg video{max-width:320px;max-height:420px;border-radius:12px;margin:-3px -3px 4px;display:block;background:#000;cursor:pointer}
+.msg .media-uploading{position:relative;min-width:180px;min-height:120px}
+.msg .media-uploading::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.38));pointer-events:none}
+.msg .media-upload-status{position:absolute;left:10px;right:10px;bottom:10px;z-index:2;display:flex;align-items:center;gap:7px;color:#fff;font-size:12px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+.msg .media-upload-spinner{width:14px;height:14px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;flex:0 0 auto}
+.media-lightbox{position:fixed;inset:0;z-index:9997;background:rgba(0,0,0,.96);display:flex;align-items:center;justify-content:center;padding:18px;animation:fadeIn .16s ease}
+.media-lightbox img,.media-lightbox video{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;background:#000}
+.media-lightbox-close{position:absolute;top:16px;right:16px;z-index:2;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px}
+
 .typing-bar{padding:6px 16px;font-size:12px;color:var(--muted);font-style:italic;background:#f5f6f8}
-.upload-progress{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;color:var(--primary);background:#f5f6f8}
 .new-msg{position:absolute;bottom:90px;right:18px;display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:0;border-radius:999px;background:var(--primary);color:#fff;font-size:13px;font-weight:600;box-shadow:0 6px 20px rgba(47,124,255,.4);z-index:20}
-.composer{display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid var(--line)}
+.composer{display:flex;align-items:flex-end;gap:8px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(255,255,255,.96);border-top:1px solid rgba(227,230,234,.9);box-shadow:0 -4px 18px rgba(20,40,80,.04)}
 .composer label.icon-btn{width:42px;height:42px;flex:0 0 auto}
-.composer textarea{flex:1;resize:none;border:1px solid var(--line);border-radius:22px;padding:10px 16px;font-size:15px;line-height:1.4;outline:0;max-height:120px;min-height:42px;background:#f5f6f8;transition:background .15s}
+.composer textarea{flex:1;resize:none;border:1px solid #dfe4ea;border-radius:22px;padding:10px 16px;font-size:15px;line-height:1.4;outline:0;max-height:120px;min-height:42px;background:#f5f6f8;transition:background .15s}
 .composer textarea:focus{background:#fff;border-color:var(--primary)}
 .send-btn{width:42px;height:42px;flex:0 0 auto;border:0;border-radius:50%;background:var(--primary);color:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(47,124,255,.35)}
 .send-btn:hover{background:var(--primary-dark)}
@@ -112,25 +122,25 @@ img{display:block;max-width:100%}
    STATUS (WA-STYLE) - REVAMPED
    ============================================================ */
 .status-header-bar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px;background:#fff}
-.status-header-bar h1{margin:0;font-size:22px;font-weight:700;color:#075e54}
+.status-header-bar h1{margin:0;font-size:22px;font-weight:750;color:var(--primary-dark);letter-spacing:-.2px}
 .status-updates{flex:1;overflow-y:auto;padding-bottom:100px}
 .status-section-title{padding:14px 16px 8px;font-size:12px;font-weight:700;color:#7a8087;text-transform:uppercase;letter-spacing:.6px}
-.status-scroll{display:flex;gap:10px;overflow-x:auto;padding:4px 16px 14px;scrollbar-width:none;scroll-snap-type:x proximity}
+.status-scroll{display:flex;gap:12px;overflow-x:auto;padding:5px 16px 18px;scrollbar-width:none;scroll-snap-type:x proximity}
 .status-scroll::-webkit-scrollbar{display:none}
-.status-tile{flex:0 0 auto;width:108px;height:180px;border-radius:14px;overflow:hidden;position:relative;cursor:pointer;background:linear-gradient(135deg,#667eea,#764ba2);box-shadow:0 2px 10px rgba(0,0,0,.14);transition:transform .12s ease;scroll-snap-align:start;border:3px solid #25d366}
-.status-tile:active{transform:scale(.96)}
-.status-tile.seen{border-color:#cfd8dc}
-.status-tile.mine{border-color:#25d366}
+.status-tile{flex:0 0 auto;width:105px;height:175px;border-radius:18px;overflow:hidden;position:relative;cursor:pointer;background:#dfe4ea;box-shadow:0 5px 18px rgba(0,0,0,.12);transition:transform .14s ease,box-shadow .14s ease;scroll-snap-align:start;border:0}
+.status-tile:active{transform:scale(.97);box-shadow:0 3px 12px rgba(0,0,0,.10)}
+.status-tile.seen,.status-tile.mine,.status-tile.mine-new{border:0}
+
 .status-tile .tile-bg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#1a1a2e}
 .status-tile .tile-bg img,.status-tile .tile-bg video{width:100%;height:100%;object-fit:cover;pointer-events:none}
 .status-tile .tile-bg .tile-text{color:#fff;font-size:13px;line-height:1.35;padding:14px;text-align:center;font-weight:500;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word}
 .status-tile .tile-empty{color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:38px;opacity:.85}
 .status-tile .tile-gradient{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 45%,rgba(0,0,0,.78) 100%);pointer-events:none}
-.status-tile .tile-avatar{position:absolute;top:8px;left:8px;width:34px;height:34px;border-radius:50%;border:2px solid #fff;overflow:hidden;background:#dbe7ff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d5fd8;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.status-tile .tile-avatar{position:absolute;top:9px;left:9px;width:38px;height:38px;border-radius:50%;border:2px solid var(--primary);overflow:hidden;background:#dbe7ff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#1d5fd8;z-index:2;box-shadow:0 2px 6px rgba(0,0,0,.25)}
 .status-tile .tile-avatar img{width:100%;height:100%;object-fit:cover}
-.status-tile .tile-plus{position:absolute;right:-3px;bottom:-3px;width:16px;height:16px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;border:2px solid #fff}
-.status-tile .tile-name{position:absolute;left:8px;right:8px;bottom:8px;color:#fff;font-size:12px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
-.status-tile .tile-time{position:absolute;left:8px;right:8px;bottom:24px;color:rgba(255,255,255,.85);font-size:10px;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status-tile .tile-plus{position:absolute;right:-4px;bottom:-4px;width:20px;height:20px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;border:2px solid #fff}
+.status-tile .tile-name{position:absolute;left:10px;right:10px;bottom:9px;color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2}
+.status-tile .tile-time{position:absolute;left:10px;right:10px;bottom:27px;color:rgba(255,255,255,.88);font-size:10px;text-shadow:0 1px 3px rgba(0,0,0,.7);z-index:2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 /* MY STATUS PAGE */
 .my-status-page{position:fixed;inset:0;z-index:9600;background:#fff;display:flex;flex-direction:column;animation:fadeIn .2s ease}
@@ -138,22 +148,22 @@ img{display:block;max-width:100%}
 .my-status-list{flex:1;overflow-y:auto;padding-bottom:120px}
 .my-status-row{display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:1px solid #f0f2f5;cursor:pointer;transition:background .15s}
 .my-status-row:hover{background:#f7f9fc}
-.ms-thumb{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#e3e6ea;position:relative;border:2.5px solid #25d366;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.ms-thumb{width:54px;height:54px;border-radius:50%;overflow:hidden;flex:0 0 auto;background:#e3e6ea;position:relative;border:2.5px solid var(--primary);box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .ms-thumb img,.ms-thumb video{width:100%;height:100%;object-fit:cover}
-.ms-thumb .ms-thumb-text{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:6px;font-size:9px;text-align:center;color:#fff;background:linear-gradient(135deg,#25d366,#128c7e);overflow:hidden;font-weight:500;line-height:1.2}
+.ms-thumb .ms-thumb-text{width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding:6px;font-size:9px;text-align:center;color:#fff;background:linear-gradient(135deg,var(--primary),var(--primary-dark));overflow:hidden;font-weight:500;line-height:1.2}
 .ms-body{flex:1;min-width:0}
 .ms-title{font-size:15px;font-weight:600;color:#111;margin-bottom:3px;display:flex;align-items:center;gap:6px}
-.ms-title .ms-heart{color:#25d366;font-size:14px}
+.ms-title .ms-heart{color:var(--primary);font-size:14px}
 .ms-sub{font-size:12px;color:#7a8087;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ms-menu-btn{width:38px;height:38px;border:0;background:transparent;border-radius:50%;color:#7a8087;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
 .ms-menu-btn:hover{background:#f0f2f5}
 .my-status-footer{padding:16px 24px 20px;font-size:12.5px;color:#7a8087;text-align:center;border-top:1px solid #f0f2f5;line-height:1.55}
-.my-status-footer i{margin-right:5px;color:#25d366}
-.my-status-fabs{position:absolute;right:20px;bottom:30px;display:flex;flex-direction:column;gap:12px;z-index:10}
+.my-status-footer i{margin-right:5px;color:var(--primary)}
+.my-status-fabs{display:none !important}
 .fab{width:54px;height:54px;border-radius:16px;border:0;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,.18);transition:transform .12s}
 .fab:active{transform:scale(.94)}
 .fab-edit{background:#fff;color:#111}
-.fab-add{background:#25d366;color:#fff}
+.fab-add{background:var(--primary);color:#fff}
 .my-status-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:60px 24px;color:#7a8087;text-align:center}
 .my-status-empty i{font-size:40px;color:#cfd8dc}
 
@@ -176,10 +186,32 @@ img{display:block;max-width:100%}
 .sw-header .sw-btn{width:36px;height:36px;border:0;background:transparent;color:#fff;display:flex;align-items:center;justify-content:center;border-radius:50%}
 .sw-header .sw-btn:hover{background:rgba(255,255,255,.15)}
 .sw-content{flex:1;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
-.sw-content img,.sw-content video{max-width:100%;max-height:100%;object-fit:contain;background:#000}
+.sw-content img,.sw-content video{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;background:#000;display:block}
 .sw-text{color:#fff;font-size:22px;line-height:1.4;padding:40px 30px;text-align:center;font-weight:500;text-shadow:0 2px 8px rgba(0,0,0,.4)}
 .sw-caption{position:absolute;left:0;right:0;bottom:0;padding:20px 24px 40px;color:#fff;font-size:16px;text-align:center;background:linear-gradient(transparent,rgba(0,0,0,.6));text-shadow:0 1px 3px rgba(0,0,0,.7)}
-.sw-nav{position:absolute;top:60px;bottom:0;width:35%;z-index:8;cursor:pointer}
+
+.sw-nav{position:absolute;top:60px;bottom:116px;width:35%;z-index:8;cursor:pointer}
+.sw-bottom{position:absolute;left:0;right:0;bottom:0;padding:10px 12px calc(12px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:8px;background:linear-gradient(transparent,rgba(0,0,0,.86) 28%);z-index:12}
+.sw-reply{flex:1;min-width:0;height:42px;border-radius:22px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.12);color:#fff;outline:none;padding:0 16px;font-size:14px;backdrop-filter:blur(8px)}
+.sw-reply::placeholder{color:rgba(255,255,255,.68)}
+.sw-reply:focus{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.4)}
+.sw-action{width:42px;height:42px;border:0;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.12);color:#fff;position:relative;flex:0 0 auto;border:1px solid rgba(255,255,255,.18)}
+.sw-action.liked{color:#ff4d78;background:rgba(255,77,120,.16);border-color:rgba(255,77,120,.38)}
+.sw-action .count{position:absolute;right:-3px;top:-5px;min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:#fff;color:#111;font-size:10px;display:flex;align-items:center;justify-content:center;font-weight:700}
+.sw-viewer ~ .action-sheet,.sw-viewer ~ .action-sheet-backdrop{z-index:9910}
+.sw-viewers-sheet{max-height:62vh;overflow:auto;padding:4px 0 calc(8px + env(safe-area-inset-bottom,0px))}
+.sw-viewer-row{display:flex;align-items:center;gap:11px;padding:12px 18px;border-bottom:1px solid #f0f2f5}
+.sw-viewer-row:last-child{border-bottom:0}
+.sw-viewer-row .who{flex:1;min-width:0}
+.sw-viewer-row .who strong{display:block;font-size:14px}
+.sw-viewer-row .who small{display:block;color:var(--muted);margin-top:2px}
+.sw-viewer-row .heart-mini{color:#ff4d78;font-size:14px}
+.sw-replies-head{padding:10px 18px 6px;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.sw-reply-row{padding:9px 18px;border-bottom:1px solid #f0f2f5}
+.sw-reply-row strong{font-size:13px}
+.sw-reply-row .reply-text{font-size:13px;margin-top:3px;line-height:1.35}
+.sw-reply-row small{font-size:11px;color:var(--muted)}
+
 .sw-nav.left{left:0}
 .sw-nav.right{right:0}
 .sw-controls{position:absolute;bottom:0;left:0;right:0;padding:14px 20px 24px;display:flex;gap:14px;justify-content:center;background:linear-gradient(transparent,rgba(0,0,0,.7));z-index:9}
@@ -188,14 +220,14 @@ img{display:block;max-width:100%}
 .sw-ctrl-btn.danger{background:rgba(231,76,60,.85);border-color:transparent}
 
 /* ACTION SHEET */
-.action-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9700;background:#fff;border-radius:20px 20px 0 0;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));animation:slideUp .22s cubic-bezier(.2,.9,.3,1);box-shadow:0 -10px 40px rgba(0,0,0,.2)}
+.action-sheet{position:fixed;left:0;right:0;bottom:0;z-index:9910;background:#fff;border-radius:20px 20px 0 0;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));animation:slideUp .22s cubic-bezier(.2,.9,.3,1);box-shadow:0 -10px 40px rgba(0,0,0,.2)}
 .action-sheet.closing{animation:slideUp .2s ease reverse forwards}
 .action-sheet .handle{width:40px;height:4px;background:#ddd;border-radius:2px;margin:6px auto 8px}
 .action-sheet .as-title{padding:6px 20px 10px;font-size:13px;color:var(--muted);border-bottom:1px solid var(--line)}
 .action-sheet .as-btn{display:flex;align-items:center;gap:12px;padding:14px 20px;width:100%;border:0;background:transparent;font-size:15px;color:#333;text-align:left}
 .action-sheet .as-btn:hover{background:#f5f6f8}
 .action-sheet .as-btn.danger{color:var(--danger)}
-.action-sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9650;animation:fadeIn .2s ease}
+.action-sheet-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:9900;animation:fadeIn .2s ease}
 
 /* CARD & GENERAL */
 .card{background:#fff;border-radius:16px;margin:12px 16px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
@@ -227,6 +259,7 @@ img{display:block;max-width:100%}
 .modal-actions .btn{flex:1}
 .modal-card .avatar.xl{margin:0 auto 8px}
 .status-picker{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:14px 0}
+.status-picker-media-only{grid-template-columns:1fr 1fr}
 .picker-btn{flex-direction:column;padding:14px 8px;gap:6px;font-size:13px}
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:500;z-index:9500;box-shadow:0 8px 24px rgba(0,0,0,.3);max-width:90vw;animation:slideUp .2s ease;display:flex;align-items:center;gap:8px}
 #toast.hidden,.toast.hidden{display:none !important;pointer-events:none !important}
@@ -255,6 +288,9 @@ img{display:block;max-width:100%}
 <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
 <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
 <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0 1 4"/><path d="M20 5v6h-6"/></symbol>
+<symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.9c-2.1-2.2-5.5-2.1-7.6.1L12 6.3l-1.2-1.3C8.7 2.8 5.3 2.7 3.2 4.9.6 7.6 1 11.2 3.7 14l8.3 8 8.3-8c2.7-2.8 3.1-6.4.5-9.1Z"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
 <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
 <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></symbol>
@@ -269,7 +305,7 @@ img{display:block;max-width:100%}
 <div class="auth-card">
 <div class="brand">
 <div class="logo"><svg class="icon icon-lg"><use href="#i-chat"/></svg></div>
-<h1>Pretv Chat</h1>
+<h1>Pretvfx-Chat</h1>
 <p class="muted">Chat real-time. Ringan. Aman.</p>
 </div>
 <div class="tabs">
@@ -295,7 +331,7 @@ img{display:block;max-width:100%}
 <div id="app-screen" class="app-body hidden">
 
 <section id="view-chat" class="view active">
-<header class="topbar"><h1>Chat</h1></header>
+<header class="topbar"><h1>Pretvfx-Chat</h1></header>
 <div class="search">
 <svg class="icon icon-sm search-ico"><use href="#i-search"/></svg>
 <input id="search-input" type="text" placeholder="Cari pengguna atau chat" />
@@ -314,7 +350,7 @@ img{display:block;max-width:100%}
 <div id="conv-name" class="conv-name">—</div>
 <div id="conv-status" class="muted small">—</div>
 </div>
-<button id="conv-profile" class="icon-btn" aria-label="Info"><svg class="icon"><use href="#i-info"/></svg></button>
+<button id="conv-profile" class="icon-btn" aria-label="Refresh pesan" title="Refresh pesan"><svg id="conv-refresh-icon" class="icon"><use href="#i-refresh"/></svg></button>
 </header>
 <div id="messages" class="messages"></div>
 <button id="new-msg-indicator" class="new-msg hidden"><svg class="icon icon-sm"><use href="#i-arrow-down"/></svg><span>0</span> pesan baru</button>
@@ -324,7 +360,6 @@ img{display:block;max-width:100%}
 <textarea id="composer-input" rows="1" placeholder="Tulis pesan..."></textarea>
 <button id="send-btn" type="submit" class="send-btn" aria-label="Kirim"><svg class="icon"><use href="#i-send"/></svg></button>
 </form>
-<div id="upload-progress" class="upload-progress hidden"><svg class="icon icon-sm spin"><use href="#i-upload"/></svg> Mengunggah media...</div>
 </section>
 
 <section id="view-status" class="view">
@@ -403,10 +438,7 @@ img{display:block;max-width:100%}
 <div class="my-status-footer">
 <i class="fa-solid fa-lock"></i>Status Anda <b>terenkripsi secara end-to-end</b>. Status akan hilang setelah 24 jam.
 </div>
-<div class="my-status-fabs">
-<button class="fab fab-edit" id="ms-edit" aria-label="Tulis"><i class="fa-solid fa-pen"></i></button>
-<button class="fab fab-add" id="ms-add" aria-label="Tambah"><i class="fa-solid fa-camera"></i></button>
-</div>
+
 </div>
 
 <div id="modal-user" class="modal hidden">
@@ -683,15 +715,113 @@ const API = {
             return { success: true };
         }
 
-        // Increment view count (best-effort, requires `views` column in statuses table)
+        // Status social details: unique viewers, likes, and replies.
+        const statusDetailsMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)\/details$/);
+        if (statusDetailsMatch && method === 'GET') {
+            const stId = statusDetailsMatch[1];
+            const { data: views, error: vErr } = await sb.from('status_views').select('viewer_id, viewed_at').eq('status_id', stId).order('viewed_at', { ascending: false });
+            if (vErr) throw new Error(vErr.message);
+            const { data: likes, error: lErr } = await sb.from('status_likes').select('user_id, created_at').eq('status_id', stId);
+            if (lErr) throw new Error(lErr.message);
+            const { data: replies, error: rErr } = await sb.from('status_replies').select('user_id, content, created_at').eq('status_id', stId).order('created_at', { ascending: false }).limit(100);
+            if (rErr) throw new Error(rErr.message);
+            const userIds = [...new Set([...(views || []).map(x => x.viewer_id), ...(likes || []).map(x => x.user_id), ...(replies || []).map(x => x.user_id)])];
+            const users = {};
+            if (userIds.length) {
+                const { data: us, error: uErr } = await sb.from('chat_users').select('id, username, display_name, avatar_url').in('id', userIds);
+                if (uErr) throw new Error(uErr.message);
+                (us || []).forEach(u => { users[u.id] = publicUser(u); });
+            }
+            const likedIds = new Set((likes || []).map(x => String(x.user_id)));
+            return {
+                success: true,
+                views: (views || []).map(v => ({ ...v, user: users[v.viewer_id] || null, liked: likedIds.has(String(v.viewer_id)) })),
+                likes: (likes || []).map(l => ({ ...l, user: users[l.user_id] || null })),
+                replies: (replies || []).map(r => ({ ...r, user: users[r.user_id] || null })),
+                views_count: (views || []).length,
+                likes_count: (likes || []).length,
+                replies_count: (replies || []).length,
+                my_liked: likedIds.has(String(this.me().id))
+            };
+        }
+
+        const likeMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)\/like$/);
+        if (likeMatch && method === 'POST') {
+            const me = this.me();
+            const stId = likeMatch[1];
+            const { data: exists, error: e1 } = await sb.from('status_likes').select('user_id').eq('status_id', stId).eq('user_id', me.id).maybeSingle();
+            if (e1) throw new Error(e1.message);
+            let liked = false;
+            if (exists) {
+                const { error } = await sb.from('status_likes').delete().eq('status_id', stId).eq('user_id', me.id);
+                if (error) throw new Error(error.message);
+            } else {
+                const { error } = await sb.from('status_likes').insert([{ status_id: stId, user_id: me.id }]);
+                if (error) throw new Error(error.message);
+                liked = true;
+            }
+            const { count, error: cErr } = await sb.from('status_likes').select('*', { count: 'exact', head: true }).eq('status_id', stId);
+            if (cErr) throw new Error(cErr.message);
+            return { success: true, liked, likes_count: count || 0 };
+        }
+
+        const replyMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)\/reply$/);
+        if (replyMatch && method === 'POST') {
+            const me = this.me();
+            const stId = replyMatch[1];
+            const content = String(body.content || '').trim().slice(0, 500);
+            if (!content) throw new Error('Balasan tidak boleh kosong.');
+
+            const { data: st, error: stErr } = await sb.from('statuses').select('id, user_id, type, media_url').eq('id', stId).maybeSingle();
+            if (stErr || !st) throw new Error('Status tidak ditemukan.');
+            if (String(st.user_id) === String(me.id)) throw new Error('Pemilik status tidak dapat membalas status sendiri.');
+
+            const { data, error } = await sb.from('status_replies').insert([{ status_id: stId, user_id: me.id, content }]).select('user_id, content, created_at').single();
+            if (error) throw new Error(error.message);
+
+            // Status reply juga dikirim sebagai pesan chat biasa ke pemilik status.
+            const ownerId = st.user_id;
+            const { data: mineMembers } = await sb.from('conversation_members').select('conversation_id').eq('user_id', me.id);
+            const sharedIds = (mineMembers || []).map(x => x.conversation_id);
+            let convId = null;
+            if (sharedIds.length) {
+                const { data: shared } = await sb.from('conversation_members').select('conversation_id').eq('user_id', ownerId).in('conversation_id', sharedIds).limit(1);
+                convId = shared?.[0]?.conversation_id || null;
+            }
+            if (!convId) {
+                const { data: conv, error: cErr } = await sb.from('conversations').insert([{ last_sender_id: me.id }]).select('*').single();
+                if (cErr) throw new Error(cErr.message);
+                convId = conv.id;
+                const { error: mErr } = await sb.from('conversation_members').insert([{ conversation_id: convId, user_id: me.id }, { conversation_id: convId, user_id: ownerId }]);
+                if (mErr) throw new Error(mErr.message);
+            }
+            const { data: chatMsg, error: msgErr } = await sb.from('messages').insert([{
+                conversation_id: convId,
+                sender_id: me.id,
+                receiver_id: ownerId,
+                message_type: 'text',
+                content,
+                media_url: null
+            }]).select('*').single();
+            if (msgErr) throw new Error(msgErr.message);
+            await sb.from('conversations').update({ last_message_at: chatMsg.created_at, last_message_preview: content.slice(0, 80), last_sender_id: me.id }).eq('id', convId);
+
+            return { success: true, conversation_id: convId, message: chatMsg, reply: { ...data, user: publicUser(me) } };
+        }
+
+        // Increment view count and record exactly one viewer per status/user.
         const viewMatch = path.match(/^\/api\/chat\/statuses\/([^/]+)\/view$/);
         if (viewMatch && method === 'POST') {
+            const me = this.me();
             const stId = viewMatch[1];
+            if (String(me.id) !== String((await sb.from('statuses').select('user_id').eq('id', stId).maybeSingle()).data?.user_id)) {
+                const { error: upErr } = await sb.from('status_views').upsert({ status_id: stId, viewer_id: me.id, viewed_at: new Date().toISOString() }, { onConflict: 'status_id,viewer_id' });
+                if (upErr) throw new Error(upErr.message);
+            }
             try {
-                const { data: st } = await sb.from('statuses').select('views').eq('id', stId).maybeSingle();
-                const cur = (st && typeof st.views === 'number') ? st.views : 0;
-                await sb.from('statuses').update({ views: cur + 1 }).eq('id', stId);
-            } catch (_) { /* kolom views tidak ada — abaikan */ }
+                const { count } = await sb.from('status_views').select('*', { count: 'exact', head: true }).eq('status_id', stId);
+                await sb.from('statuses').update({ views: count || 0 }).eq('id', stId);
+            } catch (_) {}
             return { success: true };
         }
 
@@ -763,7 +893,7 @@ const API = {
         const res = await fetch(apiUrl, {
             method: 'PUT',
             headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' },
-            body: JSON.stringify({ message: `Pretv Chat media: ${repoPath}`, content, branch })
+            body: JSON.stringify({ message: `Pretvfx-Chat media: ${repoPath}`, content, branch })
         });
         const json = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error('GitHub upload gagal: ' + (json.message || res.status));
@@ -794,7 +924,7 @@ const API = {
         const delRes = await fetch(apiUrl, {
             method: 'DELETE',
             headers: { 'Accept': 'application/vnd.github+json', 'Authorization': `Bearer ${token}`, 'X-GitHub-Api-Version': '2022-11-28' },
-            body: JSON.stringify({ message: `Pretv Chat delete: ${filePath}`, sha: info.sha, branch: fileBranch })
+            body: JSON.stringify({ message: `Pretvfx-Chat delete: ${filePath}`, sha: info.sha, branch: fileBranch })
         });
         if (!delRes.ok) {
             const j = await delRes.json().catch(() => ({}));
@@ -836,6 +966,36 @@ function timeAgo(iso) {
 }
 function timeShort(iso) { if (!iso) return ''; return new Date(iso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }); }
 function escapeHtml(s) { return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+function openChatMediaViewer(url, type) {
+    if (!url) return;
+    const old = document.querySelector('.media-lightbox');
+    if (old) old.remove();
+    const box = document.createElement('div');
+    box.className = 'media-lightbox';
+    box.innerHTML = `<button class="media-lightbox-close" aria-label="Tutup"><svg class="icon"><use href="#i-close"/></svg></button>`;
+    const close = () => {
+        const v = box.querySelector('video');
+        if (v) { try { v.pause(); } catch (_) {} v.removeAttribute('src'); try { v.load(); } catch (_) {} }
+        box.remove();
+        document.removeEventListener('keydown', onKey);
+    };
+    const onKey = (e) => { if (e.key === 'Escape') close(); };
+    box.querySelector('.media-lightbox-close').onclick = close;
+    box.addEventListener('click', (e) => { if (e.target === box) close(); });
+    if (type === 'video') {
+        const v = document.createElement('video');
+        v.src = url; v.controls = true; v.playsInline = true; v.autoplay = true;
+        box.appendChild(v);
+        v.play().catch(() => {});
+    } else {
+        const img = document.createElement('img');
+        img.src = url; img.alt = 'Foto'; img.draggable = false;
+        box.appendChild(img);
+    }
+    document.body.appendChild(box);
+    document.addEventListener('keydown', onKey);
+}
 
 /* ============================================================
    WS MANAGER
@@ -1027,14 +1187,32 @@ const StatusViewer = (function () {
     let group = [];
     let idx = 0;
     let timer = null;
-    let duration = 5000;
     let paused = false;
+    let activeVideo = null;
+    let renderToken = 0;
+    let currentDetails = null;
+
 
     function init(s) { state = s; }
 
+    function stopActiveViewerMedia() {
+        if (activeVideo) {
+            try { activeVideo.pause(); } catch (_) {}
+            try { activeVideo.removeAttribute('src'); activeVideo.load(); } catch (_) {}
+            activeVideo = null;
+        }
+        if (overlay) {
+            overlay.querySelectorAll('video').forEach(v => {
+                try { v.pause(); } catch (_) {}
+            });
+        }
+    }
+
     function open(statuses, startIdx) {
         group = statuses.slice();
-        idx = startIdx || 0;
+        idx = Math.max(0, Math.min(Number(startIdx) || 0, Math.max(0, group.length - 1)));
+        paused = false;
+        renderToken++;
         if (overlay) overlay.remove();
         overlay = document.createElement('div');
         overlay.className = 'sw-viewer';
@@ -1046,8 +1224,8 @@ const StatusViewer = (function () {
                     <div class="name" id="sw-name">—</div>
                     <div class="time" id="sw-time">—</div>
                 </div>
-                <button class="sw-btn" id="sw-more"><svg class="icon"><use href="#i-more"/></svg></button>
-                <button class="sw-btn" id="sw-close"><svg class="icon"><use href="#i-close"/></svg></button>
+                <button class="sw-btn" id="sw-more" aria-label="Lainnya"><svg class="icon"><use href="#i-more"/></svg></button>
+                <button class="sw-btn" id="sw-close" aria-label="Tutup"><svg class="icon"><use href="#i-close"/></svg></button>
             </div>
             <div class="sw-content" id="sw-content"></div>
             <div class="sw-nav left" id="sw-prev"></div>
@@ -1055,7 +1233,8 @@ const StatusViewer = (function () {
             <div class="sw-controls hidden" id="sw-controls">
                 <button class="sw-ctrl-btn" id="sw-download"><svg class="icon icon-sm"><use href="#i-download"/></svg> Simpan</button>
                 <button class="sw-ctrl-btn danger" id="sw-delete"><svg class="icon icon-sm"><use href="#i-trash"/></svg> Hapus</button>
-            </div>`;
+            </div>
+            <div class="sw-bottom" id="sw-bottom"></div>`;
         document.body.appendChild(overlay);
 
         overlay.querySelector('#sw-progress').innerHTML = group.map((_, i) => `<div class="sw-bar" data-i="${i}"><div class="sw-bar-fill"></div></div>`).join('');
@@ -1063,19 +1242,21 @@ const StatusViewer = (function () {
         overlay.querySelector('#sw-next').onclick = next;
         overlay.querySelector('#sw-prev').onclick = prev;
         overlay.querySelector('#sw-more').onclick = () => overlay.querySelector('#sw-controls').classList.toggle('hidden');
+        renderBottomActions();
 
         const content = overlay.querySelector('#sw-content');
         const pause = () => {
             paused = true;
             overlay.classList.add('paused');
-            const vid = content.querySelector('video');
-            if (vid && !vid.paused) vid.pause();
+            if (activeVideo && !activeVideo.paused) activeVideo.pause();
         };
         const resume = () => {
             paused = false;
             overlay.classList.remove('paused');
-            const vid = content.querySelector('video');
-            if (vid && vid.paused) vid.play().catch(() => {});
+            if (activeVideo) {
+                try { activeVideo.muted = false; } catch (_) {}
+                activeVideo.play().catch(() => {});
+            }
         };
         content.addEventListener('pointerdown', pause);
         content.addEventListener('pointerup', resume);
@@ -1083,10 +1264,13 @@ const StatusViewer = (function () {
         content.addEventListener('pointerleave', resume);
 
         let startX = 0, startY = 0;
-        content.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }, { passive: true });
+        content.addEventListener('touchstart', (e) => {
+            if (e.touches[0]) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; }
+        }, { passive: true });
         content.addEventListener('touchend', (e) => {
-            const dx = (e.changedTouches[0].clientX - startX);
-            const dy = (e.changedTouches[0].clientY - startY);
+            if (!e.changedTouches[0]) return;
+            const dx = e.changedTouches[0].clientX - startX;
+            const dy = e.changedTouches[0].clientY - startY;
             if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy)) {
                 if (dx < 0) next(); else prev();
             }
@@ -1095,45 +1279,119 @@ const StatusViewer = (function () {
         render();
     }
 
+    function renderBottomActions() {
+        if (!overlay) return;
+        const s = group[idx];
+        const bottom = overlay.querySelector('#sw-bottom');
+        if (!bottom || !s) return;
+        const isOwner = !!(state.me && String(s.user_id) === String(state.me.id));
+        if (isOwner) {
+            bottom.innerHTML = `
+                <button class="sw-action owner-viewers" id="sw-viewers" aria-label="Yang melihat" title="Yang melihat">
+                    <svg class="icon"><use href="#i-eye"/></svg>
+                    <span class="count hidden" id="sw-viewer-count">0</span>
+                </button>`;
+            bottom.querySelector('#sw-viewers').onclick = () => openDetailsSheet();
+            return;
+        }
+        bottom.innerHTML = `
+            <input id="sw-reply" class="sw-reply" type="text" maxlength="500" placeholder="Balas status..." autocomplete="off" />
+            <button class="sw-action sw-send" id="sw-send" aria-label="Kirim balasan" title="Kirim balasan">
+                <svg class="icon"><use href="#i-send"/></svg>
+            </button>
+            <button class="sw-action" id="sw-like" aria-label="Suka" title="Suka">
+                <svg class="icon"><use href="#i-heart"/></svg>
+                <span class="count hidden" id="sw-like-count">0</span>
+            </button>`;
+        bottom.querySelector('#sw-send').onclick = () => submitReply();
+        bottom.querySelector('#sw-like').onclick = () => toggleLike();
+        bottom.querySelector('#sw-reply').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); submitReply(); }
+        });
+    }
+
+    function setProgressBars(videoPercent = null) {
+        if (!overlay) return;
+        const bars = [...overlay.querySelectorAll('.sw-bar')];
+        bars.forEach((b, i) => {
+            const fill = b.querySelector('.sw-bar-fill');
+            b.classList.remove('active', 'done');
+            b.style.removeProperty('--sw-dur');
+            fill.style.animation = 'none';
+            fill.style.width = i < idx ? '100%' : '0%';
+            if (i === idx) {
+                b.classList.add('active');
+                if (videoPercent != null) {
+                    fill.style.width = Math.max(0, Math.min(100, videoPercent)) + '%';
+                }
+            } else if (i < idx) {
+                b.classList.add('done');
+                fill.style.width = '100%';
+            }
+        });
+    }
+
     function render() {
         const s = group[idx];
         if (!s) return close();
+        const token = ++renderToken;
+        paused = false;
+        if (timer) { clearTimeout(timer); timer = null; }
+        stopActiveViewerMedia();
+
         const u = s.user || {};
         const av = overlay.querySelector('#sw-avatar');
         if (u.avatar_url) av.outerHTML = `<img id="sw-avatar" class="avatar" src="${u.avatar_url}" alt="" />`;
         else av.outerHTML = `<span id="sw-avatar" class="avatar">${initials(u.display_name || u.username)}</span>`;
         overlay.querySelector('#sw-name').textContent = (u.display_name || u.username) || '—';
-        overlay.querySelector('#sw-time').textContent = timeAgo(s.created_at);
+        overlay.querySelector('#sw-time').textContent = formatStatusDate(s.created_at);
+        loadDetails();
 
-        // Increment view count (best-effort, only for other people's statuses)
         if (s.user_id && state.me && s.user_id !== state.me.id && s.id && !s._counted) {
             s._counted = true;
-            API.post('/api/chat/statuses/' + s.id + '/view', {}).catch(() => {});
+            API.post('/api/chat/statuses/' + s.id + '/view', {})
+                .catch(() => {})
+                .finally(() => loadDetails());
         }
 
         const c = overlay.querySelector('#sw-content');
+        c.innerHTML = '';
         if (s.type === 'image' && s.media_url) {
-            c.innerHTML = `<img src="${s.media_url}" alt="" />`;
+            const img = document.createElement('img');
+            img.src = s.media_url;
+            img.alt = '';
+            img.draggable = false;
+            c.appendChild(img);
         } else if (s.type === 'video' && s.media_url) {
-            // Autoplay tanpa kontrol — muted dulu untuk bypass block, lalu coba unmute
-            c.innerHTML = `<video src="${s.media_url}" playsinline webkit-playsinline preload="auto" autoplay></video>`;
-            const vid = c.querySelector('video');
-            vid.muted = true;
+            const vid = document.createElement('video');
+            vid.src = s.media_url;
+            vid.playsInline = true;
+            vid.setAttribute('webkit-playsinline', '');
+            vid.preload = 'auto';
+            vid.autoplay = true;
+            vid.controls = false;
+            vid.muted = false;
+            vid.setAttribute('aria-label', 'Status video');
+            activeVideo = vid;
+            c.appendChild(vid);
+
             const tryPlay = () => {
-                vid.play().then(() => {
-                    // coba unmute setelah play berhasil
-                    try { vid.muted = false; } catch (_) {}
-                }).catch(() => {
+                if (token !== renderToken || activeVideo !== vid) return;
+                vid.muted = false;
+                vid.play().catch(() => {
+                    // Browser autoplay policy may block audio; keep exactly one video active.
                     vid.muted = true;
                     vid.play().catch(() => {});
                 });
             };
             if (vid.readyState >= 2) tryPlay();
             else vid.addEventListener('loadeddata', tryPlay, { once: true });
-            // Fallback kalau loadeddata tidak ke-fire
-            setTimeout(() => { if (vid.paused) tryPlay(); }, 600);
+            setTimeout(() => tryPlay(), 450);
         } else {
-            c.innerHTML = `<div class="sw-text">${escapeHtml(s.content || '')}</div>`;
+            const text = document.createElement('div');
+            text.className = 'sw-text';
+            text.textContent = s.content || '';
+            c.appendChild(text);
         }
         if (s.type !== 'text' && s.content) c.insertAdjacentHTML('beforeend', `<div class="sw-caption">${escapeHtml(s.content)}</div>`);
 
@@ -1152,67 +1410,174 @@ const StatusViewer = (function () {
                 group.splice(idx, 1);
                 if (!group.length) return close();
                 if (idx >= group.length) idx = group.length - 1;
-                if (state.currentView === 'status') StatusModule.loadStatuses();
                 render();
-            } catch (e) { showToast(e.message); }
+                if (state.currentView === 'status') StatusModule.loadStatuses();
+            } catch (e) { showToast(e.message || 'Gagal hapus status.'); }
         };
 
-        duration = s.type === 'video' ? 15000 : 5000;
         const bars = overlay.querySelectorAll('.sw-bar');
-        bars.forEach((b, i) => {
-            const fill = b.querySelector('.sw-bar-fill');
-            b.classList.remove('active', 'done');
-            b.style.removeProperty('--sw-dur');
-            fill.style.animation = 'none';
-            fill.style.width = '0';
-            void fill.offsetWidth;
-            if (i < idx) b.classList.add('done');
-            else if (i === idx) {
-                b.classList.add('active');
-                b.style.setProperty('--sw-dur', (duration / 1000) + 's');
-                fill.style.animation = '';
-            }
-        });
+        setProgressBars();
 
-        if (timer) { clearTimeout(timer); timer = null; }
         const vid = c.querySelector('video');
         if (vid && s.type === 'video') {
-            const fill = bars[idx].querySelector('.sw-bar-fill');
-            fill.style.animation = 'none';
-            const upd = () => {
-                if (paused) return;
-                if (!vid.duration || !isFinite(vid.duration)) return;
-                fill.style.width = Math.min(100, (vid.currentTime / vid.duration) * 100) + '%';
+            const fill = bars[idx]?.querySelector('.sw-bar-fill');
+            const update = () => {
+                if (token !== renderToken || activeVideo !== vid || !fill || !isFinite(vid.duration) || !vid.duration) return;
+                fill.style.width = Math.min(100, Math.max(0, (vid.currentTime / vid.duration) * 100)) + '%';
             };
-            vid.addEventListener('timeupdate', upd);
-            vid.addEventListener('loadedmetadata', upd);
-            vid.addEventListener('play', upd);
-            vid.onended = () => next();
+            vid.addEventListener('timeupdate', update);
+            vid.addEventListener('loadedmetadata', update);
+            vid.addEventListener('durationchange', update);
+            vid.addEventListener('play', update);
+            vid.addEventListener('ended', () => { if (token === renderToken) next(); }, { once: true });
         } else {
-            timer = setTimeout(() => next(), duration);
+            const duration = 5000;
+            const bar = bars[idx];
+            if (bar) {
+                bar.style.setProperty('--sw-dur', (duration / 1000) + 's');
+                const fill = bar.querySelector('.sw-bar-fill');
+                fill.style.animation = '';
+            }
+            timer = setTimeout(() => { if (token === renderToken) next(); }, duration);
         }
+    }
+
+    async function loadDetails() {
+        const s = group[idx];
+        if (!s?.id || !overlay) return;
+        currentDetails = null;
+        try {
+            const details = await API.get('/api/chat/statuses/' + s.id + '/details');
+            if (!overlay || group[idx]?.id !== s.id) return;
+            currentDetails = details;
+            s.views = details.views_count || 0;
+            const viewerCount = overlay.querySelector('#sw-viewer-count');
+            const likeCount = overlay.querySelector('#sw-like-count');
+            viewerCount.textContent = String(details.views_count || 0);
+            likeCount.textContent = String(details.likes_count || 0);
+            viewerCount.classList.toggle('hidden', !(details.views_count > 0));
+            likeCount.classList.toggle('hidden', !(details.likes_count > 0));
+            const viewerBtn = overlay.querySelector('#sw-viewers');
+            const likeBtn = overlay.querySelector('#sw-like');
+            if (viewerBtn) viewerBtn.title = `${details.views_count || 0} orang melihat`;
+            if (likeBtn) {
+                likeBtn.title = `${details.likes_count || 0} suka`;
+                likeBtn.classList.toggle('liked', !!details.my_liked);
+            }
+            // Owner is the one who needs the viewer list the most; the list is still available to everyone.
+            if (state.currentView === 'status') StatusModule.renderMyStatusPage?.();
+        } catch (e) {
+            currentDetails = null;
+            console.warn('[status details]', e.message || e);
+        }
+    }
+
+    async function toggleLike() {
+        const s = group[idx];
+        if (!s?.id || !overlay) return;
+        const btn = overlay.querySelector('#sw-like');
+        if (!btn) return;
+        btn.disabled = true;
+        try {
+            const result = await API.post('/api/chat/statuses/' + s.id + '/like', {});
+            btn.classList.toggle('liked', !!result.liked);
+            const count = overlay.querySelector('#sw-like-count');
+            count.textContent = String(result.likes_count || 0);
+            count.classList.toggle('hidden', !(result.likes_count > 0));
+            await loadDetails();
+        } catch (e) {
+            showToast(e.message || 'Gagal memberi suka.');
+        } finally { btn.disabled = false; }
+    }
+
+    async function submitReply() {
+        const s = group[idx];
+        const input = overlay?.querySelector('#sw-reply');
+        if (!s?.id || !input) return;
+        const content = input.value.trim();
+        if (!content) return;
+        input.disabled = true;
+        try {
+            await API.post('/api/chat/statuses/' + s.id + '/reply', { content });
+            input.value = '';
+            showToast('Balasan dikirim.', 1200);
+            await loadDetails();
+        } catch (e) {
+            showToast(e.message || 'Gagal mengirim balasan.');
+        } finally { input.disabled = false; input.focus(); }
+    }
+
+    function openDetailsSheet() {
+        const s = group[idx];
+        if (!s) return;
+        // Refresh from Supabase before opening so owner always sees the latest list.
+        loadDetails().finally(() => {
+            const d = currentDetails || { views: [], likes: [], replies: [], views_count: 0, likes_count: 0, replies_count: 0 };
+            const likeMap = new Map((d.likes || []).map(x => [String(x.user_id), x]));
+            const rows = (d.views || []).map(v => {
+                const u = v.user || {};
+                const like = likeMap.get(String(v.viewer_id));
+                const timeLine = `Dilihat ${formatStatusDate(v.viewed_at)}${like?.created_at ? ` · Disukai ${formatStatusDate(like.created_at)}` : ''}`;
+                return `<div class="sw-viewer-row">
+                    ${avatarHTML(u)}
+                    <div class="who"><strong>${escapeHtml(u.display_name || u.username || 'Pengguna')}</strong><small>${escapeHtml(timeLine)}</small></div>
+                    ${like ? '<i class="fa-solid fa-heart heart-mini" title="Menyukai"></i>' : ''}
+                </div>`;
+            }).join('');
+            const replies = (d.replies || []).map(r => {
+                const u = r.user || {};
+                return `<div class="sw-reply-row"><strong>${escapeHtml(u.display_name || u.username || 'Pengguna')}</strong><small> · ${formatStatusDate(r.created_at)}</small><div class="reply-text">${escapeHtml(r.content || '')}</div></div>`;
+            }).join('');
+            const backdrop = document.createElement('div');
+            backdrop.className = 'action-sheet-backdrop';
+            const sheet = document.createElement('div');
+            sheet.className = 'action-sheet';
+            sheet.innerHTML = `<div class="handle"></div>
+                <div class="as-title">${state.me?.id === s.user_id ? 'Yang melihat & interaksi' : 'Interaksi status'}</div>
+                <div class="sw-viewers-sheet">
+                    <div class="sw-replies-head">${d.views_count || 0} dilihat · ${d.likes_count || 0} suka · ${d.replies_count || 0} balasan</div>
+                    ${rows || '<div class="my-status-empty" style="padding:28px 18px"><i class="fa-regular fa-eye"></i><p>Belum ada yang melihat status ini.</p></div>'}
+                    ${replies ? '<div class="sw-replies-head">Balasan</div>' + replies : ''}
+                </div>`;
+            document.body.appendChild(backdrop);
+            document.body.appendChild(sheet);
+            const closeSheet = () => { sheet.classList.add('closing'); backdrop.style.animation='fadeOut .2s ease forwards'; setTimeout(()=>{sheet.remove();backdrop.remove();},210); };
+            backdrop.onclick = closeSheet;
+        });
+    }
+
+    function formatStatusDate(value) {
+        const d = new Date(value);
+        if (Number.isNaN(d.getTime())) return '—';
+        return d.toLocaleString('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' }).replace('.', ':');
     }
 
     function next() {
-        if (idx + 1 < group.length) { idx++; render(); }
-        else close();
+        if (!overlay) return;
+        if (idx + 1 < group.length) {
+            stopActiveViewerMedia();
+            idx++;
+            render();
+        } else close();
     }
+
     function prev() {
-        if (idx > 0) { idx--; render(); }
-        else {
-            const bar = overlay.querySelectorAll('.sw-bar')[idx];
-            if (bar) { const f = bar.querySelector('.sw-bar-fill'); f.style.animation = 'none'; f.style.width = '0'; void f.offsetWidth; f.style.animation = ''; }
-        }
+        if (!overlay) return;
+        stopActiveViewerMedia();
+        if (idx > 0) idx--;
+        render();
     }
 
     function close() {
+        renderToken++;
         if (timer) { clearTimeout(timer); timer = null; }
+        stopActiveViewerMedia();
         if (!overlay) return;
         const el = overlay;
         overlay = null;
         el.classList.add('closing');
         setTimeout(() => el.remove(), 220);
-        if (state.currentView === 'status') StatusModule.loadStatuses();
+        if (state && state.currentView === 'status') StatusModule.loadStatuses();
     }
 
     return { init, open, close };
@@ -1236,7 +1601,7 @@ const ChatModule = (function () {
         newMsgIndicator = document.getElementById('new-msg-indicator');
 
         document.getElementById('conv-back').addEventListener('click', closeConv);
-        document.getElementById('conv-profile').addEventListener('click', openOtherProfile);
+        document.getElementById('conv-profile').addEventListener('click', refreshConversation);
         document.getElementById('search-input').addEventListener('input', debounce(onSearch, 300));
         composer.addEventListener('submit', onSendText);
         input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSendText(e); } });
@@ -1248,8 +1613,11 @@ const ChatModule = (function () {
         msgsEl.addEventListener('click', (e) => {
             const msgEl = e.target.closest('.msg');
             if (!msgEl) return;
-            // Kalau lagi klik video player, biarkan
-            if (e.target.closest('video')) return;
+            const media = e.target.closest('.media-wrap img, .media-wrap video');
+            if (media && !msgEl.classList.contains('is-uploading')) {
+                const mediaMsg = state.messages.find(x => String(x.id) === String(msgEl.dataset.id));
+                if (mediaMsg?.media_url) { openChatMediaViewer(mediaMsg.media_url, mediaMsg.message_type); return; }
+            }
             if (!msgEl.classList.contains('me')) return;
             const id = msgEl.dataset.id;
             if (!id || String(id).startsWith('tmp-')) return;
@@ -1370,14 +1738,25 @@ const ChatModule = (function () {
         const me = m.sender_id === state.me.id;
         const cls = me ? 'me' : 'other';
         let inner = '';
-        if (m.message_type === 'image' && m.media_url) inner = `<div class="media-wrap"><img src="${m.media_url}" alt="" loading="lazy" /></div>`;
-        else if (m.message_type === 'video' && m.media_url) inner = `<video src="${m.media_url}" controls preload="metadata"></video>`;
+        const uploading = !!m.uploading;
+        if (m.message_type === 'image' && m.media_url) {
+            inner = `<div class="media-wrap ${uploading ? 'media-uploading' : ''}" data-media-type="image">` +
+                `<img src="${m.media_url}" alt="Foto" loading="lazy" />` +
+                (uploading ? `<div class="media-upload-status"><span class="media-upload-spinner"></span><span>Sedang mengirim...</span></div>` : '') +
+                `</div>`;
+        } else if (m.message_type === 'video' && m.media_url) {
+            inner = `<div class="media-wrap ${uploading ? 'media-uploading' : ''}" data-media-type="video">` +
+                `<video src="${m.media_url}" ${uploading ? 'muted' : 'controls'} playsinline preload="metadata"></video>` +
+                (uploading ? `<div class="media-upload-status"><span class="media-upload-spinner"></span><span>Sedang mengirim...</span></div>` : '') +
+                `</div>`;
+        }
         if (m.content) inner += `<div>${escapeHtml(m.content)}</div>`;
         let tick = '';
         if (me) tick = m.read_at
             ? `<span class="tick read" title="Dibaca"><svg class="icon"><use href="#i-check-check"/></svg></span>`
             : `<span class="tick sent" title="Terkirim"><svg class="icon"><use href="#i-check"/></svg></span>`;
-        return `<div class="msg ${cls}" data-id="${m.id}">${inner}<div class="meta"><span>${timeShort(m.created_at)}</span>${tick}</div></div>`;
+        const statusText = uploading ? `<span class="uploading-text">Mengirim...</span>` : '';
+        return `<div class="msg ${cls} ${uploading ? 'is-uploading' : ''}" data-id="${m.id}">${inner}<div class="meta"><span>${uploading ? '' : timeShort(m.created_at)}</span>${statusText}${tick}</div></div>`;
     }
 
     async function onSendText(e) {
@@ -1408,21 +1787,69 @@ const ChatModule = (function () {
         const file = e.target.files?.[0];
         if (!file || !state.currentConversation) return;
         fileInput.value = '';
-        const prog = document.getElementById('upload-progress');
-        prog.classList.remove('hidden');
+        if (!/^image\/(.+)|^video\/(.+)/i.test(file.type)) { showToast('File harus foto atau video.'); return; }
+        if (file.size > 20 * 1024 * 1024) { showToast('Media terlalu besar (maks 20 MB).'); return; }
+
+        const type = file.type.startsWith('video') ? 'video' : 'image';
+        const tempId = 'tmp-media-' + Date.now();
+        const tempUrl = URL.createObjectURL(file);
+        const optimistic = {
+            id: tempId,
+            conversation_id: state.currentConversation.id,
+            sender_id: state.me.id,
+            message_type: type,
+            media_url: tempUrl,
+            content: '',
+            created_at: new Date().toISOString(),
+            uploading: true
+        };
+        state.messages.push(optimistic);
+        msgsEl.insertAdjacentHTML('beforeend', renderMessage(optimistic));
+        scrollToBottom(true);
         sendBtn.disabled = true;
+
         try {
             const fd = new FormData();
             fd.append('file', file);
             const { url } = await API.upload('/api/chat/upload/chat', fd);
-            const type = file.type.startsWith('video') ? 'video' : 'image';
             const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, { message_type: type, media_url: url, content: '' });
-            state.messages.push(message);
-            msgsEl.insertAdjacentHTML('beforeend', renderMessage(message));
+            const at = state.messages.findIndex(m => m.id === tempId);
+            if (at >= 0) state.messages[at] = message;
+            URL.revokeObjectURL(tempUrl);
+            renderMessages();
             scrollToBottom(true);
             loadConversations();
-        } catch (e) { showToast(e.message || 'Gagal mengirim media.'); }
-        finally { prog.classList.add('hidden'); sendBtn.disabled = false; }
+        } catch (e) {
+            URL.revokeObjectURL(tempUrl);
+            const at = state.messages.findIndex(m => m.id === tempId);
+            if (at >= 0) state.messages.splice(at, 1);
+            renderMessages();
+            showToast(e.message || 'Gagal mengirim media.');
+        } finally {
+            sendBtn.disabled = false;
+        }
+    }
+
+    async function refreshConversation() {
+        if (!state.currentConversation) return;
+        const btn = document.getElementById('conv-profile');
+        const icon = document.getElementById('conv-refresh-icon');
+        if (btn) btn.disabled = true;
+        if (icon) icon.classList.add('spin');
+        try {
+            const { data } = await API.get(`/api/chat/conversations/${state.currentConversation.id}/messages?limit=100`);
+            const wasNearBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight < 120;
+            state.messages = data || [];
+            renderMessages();
+            if (wasNearBottom) scrollToBottom(false);
+            await loadConversations();
+            showToast('Pesan diperbarui.', 1200);
+        } catch (e) {
+            showToast(e.message || 'Gagal refresh pesan.');
+        } finally {
+            if (icon) icon.classList.remove('spin');
+            if (btn) btn.disabled = false;
+        }
     }
 
     function onNewMessage(m) {
@@ -1505,7 +1932,7 @@ const ChatModule = (function () {
     function openOtherProfile() { if (!state.currentOtherUser) return; openUserModal(state.currentOtherUser.username); }
     function scrollToBottom(smooth) { msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }); }
 
-    return { init, loadConversations, onNewMessage, onMessageDelete, onMessageRead, onTyping, onPresenceUpdate, openStatusPicker: () => StatusModule.openStatusPicker() };
+    return { init, loadConversations, onNewMessage, onMessageDelete, onMessageRead, onTyping, onPresenceUpdate, refreshConversation, openStatusPicker: () => StatusModule.openStatusPicker() };
 })();
 
 /* ============================================================
@@ -1523,10 +1950,7 @@ const StatusModule = (function () {
         // Tombol back halaman My Status
         const msBack = document.getElementById('ms-back');
         if (msBack) msBack.addEventListener('click', () => closeMyStatusPage());
-        const msEdit = document.getElementById('ms-edit');
-        if (msEdit) msEdit.addEventListener('click', () => openTextComposer());
-        const msAdd = document.getElementById('ms-add');
-        if (msAdd) msAdd.addEventListener('click', () => openStatusPicker('my-status'));
+        // Upload status dilakukan dari tombol + pada kartu Status saya, seperti WhatsApp.
     }
 
     async function loadStatuses() {
@@ -1571,7 +1995,7 @@ const StatusModule = (function () {
             <div class="status-tile ${myLatest ? 'mine' : 'mine-new'}" data-uid="__me__" id="my-status-tile">
                 <div class="tile-bg">${myPreview}</div>
                 <div class="tile-gradient"></div>
-                <div class="tile-avatar">${myAvatarHTML}<span class="tile-plus"><i class="fa-solid fa-plus"></i></span></div>
+                <div class="tile-avatar">${myAvatarHTML}<span class="tile-plus" id="my-status-plus" role="button" aria-label="Tambah status"><i class="fa-solid fa-plus"></i></span></div>
                 ${myLatest ? `<div class="tile-time">${timeAgo(myLatest.created_at)}</div>` : ''}
                 <div class="tile-name">Status saya</div>
             </div>
@@ -1594,6 +2018,12 @@ const StatusModule = (function () {
         }).join('');
 
         box.innerHTML = html;
+
+        const addMine = box.querySelector('#my-status-plus');
+        if (addMine) addMine.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openStatusPicker('status', true);
+        });
 
         box.querySelectorAll('.status-tile').forEach(el => {
             el.addEventListener('click', () => {
@@ -1631,7 +2061,7 @@ const StatusModule = (function () {
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
         if (!mine.length) {
-            listEl.innerHTML = `<div class="my-status-empty"><i class="fa-regular fa-clock"></i><p class="muted">Belum ada status. Ketuk tombol kamera untuk menambahkan.</p></div>`;
+            listEl.innerHTML = `<div class="my-status-empty"><i class="fa-regular fa-clock"></i><p class="muted">Belum ada status.</p></div>`;
             return;
         }
 
@@ -1721,16 +2151,16 @@ const StatusModule = (function () {
     }
 
     /* ---------- PICKER & COMPOSER ---------- */
-    function openStatusPicker(target) {
+    function openStatusPicker(target, mediaOnly = false) {
         pickerTarget = target || 'status';
         const modal = document.createElement('div');
         modal.className = 'modal';
         modal.innerHTML = `
-            <div class="modal-card">
-                <h3>Status baru</h3>
-                <p class="muted small">Pilih tipe status</p>
-                <div class="status-picker">
-                    <button class="btn picker-btn" data-type="text"><svg class="icon icon-sm"><use href="#i-chat"/></svg> Teks</button>
+            <div class="modal-card status-picker-card">
+                <h3>${mediaOnly ? 'Tambah status' : 'Status baru'}</h3>
+                <p class="muted small">${mediaOnly ? 'Pilih foto atau video' : 'Pilih tipe status'}</p>
+                <div class="status-picker ${mediaOnly ? 'status-picker-media-only' : ''}">
+                    ${mediaOnly ? '' : `<button class="btn picker-btn" data-type="text"><svg class="icon icon-sm"><use href="#i-chat"/></svg> Teks</button>`}
                     <button class="btn picker-btn" data-type="image"><svg class="icon icon-sm"><use href="#i-image"/></svg> Foto</button>
                     <button class="btn picker-btn" data-type="video"><svg class="icon icon-sm"><use href="#i-video"/></svg> Video</button>
                 </div>
@@ -1791,17 +2221,16 @@ const StatusModule = (function () {
             const f = inp.files && inp.files[0];
             if (!f) return;
             if (f.size > 20 * 1024 * 1024) { showToast('File terlalu besar. Maksimal 20 MB.'); return; }
-            const prog = showUploadToast('Mengunggah status...');
+            showToast('Mengunggah status...');
             try {
                 const fd = new FormData();
                 fd.append('file', f);
                 const { url } = await API.upload('/api/chat/upload/status', fd);
                 await API.post('/api/chat/statuses', { type, media_url: url });
-                prog.remove();
                 await loadStatuses();
                 if (pickerTarget === 'my-status') renderMyStatusPage();
                 showToast('Status diposting.');
-            } catch (err) { prog.remove(); showToast(err.message || 'Gagal upload.'); }
+            } catch (err) { showToast(err.message || 'Gagal upload.'); }
         };
         inp.click();
     }
