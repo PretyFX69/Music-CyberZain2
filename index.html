@@ -1,95 +1,2162 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contoh Pemisahan File</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<meta name="theme-color" content="#ffffff" />
+<title>Pretv Chat</title>
 
-    <!-- Hubungkan CSS -->
-    <link rel="stylesheet" href="style.css">
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: #f5f6f8;
+    color: #111;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+}
+button { font-family: inherit; cursor: pointer; }
+input, textarea { font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+:root {
+    --primary: #2f7cff;
+    --primary-dark: #1d5fd8;
+    --danger: #e74c3c;
+    --line: #e3e6ea;
+    --muted: #7a8087;
+    --bg: #ffffff;
+    --bg-soft: #f5f6f8;
+    --bubble-me: #2f7cff;
+    --bubble-other: #ffffff;
+    --text-me: #ffffff;
+    --text-other: #111;
+}
+
+.hidden { display: none !important; }
+.muted { color: var(--muted); }
+.small { font-size: 12px; }
+.strong { font-weight: 600; }
+
+/* ============================================================
+   ICON
+   ============================================================ */
+.icon {
+    width: 20px; height: 20px;
+    fill: none; stroke: currentColor;
+    stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round;
+    flex: 0 0 auto;
+    pointer-events: none;
+}
+.icon-sm { width: 16px; height: 16px; }
+.icon-lg { width: 32px; height: 32px; }
+
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   AVATAR
+   ============================================================ */
+.avatar {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: #dbe7ff; color: #1d5fd8;
+    font-weight: 600; font-size: 14px;
+    object-fit: cover; overflow: hidden;
+    flex: 0 0 auto;
+}
+.avatar.sm { width: 34px; height: 34px; font-size: 12px; }
+.avatar.xl { width: 110px; height: 110px; font-size: 34px; border: 3px solid #fff; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+
+/* ============================================================
+   AUTH SCREEN
+   ============================================================ */
+.auth-body {
+    min-height: 100dvh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px 18px;
+    background: linear-gradient(135deg, #eef3ff 0%, #f8f9fc 100%);
+}
+.auth-card {
+    width: 100%; max-width: 420px;
+    background: #fff;
+    border-radius: 22px;
+    padding: 28px 22px;
+    box-shadow: 0 20px 60px rgba(31, 60, 120, .10);
+}
+.brand { text-align: center; margin-bottom: 22px; }
+.brand .logo {
+    width: 64px; height: 64px; margin: 0 auto 12px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, var(--primary), #6aa8ff);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 10px 30px rgba(47,124,255,.35);
+}
+.brand h1 { margin: 0 0 4px; font-size: 22px; font-weight: 700; }
+.brand p { margin: 0; }
+
+.tabs {
+    display: flex; gap: 6px; padding: 4px;
+    background: #f1f3f6; border-radius: 12px;
+    margin-bottom: 18px;
+}
+.tab {
+    flex: 1; padding: 10px; border: 0; border-radius: 9px;
+    background: transparent; color: var(--muted);
+    font-weight: 600; font-size: 14px;
+    transition: all .18s ease;
+}
+.tab.active { background: #fff; color: #111; box-shadow: 0 2px 8px rgba(0,0,0,.06); }
+
+.form { display: flex; flex-direction: column; gap: 14px; }
+.form label {
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 13px; font-weight: 500; color: #333;
+}
+.input-wrap {
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 0 12px; background: #fff;
+    transition: border-color .15s;
+}
+.input-wrap:focus-within { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47,124,255,.12); }
+.input-wrap .icon { color: var(--muted); }
+.input-wrap input {
+    flex: 1; border: 0; outline: 0; background: transparent;
+    padding: 12px 0; font-size: 15px; color: #111;
+}
+.error { color: var(--danger); font-size: 13px; margin: 0; min-height: 16px; }
+
+.btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 16px; border: 1px solid var(--line);
+    border-radius: 12px; background: #fff; color: #333;
+    font-size: 14px; font-weight: 600;
+    transition: transform .05s ease, background .15s;
+}
+.btn:active { transform: scale(.98); }
+.btn.primary { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn.primary:hover { background: var(--primary-dark); }
+.btn.danger { background: #fdecea; color: var(--danger); border-color: #f7c8c0; }
+.btn:disabled { opacity: .6; cursor: not-allowed; }
+
+/* ============================================================
+   APP SCREEN
+   ============================================================ */
+.app-body {
+    height: 100dvh; display: flex; flex-direction: column;
+    background: var(--bg-soft); overflow: hidden;
+}
+#app-screen { display: flex; flex-direction: column; height: 100dvh; }
+#app-screen.hidden { display: none !important; }
+
+.view { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+.view.active { display: flex; }
+
+.topbar {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; background: #fff;
+    border-bottom: 1px solid var(--line);
+    min-height: 56px;
+    position: sticky; top: 0; z-index: 5;
+}
+.topbar h1 { margin: 0; font-size: 20px; font-weight: 700; flex: 1; }
+
+.icon-btn {
+    width: 40px; height: 40px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; background: transparent; border-radius: 10px; color: #333;
+    transition: background .15s;
+    cursor: pointer;
+}
+.icon-btn:hover { background: #f0f2f5; }
+
+/* ============================================================
+   CHAT LIST
+   ============================================================ */
+.search {
+    display: flex; align-items: center; gap: 8px;
+    margin: 12px 16px; padding: 10px 14px;
+    background: #fff; border-radius: 12px;
+    border: 1px solid var(--line);
+}
+.search-ico { color: var(--muted); }
+.search input { flex: 1; border: 0; outline: 0; background: transparent; font-size: 15px; }
+
+.search-results {
+    margin: 0 16px 12px;
+    background: #fff; border-radius: 12px;
+    border: 1px solid var(--line);
+    overflow: hidden;
+}
+.sr-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; border-bottom: 1px solid #f0f2f5;
+    cursor: pointer;
+}
+.sr-item:last-child { border-bottom: 0; }
+.sr-item:hover { background: #f7f9fc; }
+
+.chat-list { flex: 1; overflow-y: auto; padding: 0 12px 100px; }
+.chat-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; border-radius: 14px;
+    background: #fff; margin-bottom: 8px;
+    cursor: pointer;
+    transition: background .15s;
+}
+.chat-item:hover { background: #f7f9fc; }
+.chat-item .body { flex: 1; min-width: 0; }
+.chat-item .row1 { display: flex; align-items: center; gap: 8px; margin-bottom: 3px; }
+.chat-item .name { font-weight: 600; font-size: 15px; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-item .time { font-size: 11px; color: var(--muted); flex: 0 0 auto; }
+.chat-item .preview {
+    font-size: 13px; color: var(--muted);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.badge {
+    background: var(--primary); color: #fff;
+    font-size: 11px; font-weight: 600;
+    padding: 2px 7px; border-radius: 999px;
+    margin-left: 6px;
+}
+
+.empty {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 8px; padding: 40px 20px; text-align: center;
+    color: var(--muted);
+}
+.empty p { margin: 0; }
+
+/* ============================================================
+   CONVERSATION
+   ============================================================ */
+.conv { background: #f5f6f8; }
+.conv-top { gap: 10px; }
+.conv-meta { flex: 1; min-width: 0; }
+.conv-name { font-weight: 600; font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conv-status { margin-top: 1px; }
+
+.messages {
+    flex: 1; overflow-y: auto;
+    padding: 16px 12px 12px;
+    display: flex; flex-direction: column; gap: 6px;
+    background:
+        radial-gradient(circle at 20% 10%, #eef3ff 0%, transparent 40%),
+        radial-gradient(circle at 80% 90%, #fff3ec 0%, transparent 40%),
+        #f5f6f8;
+}
+.msg {
+    max-width: 78%;
+    padding: 9px 13px;
+    border-radius: 16px;
+    font-size: 15px; line-height: 1.35;
+    word-wrap: break-word; overflow-wrap: anywhere;
+    position: relative;
+    align-self: flex-start;
+    background: var(--bubble-other); color: var(--text-other);
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+}
+.msg.me {
+    align-self: flex-end;
+    background: var(--bubble-me); color: var(--text-me);
+    border-bottom-right-radius: 6px;
+}
+.msg.other { border-bottom-left-radius: 6px; }
+.msg .meta {
+    display: flex; align-items: center; justify-content: flex-end; gap: 4px;
+    font-size: 11px; opacity: .75;
+    margin-top: 3px;
+}
+.msg .tick { display: inline-flex; }
+.msg .tick .icon { width: 14px; height: 14px; }
+.msg .media-wrap { margin: -5px -5px 5px; border-radius: 12px; overflow: hidden; }
+.msg .media-wrap img { display: block; max-height: 320px; object-fit: cover; }
+.msg video { max-width: 260px; max-height: 320px; border-radius: 12px; margin: -3px -3px 4px; }
+
+.typing-bar {
+    padding: 6px 16px;
+    font-size: 12px; color: var(--muted); font-style: italic;
+    background: #f5f6f8;
+}
+.upload-progress {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; font-size: 13px; color: var(--primary);
+    background: #f5f6f8;
+}
+
+.new-msg {
+    position: absolute; bottom: 90px; right: 18px;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px; border: 0; border-radius: 999px;
+    background: var(--primary); color: #fff;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(47,124,255,.4);
+    z-index: 20;
+}
+
+.composer {
+    display: flex; align-items: flex-end; gap: 8px;
+    padding: 10px 12px;
+    background: #fff;
+    border-top: 1px solid var(--line);
+}
+.composer label.icon-btn {
+    width: 42px; height: 42px; flex: 0 0 auto;
+}
+.composer textarea {
+    flex: 1; resize: none;
+    border: 1px solid var(--line); border-radius: 22px;
+    padding: 10px 16px; font-size: 15px; line-height: 1.4;
+    outline: 0; max-height: 120px; min-height: 42px;
+    background: #f5f6f8;
+    transition: background .15s;
+}
+.composer textarea:focus { background: #fff; border-color: var(--primary); }
+.send-btn {
+    width: 42px; height: 42px; flex: 0 0 auto;
+    border: 0; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(47,124,255,.35);
+}
+.send-btn:hover { background: var(--primary-dark); }
+.send-btn:disabled { opacity: .5; }
+
+/* ============================================================
+   STATUS
+   ============================================================ */
+.card {
+    background: #fff; border-radius: 16px;
+    margin: 12px 16px; padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+.status-me-head {
+    display: flex; align-items: center; gap: 12px;
+}
+.status-me-head > div { flex: 1; }
+
+.status-list { flex: 1; overflow-y: auto; padding: 0 12px 100px; }
+.status-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px; border-radius: 14px;
+    background: #fff; margin-bottom: 8px;
+    cursor: pointer;
+}
+.status-item:hover { background: #f7f9fc; }
+.status-ring {
+    padding: 3px; border-radius: 50%;
+    background: linear-gradient(135deg, #2f7cff, #a86bff);
+    display: inline-flex;
+}
+.status-ring .avatar { border: 2px solid #fff; width: 46px; height: 46px; }
+.status-meta { flex: 1; min-width: 0; }
+
+/* ============================================================
+   PROFILE
+   ============================================================ */
+.profile-card { padding: 22px 18px; }
+.profile-head { display: flex; justify-content: center; margin-bottom: 20px; }
+.profile-avatar-wrap { position: relative; display: inline-block; }
+.avatar-edit {
+    position: absolute; right: 2px; bottom: 2px;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    border: 3px solid #fff; cursor: pointer;
+    box-shadow: 0 3px 10px rgba(47,124,255,.4);
+}
+.avatar-edit.uploading { opacity: .5; pointer-events: none; }
+.profile-fields { display: flex; flex-direction: column; gap: 14px; }
+.profile-fields label {
+    display: flex; flex-direction: column; gap: 6px;
+    font-size: 13px; font-weight: 500; color: #333;
+}
+.profile-fields input,
+.profile-fields textarea {
+    border: 1px solid var(--line); border-radius: 12px;
+    padding: 11px 14px; font-size: 15px; outline: 0;
+    background: #fff; resize: vertical;
+}
+.profile-fields input[readonly] { background: #f5f6f8; color: var(--muted); }
+.profile-fields input:focus,
+.profile-fields textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(47,124,255,.12); }
+.profile-card > .btn.danger { margin-top: 16px; width: 100%; }
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+.bottom-nav {
+    display: flex;
+    background: #fff;
+    border-top: 1px solid var(--line);
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+    position: sticky; bottom: 0; z-index: 10;
+}
+.nav-btn {
+    flex: 1; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 6px; border: 0; background: transparent;
+    color: var(--muted); font-size: 11px; font-weight: 500;
+}
+.nav-btn.active { color: var(--primary); }
+.nav-btn .icon { width: 22px; height: 22px; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal {
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,.5);
+    display: flex; align-items: center; justify-content: center;
+    padding: 20px;
+}
+.modal.hidden { display: none; }
+.modal-card {
+    background: #fff; border-radius: 18px;
+    padding: 22px; max-width: 360px; width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+.modal-card h3 { margin: 8px 0 4px; font-size: 18px; }
+.modal-card p { margin: 4px 0; }
+.modal-actions { display: flex; gap: 8px; margin-top: 16px; }
+.modal-actions .btn { flex: 1; }
+.modal-card .avatar.xl { margin: 0 auto 8px; }
+
+.status-modal { max-width: 480px; text-align: left; padding: 16px; }
+.status-viewer-head {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 12px;
+}
+.status-viewer-head > div { flex: 1; }
+#sv-content img { width: 100%; border-radius: 12px; max-height: 60vh; object-fit: contain; }
+#sv-content video { width: 100%; border-radius: 12px; max-height: 60vh; }
+.status-text { font-size: 16px; padding: 20px 8px; text-align: center; }
+
+.status-picker { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin: 14px 0; }
+.picker-btn { flex-direction: column; padding: 14px 8px; gap: 6px; font-size: 13px; }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: #111; color: #fff;
+    padding: 10px 18px; border-radius: 999px;
+    font-size: 13px; font-weight: 500;
+    z-index: 9500;
+    box-shadow: 0 8px 24px rgba(0,0,0,.3);
+    max-width: 90vw;
+}
+#toast.hidden,
+.toast.hidden {
+    display: none !important;
+    pointer-events: none !important;
+}
+
+/* ============================================================
+   FIX: cegah svg/icon nutup klik
+   ============================================================ */
+.icon, .icon svg, .icon use { pointer-events: none; }
+#pretv-logout-modal button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+</style>
 </head>
 <body>
-<div class="bg"></div>
 
-<header class="brand">🎧 CyberZain-MUSIC</header>
+<!-- ============================================================
+     SVG SPRITE
+     ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+        <symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></symbol>
+        <symbol id="i-status" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+        <symbol id="i-back" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></symbol>
+        <symbol id="i-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></symbol>
+        <symbol id="i-attach" viewBox="0 0 24 24"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></symbol>
+        <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></symbol>
+        <symbol id="i-camera" viewBox="0 0 24 24"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></symbol>
+        <symbol id="i-video" viewBox="0 0 24 24"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></symbol>
+        <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.4"/><circle cx="12" cy="5" r="1.4"/><circle cx="12" cy="19" r="1.4"/></symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></symbol>
+        <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></symbol>
+        <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+        <symbol id="i-check-check" viewBox="0 0 24 24"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></symbol>
+        <symbol id="i-plus" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></symbol>
+        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></symbol>
+        <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></symbol>
+        <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></symbol>
+    </defs>
+</svg>
 
-<div class="container">
-  <aside class="side">
-    <input type="text" id="searchSong" placeholder="Cari lagu atau artis..." oninput="filterSongs()" />
+<!-- ============================================================
+     AUTH SCREEN
+     ============================================================ -->
+<main id="auth-screen" class="auth-body">
+    <div class="auth-card">
+        <div class="brand">
+            <div class="logo">
+                <svg class="icon icon-lg"><use href="#i-chat"/></svg>
+            </div>
+            <h1>Pretv Chat</h1>
+            <p class="muted">Chat real-time. Ringan. Aman.</p>
+        </div>
 
-<select id="categorySelect">
-  <option value="">— Pilih Kategori —</option>
-  <option value="😝🤙🏻">Playlist Anda</option>
-  <option value="Lagu Terbaru">Lagu Terbaru</option>
-  <option value="Sedang Trend">Sedang Trend</option>
-</select>
-  <div class="player">   <!-- Tombol Titik Tiga -->
-<!-- Menu Utama -->
-<button id="menuBtn" class="menu-btn">⋮</button>
-<div id="menuPanel" class="menu-panel">
-    <div class="menu-item" id="downloadMusic">Download Music</div>
-    <div class="menu-item" id="speedControl">Kecepatan Music</div>
-    <div class="menu-item" id="qualityMenuBtn">Kualitas Audio ▸</div>
-    <div class="menu-item" id="sleepTimeBtn">Sleep Time ▸</div>
-        <div class="menu-item" id="equalizerBtn">Equalizer ▸</div>
-        <div class="menu-item" id="openWebsite">Ubah Tampilan</div>
-    <div class="menu-item" id="contactOwner">Hubungi Pemilik</div>
+        <div class="tabs">
+            <button class="tab active" data-tab="login">Masuk</button>
+            <button class="tab" data-tab="register">Daftar</button>
+        </div>
 
-    <!-- Submenu Kualitas Audio -->
-    <div id="qualitySubmenu" class="submenu">
-        <div class="submenu-item" data-quality="96">96 kbps</div>
-        <div class="submenu-item" data-quality="128">128 kbps</div>
-        <div class="submenu-item" data-quality="192">192 kbps</div>
-        <div class="submenu-item" data-quality="320">320 kbps</div>
+        <form id="login-form" class="form">
+            <label>Username
+                <span class="input-wrap">
+                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
+                    <input name="username" type="text" placeholder="@username" autocomplete="username" required />
+                </span>
+            </label>
+            <label>Password
+                <span class="input-wrap">
+                    <svg class="icon icon-sm"><use href="#i-lock"/></svg>
+                    <input name="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+                </span>
+            </label>
+            <button class="btn primary" type="submit">Masuk</button>
+            <p class="error" id="login-error"></p>
+        </form>
+
+        <form id="register-form" class="form hidden">
+            <label>Username
+                <span class="input-wrap">
+                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
+                    <input name="username" type="text" placeholder="@username" autocomplete="username" required />
+                </span>
+            </label>
+            <label>Nama tampilan
+                <span class="input-wrap">
+                    <svg class="icon icon-sm"><use href="#i-user"/></svg>
+                    <input name="display_name" type="text" placeholder="Nama kamu" />
+                </span>
+            </label>
+            <label>Password
+                <span class="input-wrap">
+                    <svg class="icon icon-sm"><use href="#i-lock"/></svg>
+                    <input name="password" type="password" placeholder="Min. 4 karakter" autocomplete="new-password" required />
+                </span>
+            </label>
+            <button class="btn primary" type="submit">Daftar</button>
+            <p class="error" id="register-error"></p>
+        </form>
     </div>
+</main>
 
-    <!-- Submenu Sleep Timer -->
-    <div id="sleepSubmenu" class="submenu">
-        <div class="submenu-item" data-time="5">5 menit</div>
-        <div class="submenu-item" data-time="10">10 menit</div>
-        <div class="submenu-item" data-time="15">15 menit</div>
-        <div class="submenu-item" data-time="30">30 menit</div>
-        <div class="submenu-item" data-time="60">1 jam</div>
-    </div>
+<!-- ============================================================
+     APP SCREEN
+     ============================================================ -->
+<div id="app-screen" class="app-body hidden">
 
-    <!-- Menu Equalizer -->
-    <div id="equalizerSubmenu" class="submenu">
-        <div class="submenu-item" data-eq="bass">Bass (sedang perbaikan)</div>
-        <div class="submenu-item" data-eq="treble">Treble (sedang perbaikan)</div>
-        <div class="submenu-item" data-eq="flat">Flat (sedang perbaikan)</div>
-    </div>
+    <!-- VIEW: CHAT LIST -->
+    <section id="view-chat" class="view active">
+        <header class="topbar"><h1>Chat</h1></header>
+        <div class="search">
+            <svg class="icon icon-sm search-ico"><use href="#i-search"/></svg>
+            <input id="search-input" type="text" placeholder="Cari pengguna atau chat" />
+        </div>
+        <div id="search-results" class="search-results hidden"></div>
+        <div id="chat-list" class="chat-list">
+            <div class="empty">
+                <svg class="icon icon-lg muted"><use href="#i-chat"/></svg>
+                <p>Belum ada percakapan.</p>
+                <p class="muted small">Cari pengguna untuk memulai chat.</p>
+            </div>
+        </div>
+    </section>
 
-    <!-- Menu Report -->
-    <div class="menu-item" id="reportBtn">Report Lagu</div>
+    <!-- VIEW: CONVERSATION -->
+    <section id="view-conv" class="view conv">
+        <header class="topbar conv-top">
+            <button id="conv-back" class="icon-btn" aria-label="Kembali">
+                <svg class="icon"><use href="#i-back"/></svg>
+            </button>
+            <span id="conv-avatar" class="avatar sm"></span>
+            <div class="conv-meta">
+                <div id="conv-name" class="conv-name">—</div>
+                <div id="conv-status" class="muted small">—</div>
+            </div>
+            <button id="conv-profile" class="icon-btn" aria-label="Info">
+                <svg class="icon"><use href="#i-info"/></svg>
+            </button>
+        </header>
+
+        <div id="messages" class="messages"></div>
+
+        <button id="new-msg-indicator" class="new-msg hidden">
+            <svg class="icon icon-sm"><use href="#i-arrow-down"/></svg>
+            <span>0</span> pesan baru
+        </button>
+
+        <div id="typing-bar" class="typing-bar hidden"></div>
+
+        <form id="composer" class="composer">
+            <label class="icon-btn" aria-label="Lampiran">
+                <svg class="icon"><use href="#i-attach"/></svg>
+                <input id="file-input" type="file" accept="image/*,video/*" hidden />
+            </label>
+            <textarea id="composer-input" rows="1" placeholder="Tulis pesan..."></textarea>
+            <button id="send-btn" type="submit" class="send-btn" aria-label="Kirim">
+                <svg class="icon"><use href="#i-send"/></svg>
+            </button>
+        </form>
+        <div id="upload-progress" class="upload-progress hidden">
+            <svg class="icon icon-sm spin"><use href="#i-upload"/></svg>
+            Mengunggah media...
+        </div>
+    </section>
+
+    <!-- VIEW: STATUS -->
+    <section id="view-status" class="view">
+        <header class="topbar"><h1>Status</h1></header>
+        <div class="status-me card">
+            <div class="status-me-head">
+                <span id="me-avatar-status" class="avatar"></span>
+                <div>
+                    <div class="strong">Status saya</div>
+                    <div id="my-status-count" class="muted small">Ketuk untuk menambahkan</div>
+                </div>
+                <button id="add-status" class="icon-btn" aria-label="Tambah status">
+                    <svg class="icon"><use href="#i-plus"/></svg>
+                </button>
+            </div>
+        </div>
+        <div id="status-list" class="status-list">
+            <div class="empty">
+                <svg class="icon icon-lg muted"><use href="#i-status"/></svg>
+                <p class="muted">Belum ada status terbaru.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIEW: PROFILE -->
+    <section id="view-profile" class="view">
+        <header class="topbar"><h1>Profil</h1></header>
+        <div class="profile-card card">
+            <div class="profile-head">
+                <div class="profile-avatar-wrap">
+                    <span id="me-avatar" class="avatar xl"></span>
+                    <label class="avatar-edit" for="avatar-input" title="Ganti foto">
+                        <svg class="icon icon-sm"><use href="#i-camera"/></svg>
+                    </label>
+                    <input id="avatar-input" type="file" accept="image/*" hidden />
+                </div>
+            </div>
+            <div class="profile-fields">
+                <label>Nama tampilan
+                    <input id="field-display_name" type="text" />
+                </label>
+                <label>Username
+                    <input id="field-username" type="text" readonly />
+                </label>
+                <label>Tentang
+                    <textarea id="field-about" rows="3"></textarea>
+                </label>
+                <button id="save-profile" class="btn primary">
+                    <svg class="icon icon-sm"><use href="#i-check"/></svg>
+                    Simpan perubahan
+                </button>
+                <p id="profile-msg" class="muted small"></p>
+            </div>
+            <button id="logout-btn" class="btn danger">
+                <svg class="icon icon-sm"><use href="#i-logout"/></svg>
+                Logout
+            </button>
+        </div>
+    </section>
+
+    <!-- BOTTOM NAV -->
+    <nav class="bottom-nav" id="bottom-nav">
+        <button class="nav-btn active" data-view="chat">
+            <svg class="icon"><use href="#i-chat"/></svg>
+            <span>Chat</span>
+        </button>
+        <button class="nav-btn" data-view="status">
+            <svg class="icon"><use href="#i-status"/></svg>
+            <span>Status</span>
+        </button>
+        <button class="nav-btn" data-view="profile">
+            <svg class="icon"><use href="#i-user"/></svg>
+            <span>Profil</span>
+        </button>
+    </nav>
 </div>
-    <div class="cd-box">
-      <div id="cd" class="cd" style="background-image: url('https://raw.githubusercontent.com/NdikzDatabase/Database/main/Database/1762559143736-x3crbj.jpg')"></div>
-    </div>
-    <div class="visualizer" id="visualizer">
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-      <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
-    </div>
-    <div class="yt-info">
-<div class="title-wrap">
-  <h2 id="nowTitle" class="title-scroll">Tidak ada lagu diputar</h2>
-</div>
-      <p id="nowArtist">—</p>
-    </div>
-    <div class="yt-bar" id="seekBar"><div id="progress"></div></div>
-    <div class="time-row"><span id="current">0:00</span><span id="duration">0:00</span></div>
-    <div class="controls">
-      <button id="prevBtn" title="Previous">⏮</button>
-      <button id="playBtn" title="Play/Pause">▶</button>
-      <button id="nextBtn" title="Next">⏭</button>
-    </div>
-    <audio id="audioPlayer" preload="metadata"></audio>
-  </div>
 
-    <button class="btn" id="toggleLoop">Mode: Mengganti Music Selanjutnya</button>
-    <div class="playlist" id="playlistBox" aria-live="polite"></div>
-  </aside>
+<!-- MODAL: USER -->
+<div id="modal-user" class="modal hidden">
+    <div class="modal-card">
+        <span id="mu-avatar" class="avatar xl"></span>
+        <h3 id="mu-name">—</h3>
+        <p id="mu-username" class="muted">—</p>
+        <p id="mu-about" class="small">—</p>
+        <div class="modal-actions">
+            <button id="mu-close" class="btn">
+                <svg class="icon icon-sm"><use href="#i-close"/></svg> Tutup
+            </button>
+            <button id="mu-chat" class="btn primary">
+                <svg class="icon icon-sm"><use href="#i-chat"/></svg> Kirim pesan
+            </button>
+        </div>
+    </div>
 </div>
-    <script src="script.js"></script>
+
+<!-- MODAL: STATUS VIEWER -->
+<div id="modal-status" class="modal hidden">
+    <div class="modal-card status-modal">
+        <div class="status-viewer-head">
+            <span id="sv-avatar" class="avatar sm"></span>
+            <div>
+                <div id="sv-name" class="strong">—</div>
+                <div id="sv-time" class="muted small">—</div>
+            </div>
+            <button id="sv-close" class="icon-btn" aria-label="Tutup">
+                <svg class="icon"><use href="#i-close"/></svg>
+            </button>
+        </div>
+        <div id="sv-content"></div>
+    </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<!-- ============================================================
+     SCRIPTS
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   1. SUPABASE CLIENT
+   ============================================================ */
+const SUPABASE_URL = 'https://dyxhqsykaamhbgktjwkw.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_mavPX5DNtbxoRs8kGT3xfw_6Zsu8wns';
+
+let _sb = null;
+function initSupabase() {
+    if (_sb) return _sb;
+    if (typeof window.supabase === 'undefined') throw new Error('supabase-js belum dimuat');
+    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false }
+    });
+    return _sb;
+}
+
+/* ============================================================
+   2. API HYBRID (Supabase direct + GitHub upload)
+   ============================================================ */
+const TOKEN_KEY = 'pretv_token';
+
+const GITHUB = {
+    token: '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',
+    owner: 'danadiyaksanasif-afk',
+    repo: 'upload-gambar',
+    branch: 'main'
+};
+
+function publicUser(u) {
+    if (!u) return null;
+    return {
+        id: u.id,
+        username: u.username,
+        display_name: u.display_name,
+        avatar_url: u.avatar_url || null,
+        about: u.about || '',
+        online: !!u.online,
+        last_seen: u.last_seen,
+        created_at: u.created_at
+    };
+}
+
+async function sha256(text) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(text)));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function sessionUser() {
+    try { return JSON.parse(localStorage.getItem(TOKEN_KEY) || 'null'); }
+    catch { return null; }
+}
+
+const API = {
+    get token() { return localStorage.getItem(TOKEN_KEY); },
+    set token(v) { v ? localStorage.setItem(TOKEN_KEY, v) : localStorage.removeItem(TOKEN_KEY); },
+
+    async db() { return initSupabase(); },
+    me() {
+        const s = sessionUser();
+        if (!s?.id) throw new Error('Silakan login.');
+        return s;
+    },
+
+    async call(method, url, body, isForm = false) {
+        const path = String(url).split('?')[0];
+        const qs = new URLSearchParams(String(url).includes('?') ? String(url).split('?')[1] : '');
+        const sb = await this.db();
+
+        // ---- REGISTER ----
+        if (path === '/api/chat/register' && method === 'POST') {
+            const username = String(body.username || '').trim().replace(/^@/, '').toLowerCase();
+            const password = String(body.password || '');
+            const display_name = String(body.display_name || username).trim().slice(0, 60);
+            if (!username || !password) throw new Error('Username dan password wajib diisi.');
+            if (!/^[a-z0-9_.]{3,30}$/.test(username)) throw new Error('Username hanya huruf kecil, angka, titik, underscore (3–30).');
+            if (password.length < 4) throw new Error('Password minimal 4 karakter.');
+            const { data: exist, error: e1 } = await sb.from('chat_users').select('id').eq('username', username).maybeSingle();
+            if (e1) throw new Error(e1.message);
+            if (exist) throw new Error('Username sudah digunakan.');
+            const hash = await sha256(password);
+            const { data, error } = await sb.from('chat_users')
+                .insert([{ username, password_hash: hash, display_name }]).select('*').single();
+            if (error) throw new Error(error.message);
+            const user = publicUser(data);
+            this.token = JSON.stringify(user);
+            return { success: true, token: this.token, user };
+        }
+
+        // ---- LOGIN ----
+        if (path === '/api/chat/login' && method === 'POST') {
+            const username = String(body.username || '').trim().replace(/^@/, '').toLowerCase();
+            const password = String(body.password || '');
+            const { data, error } = await sb.from('chat_users').select('*').eq('username', username).maybeSingle();
+            if (error) throw new Error(error.message);
+            if (!data) throw new Error('Username atau password salah.');
+            const hash = await sha256(password);
+            if (data.password_hash !== hash) throw new Error('Username atau password salah.');
+            await sb.from('chat_users').update({ online: true, last_seen: new Date().toISOString() }).eq('id', data.id);
+            const user = publicUser(data);
+            this.token = JSON.stringify(user);
+            return { success: true, token: this.token, user };
+        }
+
+        // ---- ME ----
+        if (path === '/api/chat/me') {
+            const me = this.me();
+            const { data, error } = await sb.from('chat_users').select('*').eq('id', me.id).maybeSingle();
+            if (error || !data) throw new Error('Sesi tidak valid.');
+            const user = publicUser(data);
+            this.token = JSON.stringify(user);
+            return { success: true, user };
+        }
+
+        // ---- LOGOUT ----
+        if (path === '/api/chat/logout' && method === 'POST') {
+            try {
+                const me = this.me();
+                await sb.from('chat_users').update({ online: false, last_seen: new Date().toISOString() }).eq('id', me.id);
+            } catch (_) {}
+            this.token = null;
+            return { success: true };
+        }
+
+        // ---- SEARCH USERS ----
+        if (path === '/api/chat/users/search') {
+            const me = this.me();
+            const q = String(qs.get('q') || '').trim().toLowerCase().replace(/^@/, '');
+            if (!q) return { success: true, data: [] };
+            const { data, error } = await sb.from('chat_users')
+                .select('id, username, display_name, avatar_url, about, online, last_seen')
+                .or(`username.ilike.%${q}%,display_name.ilike.%${q}%`)
+                .neq('id', me.id).limit(20);
+            if (error) throw new Error(error.message);
+            return { success: true, data: (data || []).map(publicUser) };
+        }
+
+        // ---- GET USER BY USERNAME ----
+        if (path.startsWith('/api/chat/users/') && method === 'GET') {
+            const username = decodeURIComponent(path.split('/').pop()).replace(/^@/, '').toLowerCase();
+            const { data, error } = await sb.from('chat_users').select('*').eq('username', username).maybeSingle();
+            if (error || !data) throw new Error('User tidak ditemukan.');
+            return { success: true, user: publicUser(data) };
+        }
+
+        // ---- UPDATE PROFILE ----
+        if (path === '/api/chat/profile' && method === 'PUT') {
+            const me = this.me();
+            const patch = {};
+            if (typeof body.display_name === 'string') patch.display_name = body.display_name.trim().slice(0, 60);
+            if (typeof body.about === 'string') patch.about = body.about.trim().slice(0, 300);
+            const { data, error } = await sb.from('chat_users').update(patch).eq('id', me.id).select('*').single();
+            if (error) throw new Error(error.message);
+            const user = publicUser(data);
+            this.token = JSON.stringify(user);
+            return { success: true, user };
+        }
+
+        // ---- CONVERSATIONS ----
+        if (path === '/api/chat/conversations' && method === 'GET') {
+            return { success: true, data: await this._listConversations() };
+        }
+
+        if (path === '/api/chat/conversations' && method === 'POST') {
+            const me = this.me();
+            const otherId = String(body.user_id || '');
+            if (!otherId || otherId === me.id) throw new Error('User tidak valid.');
+            const { data: mine } = await sb.from('conversation_members').select('conversation_id').eq('user_id', me.id);
+            const ids = (mine || []).map(x => x.conversation_id);
+            if (ids.length) {
+                const { data: shared } = await sb.from('conversation_members')
+                    .select('conversation_id').eq('user_id', otherId).in('conversation_id', ids).limit(1);
+                if (shared?.length) return { success: true, conversation_id: shared[0].conversation_id, existed: true };
+            }
+            const { data: conv, error: cErr } = await sb.from('conversations')
+                .insert([{ last_sender_id: me.id }]).select('*').single();
+            if (cErr) throw new Error(cErr.message);
+            const { error: mErr } = await sb.from('conversation_members').insert([
+                { conversation_id: conv.id, user_id: me.id },
+                { conversation_id: conv.id, user_id: otherId }
+            ]);
+            if (mErr) throw new Error(mErr.message);
+            return { success: true, conversation_id: conv.id, existed: false };
+        }
+
+        // ---- MESSAGES ----
+        const msgMatch = path.match(/^\/api\/chat\/conversations\/([^/]+)\/messages$/);
+        if (msgMatch && method === 'GET') {
+            const convId = msgMatch[1];
+            const limit = Math.min(parseInt(qs.get('limit') || '40', 10) || 40, 100);
+            const { data, error } = await sb.from('messages').select('*')
+                .eq('conversation_id', convId).order('created_at', { ascending: false }).limit(limit);
+            if (error) throw new Error(error.message);
+            return { success: true, data: (data || []).reverse() };
+        }
+        if (msgMatch && method === 'POST') {
+            const me = this.me();
+            const convId = msgMatch[1];
+            const message_type = String(body.message_type || 'text').toLowerCase();
+            const content = String(body.content || '').trim();
+            const media_url = body.media_url || null;
+            const { data: others } = await sb.from('conversation_members')
+                .select('user_id').eq('conversation_id', convId).neq('user_id', me.id);
+            const receiver_id = others?.[0]?.user_id || null;
+            const { data: msg, error } = await sb.from('messages').insert([{
+                conversation_id: convId,
+                sender_id: me.id,
+                receiver_id,
+                message_type,
+                content: content || null,
+                media_url
+            }]).select('*').single();
+            if (error) throw new Error(error.message);
+            const preview = message_type === 'text' ? content.slice(0, 80)
+                : (message_type === 'image' ? '📷 Foto' : '🎬 Video');
+            await sb.from('conversations').update({
+                last_message_at: msg.created_at,
+                last_message_preview: preview,
+                last_sender_id: me.id
+            }).eq('id', convId);
+            return { success: true, message: msg };
+        }
+
+        // ---- MARK READ ----
+        if (path.match(/^\/api\/chat\/conversations\/[^/]+\/read$/) && method === 'POST') {
+            const me = this.me();
+            const convId = path.split('/')[4];
+            const now = new Date().toISOString();
+            await sb.from('messages').update({ read_at: now })
+                .eq('conversation_id', convId).eq('receiver_id', me.id).is('read_at', null);
+            return { success: true };
+        }
+
+        // ---- STATUS ----
+        if (path === '/api/chat/statuses' && method === 'GET') {
+            let r = await sb.from('statuses').select('*')
+                .gt('expires_at', new Date().toISOString())
+                .order('created_at', { ascending: false }).limit(80);
+            if (r.error) {
+                r = await sb.from('statuses').select('*')
+                    .order('created_at', { ascending: false }).limit(80);
+            }
+            if (r.error) throw new Error(r.error.message);
+            const data = r.data || [];
+            const ids = [...new Set(data.map(s => s.user_id))];
+            const users = {};
+            if (ids.length) {
+                const { data: us } = await sb.from('chat_users').select('*').in('id', ids);
+                (us || []).forEach(u => { users[u.id] = publicUser(u); });
+            }
+            return { success: true, data: data.map(s => ({ ...s, user: users[s.user_id] || null })) };
+        }
+        if (path === '/api/chat/statuses' && method === 'POST') {
+            const me = this.me();
+            const type = String(body.type || 'text').toLowerCase();
+            const content = String(body.content || '').trim();
+            const media_url = body.media_url || null;
+            const { data, error } = await sb.from('statuses').insert([{
+                user_id: me.id, type, content: content || null, media_url
+            }]).select('*').single();
+            if (error) throw new Error(error.message);
+            return { success: true, status: data };
+        }
+
+        // ---- UPLOAD (GitHub dari browser) ----
+        if (path.startsWith('/api/chat/upload') && isForm) {
+            const me = this.me();
+            const file = body.get ? (body.get('file') || body.get('image') || body.get('video')) : null;
+            if (!file) throw new Error('File tidak ditemukan.');
+            let folder = 'chat';
+            if (path.includes('avatar')) folder = 'avatars';
+            if (path.includes('status')) folder = 'statuses';
+            const url = await this._githubUpload(file, folder, me.username || me.id);
+            if (path.includes('avatar')) {
+                const { data, error } = await sb.from('chat_users').update({ avatar_url: url }).eq('id', me.id).select('*').single();
+                if (error) throw new Error(error.message);
+                const user = publicUser(data);
+                this.token = JSON.stringify(user);
+                return { success: true, avatar_url: url, user };
+            }
+            return { success: true, url };
+        }
+
+        throw new Error('Endpoint tidak didukung: ' + path);
+    },
+
+    async _listConversations() {
+        const me = this.me();
+        const sb = await this.db();
+        const { data: members, error } = await sb.from('conversation_members').select('conversation_id').eq('user_id', me.id);
+        if (error) throw new Error(error.message);
+        const ids = (members || []).map(m => m.conversation_id);
+        if (!ids.length) return [];
+        const { data: convs, error: cErr } = await sb.from('conversations').select('*').in('id', ids)
+            .order('last_message_at', { ascending: false });
+        if (cErr) throw new Error(cErr.message);
+        const { data: allMembers } = await sb.from('conversation_members')
+            .select('conversation_id, user_id').in('conversation_id', ids);
+        const otherIds = [...new Set((allMembers || []).filter(m => m.user_id !== me.id).map(m => m.user_id))];
+        const usersMap = {};
+        if (otherIds.length) {
+            const { data: users } = await sb.from('chat_users')
+                .select('id, username, display_name, avatar_url, online, last_seen').in('id', otherIds);
+            (users || []).forEach(u => { usersMap[u.id] = publicUser(u); });
+        }
+        const out = [];
+        for (const c of (convs || [])) {
+            const other = (allMembers || [])
+                .filter(m => m.conversation_id === c.id && m.user_id !== me.id)
+                .map(m => usersMap[m.user_id]).filter(Boolean)[0] || null;
+            out.push({
+                id: c.id,
+                last_message_at: c.last_message_at,
+                last_message_preview: c.last_message_preview || '',
+                last_sender_id: c.last_sender_id,
+                other_user: other,
+                unread_count: 0
+            });
+        }
+        return out;
+    },
+
+    async _githubUpload(file, folder, prefix) {
+        const name = String(file.name || 'file').replace(/[^a-zA-Z0-9._-]/g, '_');
+        const ext = (name.match(/\.([a-z0-9]{1,8})$/i) || [, 'bin'])[1].toLowerCase();
+        const repoPath = `${folder}/${prefix}_${Date.now()}_${Math.random().toString(16).slice(2, 10)}.${ext}`;
+        const buf = await file.arrayBuffer();
+        const bytes = new Uint8Array(buf);
+        let binary = '';
+        for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+        const content = btoa(binary);
+        const apiUrl = `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${repoPath.split('/').map(encodeURIComponent).join('/')}`;
+        const res = await fetch(apiUrl, {
+            method: 'PUT',
+            headers: {
+                'Accept': 'application/vnd.github+json',
+                'Authorization': `Bearer ${GITHUB.token}`,
+                'X-GitHub-Api-Version': '2022-11-28'
+            },
+            body: JSON.stringify({
+                message: `Pretv Chat media: ${repoPath}`,
+                content,
+                branch: GITHUB.branch
+            })
+        });
+        const json = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error('GitHub upload gagal: ' + (json.message || res.status));
+        return `https://raw.githubusercontent.com/${GITHUB.owner}/${GITHUB.repo}/${GITHUB.branch}/${repoPath.split('/').map(encodeURIComponent).join('/')}`;
+    },
+
+    get(url) { return this.call('GET', url); },
+    post(url, body) { return this.call('POST', url, body); },
+    put(url, body) { return this.call('PUT', url, body); },
+    del(url) { return this.call('DELETE', url); },
+    upload(url, formData) { return this.call('POST', url, formData, true); }
+};
+
+/* ============================================================
+   3. UTILITIES
+   ============================================================ */
+function showToast(msg, ms = 2500) {
+    const el = document.getElementById('toast');
+    if (!el) return alert(msg);
+    el.textContent = msg;
+    el.classList.remove('hidden');
+    clearTimeout(el._t);
+    el._t = setTimeout(() => el.classList.add('hidden'), ms);
+}
+function initials(name = '') {
+    return String(name || '?').trim().split(/\s+/).map(s => s[0]).slice(0, 2).join('').toUpperCase();
+}
+function avatarHTML(user) {
+    if (user?.avatar_url) return `<img class="avatar" src="${user.avatar_url}" alt="" loading="lazy" />`;
+    return `<span class="avatar">${initials(user?.display_name || user?.username)}</span>`;
+}
+function timeAgo(iso) {
+    if (!iso) return '';
+    const d = new Date(iso);
+    const diff = (Date.now() - d.getTime()) / 1000;
+    if (diff < 60) return 'baru saja';
+    if (diff < 3600) return `${Math.floor(diff / 60)} menit lalu`;
+    if (diff < 86400) return `${Math.floor(diff / 3600)} jam lalu`;
+    return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
+}
+function timeShort(iso) {
+    if (!iso) return '';
+    return new Date(iso).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+}
+function escapeHtml(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+/* ============================================================
+   4. WS MANAGER (Supabase Realtime)
+   ============================================================ */
+const WSManager = (function () {
+    let listeners = {};
+    let channel = null;
+
+    function emit(type, payload) {
+        (listeners[type] || []).forEach(fn => {
+            try { fn(payload); } catch (e) { console.error(e); }
+        });
+    }
+
+    function mapMsg(m) {
+        if (!m) return m;
+        return {
+            id: m.id,
+            conversation_id: m.conversation_id,
+            sender_id: m.sender_id,
+            receiver_id: m.receiver_id || null,
+            message_type: m.message_type || m.media_type || 'text',
+            content: m.content || m.body || '',
+            media_url: m.media_url || null,
+            created_at: m.created_at,
+            read_at: m.read_at || null
+        };
+    }
+
+    async function connect() {
+        try {
+            const sb = await initSupabase();
+            if (channel) { try { await sb.removeChannel(channel); } catch (_) {} channel = null; }
+
+            channel = sb.channel('pretv-public')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, (p) => {
+                    emit('message:new', { message: mapMsg(p.new) });
+                })
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages' }, (p) => {
+                    if (p.new && p.new.read_at) {
+                        emit('message:read', {
+                            conversation_id: p.new.conversation_id,
+                            reader_id: p.new.receiver_id,
+                            read_at: p.new.read_at
+                        });
+                    }
+                })
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'statuses' }, () => {
+                    emit('status:new', {});
+                })
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'chat_users' }, (p) => {
+                    if (p.new) emit('presence', { user_id: p.new.id, online: !!p.new.online, last_seen: p.new.last_seen });
+                })
+                .subscribe();
+        } catch (e) {
+            console.warn('[realtime]', e.message || e);
+        }
+    }
+
+    function on(type, fn) {
+        if (!listeners[type]) listeners[type] = [];
+        listeners[type].push(fn);
+    }
+    function send() { /* typing nanti */ }
+    function close() { channel = null; }
+
+    return { connect, on, send, close };
+})();
+
+/* ============================================================
+   5. AUTH MODULE
+   ============================================================ */
+const AuthModule = (function () {
+    function init() {
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        if (!loginForm) return;
+
+        // Kalau sudah login, langsung tampilkan app
+        if (API.token) {
+            API.get('/api/chat/me').then(() => showApp()).catch(() => { API.token = null; });
+        }
+
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t === tab));
+                const isLogin = tab.dataset.tab === 'login';
+                loginForm.classList.toggle('hidden', !isLogin);
+                registerForm.classList.toggle('hidden', isLogin);
+            });
+        });
+
+        const cleanUsername = u => String(u || '').trim().replace(/^@/, '').toLowerCase();
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = loginForm.querySelector('button');
+            const err = document.getElementById('login-error');
+            err.textContent = '';
+            btn.disabled = true;
+            const prev = btn.textContent;
+            btn.textContent = 'Memproses...';
+            try {
+                const fd = new FormData(loginForm);
+                const data = await API.post('/api/chat/login', {
+                    username: cleanUsername(fd.get('username')),
+                    password: fd.get('password')
+                });
+                API.token = data.token;
+                showApp();
+            } catch (e) {
+                err.textContent = e.message || 'Login gagal.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = prev;
+            }
+        });
+
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = registerForm.querySelector('button');
+            const err = document.getElementById('register-error');
+            err.textContent = '';
+            btn.disabled = true;
+            const prev = btn.textContent;
+            btn.textContent = 'Mendaftar...';
+            try {
+                const fd = new FormData(registerForm);
+                const data = await API.post('/api/chat/register', {
+                    username: cleanUsername(fd.get('username')),
+                    password: String(fd.get('password') || ''),
+                    display_name: String(fd.get('display_name') || '').trim().slice(0, 60)
+                });
+                API.token = data.token;
+                showApp();
+            } catch (e) {
+                err.textContent = e.message || 'Daftar gagal.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = prev;
+            }
+        });
+    }
+
+    function showApp() {
+        document.getElementById('auth-screen').classList.add('hidden');
+        document.getElementById('app-screen').classList.remove('hidden');
+        document.body.classList.remove('auth-body');
+        document.body.classList.add('app-body');
+        App.boot();
+    }
+
+    function showAuth() {
+        document.getElementById('auth-screen').classList.remove('hidden');
+        document.getElementById('app-screen').classList.add('hidden');
+        document.body.classList.add('auth-body');
+        document.body.classList.remove('app-body');
+    }
+
+    return { init, showApp, showAuth };
+})();
+
+/* ============================================================
+   6. CHAT MODULE
+   ============================================================ */
+const ChatModule = (function () {
+    let state, list, msgsEl, composer, input, fileInput, sendBtn, typingBar, newMsgIndicator;
+
+    function init(s) {
+        state = s;
+        list = document.getElementById('chat-list');
+        msgsEl = document.getElementById('messages');
+        composer = document.getElementById('composer');
+        input = document.getElementById('composer-input');
+        fileInput = document.getElementById('file-input');
+        sendBtn = document.getElementById('send-btn');
+        typingBar = document.getElementById('typing-bar');
+        newMsgIndicator = document.getElementById('new-msg-indicator');
+
+        document.getElementById('conv-back').addEventListener('click', closeConv);
+        document.getElementById('conv-profile').addEventListener('click', openOtherProfile);
+        document.getElementById('search-input').addEventListener('input', debounce(onSearch, 300));
+        composer.addEventListener('submit', onSendText);
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); onSendText(e); }
+        });
+        input.addEventListener('input', autoGrow);
+        fileInput.addEventListener('change', onSendMedia);
+        newMsgIndicator.addEventListener('click', () => {
+            scrollToBottom(true);
+            newMsgIndicator.classList.add('hidden');
+        });
+    }
+
+    function autoGrow() {
+        input.style.height = 'auto';
+        input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+    }
+
+    function debounce(fn, ms) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; }
+
+    async function loadConversations() {
+        try {
+            const { data } = await API.get('/api/chat/conversations');
+            state.chatList = data || [];
+            renderConversations();
+        } catch (e) { showToast(e.message); }
+    }
+
+    function renderConversations() {
+        if (!state.chatList.length) {
+            list.innerHTML = `<div class="empty"><p>Belum ada percakapan.</p><p class="muted small">Cari pengguna untuk memulai chat.</p></div>`;
+            return;
+        }
+        list.innerHTML = state.chatList.map(c => {
+            const u = c.other_user || {};
+            const badge = c.unread_count ? `<span class="badge">${c.unread_count}</span>` : '';
+            return `
+                <div class="chat-item" data-id="${c.id}">
+                    ${avatarHTML(u)}
+                    <div class="body">
+                        <div class="row1">
+                            <div class="name">${escapeHtml(u.display_name || u.username || '—')}${badge}</div>
+                            <div class="time">${c.last_message_at ? timeShort(c.last_message_at) : ''}</div>
+                        </div>
+                        <div class="preview">${escapeHtml(c.last_message_preview || 'Mulai percakapan')}</div>
+                    </div>
+                </div>`;
+        }).join('');
+        list.querySelectorAll('.chat-item').forEach(el => {
+            el.addEventListener('click', () => openConv(el.dataset.id));
+        });
+    }
+
+    async function openConv(convId) {
+        const conv = state.chatList.find(c => c.id === convId);
+        if (!conv) return;
+        state.currentConversation = { id: convId };
+        state.currentOtherUser = conv.other_user;
+
+        document.getElementById('conv-name').textContent = conv.other_user?.display_name || conv.other_user?.username || '—';
+        document.getElementById('conv-status').textContent = conv.other_user?.online ? 'online'
+            : (conv.other_user?.last_seen ? 'terakhir dilihat ' + timeAgo(conv.other_user.last_seen) : '');
+
+        const av = document.getElementById('conv-avatar');
+        const u = conv.other_user || {};
+        if (u.avatar_url) {
+            av.outerHTML = `<img id="conv-avatar" class="avatar sm" src="${u.avatar_url}" alt="" />`;
+        } else {
+            av.outerHTML = `<span id="conv-avatar" class="avatar sm">${initials(u.display_name || u.username)}</span>`;
+        }
+
+        document.getElementById('view-chat').classList.remove('active');
+        document.getElementById('view-conv').classList.add('active');
+        document.getElementById('bottom-nav').classList.add('hidden');
+
+        msgsEl.innerHTML = '';
+        try {
+            const { data } = await API.get(`/api/chat/conversations/${convId}/messages?limit=40`);
+            state.messages = data || [];
+            renderMessages();
+            scrollToBottom(false);
+            API.post(`/api/chat/conversations/${convId}/read`, {}).catch(() => {});
+            const c = state.chatList.find(x => x.id === convId);
+            if (c) { c.unread_count = 0; renderConversations(); }
+        } catch (e) { showToast(e.message); }
+    }
+
+    function closeConv() {
+        state.currentConversation = null;
+        state.currentOtherUser = null;
+        document.getElementById('view-conv').classList.remove('active');
+        document.getElementById('view-chat').classList.add('active');
+        document.getElementById('bottom-nav').classList.remove('hidden');
+        typingBar.classList.add('hidden');
+        loadConversations();
+    }
+
+    function renderMessages() {
+        msgsEl.innerHTML = state.messages.map(renderMessage).join('');
+    }
+
+    function renderMessage(m) {
+        const me = m.sender_id === state.me.id;
+        const cls = me ? 'me' : 'other';
+        let inner = '';
+
+        if (m.message_type === 'image' && m.media_url) {
+            inner = `<div class="media-wrap"><img src="${m.media_url}" alt="" loading="lazy" /></div>`;
+        } else if (m.message_type === 'video' && m.media_url) {
+            inner = `<video src="${m.media_url}" controls preload="metadata"></video>`;
+        }
+        if (m.content) inner += `<div>${escapeHtml(m.content)}</div>`;
+
+        let tick = '';
+        if (me) {
+            tick = m.read_at
+                ? `<span class="tick read" title="Dibaca"><svg class="icon"><use href="#i-check-check"/></svg></span>`
+                : `<span class="tick sent" title="Terkirim"><svg class="icon"><use href="#i-check"/></svg></span>`;
+        }
+
+        return `<div class="msg ${cls}" data-id="${m.id}">${inner}<div class="meta"><span>${timeShort(m.created_at)}</span>${tick}</div></div>`;
+    }
+
+    async function onSendText(e) {
+        if (e) e.preventDefault();
+        const text = input.value.trim();
+        if (!text || !state.currentConversation) return;
+
+        const tempId = 'tmp-' + Date.now();
+        const optimistic = {
+            id: tempId,
+            conversation_id: state.currentConversation.id,
+            sender_id: state.me.id,
+            message_type: 'text',
+            content: text,
+            created_at: new Date().toISOString()
+        };
+        state.messages.push(optimistic);
+        msgsEl.insertAdjacentHTML('beforeend', renderMessage(optimistic));
+        scrollToBottom(true);
+        input.value = ''; autoGrow();
+
+        try {
+            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, {
+                message_type: 'text', content: text
+            });
+            const idx = state.messages.findIndex(m => m.id === tempId);
+            if (idx >= 0) state.messages[idx] = message;
+            renderMessages(); scrollToBottom(true);
+            loadConversations();
+        } catch (e) {
+            showToast('Gagal mengirim pesan. Coba lagi.');
+            const idx = state.messages.findIndex(m => m.id === tempId);
+            if (idx >= 0) state.messages.splice(idx, 1);
+            renderMessages();
+        }
+    }
+
+    async function onSendMedia(e) {
+        const file = e.target.files?.[0];
+        if (!file || !state.currentConversation) return;
+        fileInput.value = '';
+
+        const prog = document.getElementById('upload-progress');
+        prog.classList.remove('hidden');
+        sendBtn.disabled = true;
+
+        try {
+            const fd = new FormData();
+            fd.append('file', file);
+            const { url } = await API.upload('/api/chat/upload/chat', fd);
+            const type = file.type.startsWith('video') ? 'video' : 'image';
+            const { message } = await API.post(`/api/chat/conversations/${state.currentConversation.id}/messages`, {
+                message_type: type, media_url: url, content: ''
+            });
+            state.messages.push(message);
+            msgsEl.insertAdjacentHTML('beforeend', renderMessage(message));
+            scrollToBottom(true);
+            loadConversations();
+        } catch (e) {
+            showToast('Gagal mengirim media. Coba lagi.');
+        } finally {
+            prog.classList.add('hidden');
+            sendBtn.disabled = false;
+        }
+    }
+
+    function onNewMessage(m) {
+        loadConversations();
+        if (!state.currentConversation || state.currentConversation.id !== m.conversation_id) return;
+        if (state.messages.find(x => x.id === m.id)) return;
+
+        state.messages.push(m);
+        msgsEl.insertAdjacentHTML('beforeend', renderMessage(m));
+        const nearBottom = msgsEl.scrollHeight - msgsEl.scrollTop - msgsEl.clientHeight < 120;
+        if (nearBottom) scrollToBottom(true);
+        else {
+            newMsgIndicator.querySelector('span').textContent = '1';
+            newMsgIndicator.classList.remove('hidden');
+        }
+        if (m.receiver_id === state.me.id) {
+            API.post(`/api/chat/conversations/${m.conversation_id}/read`, {}).catch(() => {});
+        }
+    }
+
+    function onMessageRead(data) {
+        if (!state.currentConversation || state.currentConversation.id !== data.conversation_id) return;
+        state.messages.forEach(m => { if (m.sender_id === state.me.id && !m.read_at) m.read_at = data.read_at; });
+        renderMessages();
+    }
+
+    function onTyping(data) {
+        if (!state.currentConversation || state.currentConversation.id !== data.conversation_id) return;
+        if (data.user_id === state.me.id) return;
+        typingBar.textContent = data.is_typing ? `${data.username} sedang mengetik...` : '';
+        typingBar.classList.toggle('hidden', !data.is_typing);
+    }
+
+    function onPresenceUpdate(data) {
+        if (state.currentOtherUser?.id === data.user_id) {
+            state.currentOtherUser.online = data.online;
+            state.currentOtherUser.last_seen = data.last_seen;
+            document.getElementById('conv-status').textContent = data.online ? 'online'
+                : ('terakhir dilihat ' + timeAgo(data.last_seen));
+        }
+    }
+
+    async function onSearch() {
+        const q = document.getElementById('search-input').value.trim();
+        const box = document.getElementById('search-results');
+        if (!q) { box.classList.add('hidden'); box.innerHTML = ''; return; }
+        try {
+            const { data } = await API.get('/api/chat/users/search?q=' + encodeURIComponent(q));
+            if (!data.length) {
+                box.innerHTML = `<div class="empty"><p class="muted small">Tidak ada hasil.</p></div>`;
+                box.classList.remove('hidden');
+                return;
+            }
+            box.innerHTML = data.map(u => `
+                <div class="sr-item" data-username="${u.username}">
+                    ${avatarHTML(u)}
+                    <div>
+                        <div class="strong">${escapeHtml(u.display_name)}</div>
+                        <div class="muted small">@${escapeHtml(u.username)}</div>
+                    </div>
+                </div>`).join('');
+            box.querySelectorAll('.sr-item').forEach(el => {
+                el.addEventListener('click', () => openUserModal(el.dataset.username));
+            });
+            box.classList.remove('hidden');
+        } catch (e) { showToast(e.message); }
+    }
+
+    async function openUserModal(username) {
+        try {
+            const { user } = await API.get('/api/chat/users/' + encodeURIComponent(username));
+            const modal = document.getElementById('modal-user');
+            document.getElementById('mu-name').textContent = user.display_name;
+            document.getElementById('mu-username').textContent = '@' + user.username;
+            document.getElementById('mu-about').textContent = user.about || 'Tidak ada bio.';
+            const av = document.getElementById('mu-avatar');
+            if (user.avatar_url) av.outerHTML = `<img id="mu-avatar" class="avatar xl" src="${user.avatar_url}" alt="" />`;
+            else av.outerHTML = `<span id="mu-avatar" class="avatar xl">${initials(user.display_name)}</span>`;
+
+            modal.classList.remove('hidden');
+            document.getElementById('mu-close').onclick = () => modal.classList.add('hidden');
+            document.getElementById('mu-chat').onclick = async () => {
+                try {
+                    const { conversation_id } = await API.post('/api/chat/conversations', { user_id: user.id });
+                    modal.classList.add('hidden');
+                    document.getElementById('search-input').value = '';
+                    document.getElementById('search-results').classList.add('hidden');
+                    await loadConversations();
+                    openConv(conversation_id);
+                } catch (e) { showToast(e.message); }
+            };
+        } catch (e) { showToast(e.message); }
+    }
+
+    function openOtherProfile() {
+        if (!state.currentOtherUser) return;
+        openUserModal(state.currentOtherUser.username);
+    }
+
+    function scrollToBottom(smooth) {
+        msgsEl.scrollTo({ top: msgsEl.scrollHeight, behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    return { init, loadConversations, onNewMessage, onMessageRead, onTyping, onPresenceUpdate };
+})();
+
+/* ============================================================
+   7. STATUS MODULE
+   ============================================================ */
+const StatusModule = (function () {
+    let state = null;
+
+    function init(s) {
+        state = s;
+        const addBtn = document.getElementById('add-status');
+        if (addBtn) addBtn.addEventListener('click', openStatusPicker);
+        const closeBtn = document.getElementById('sv-close');
+        if (closeBtn) closeBtn.addEventListener('click', () => {
+            document.getElementById('modal-status').classList.add('hidden');
+        });
+        const statusModal = document.getElementById('modal-status');
+        if (statusModal) statusModal.addEventListener('click', (e) => {
+            if (e.target === statusModal) statusModal.classList.add('hidden');
+        });
+    }
+
+    async function loadStatuses() {
+        try {
+            const { data } = await API.get('/api/chat/statuses');
+            state.statuses = data || [];
+            renderStatuses();
+        } catch (e) {
+            showToast(e.message || 'Gagal memuat status.');
+        }
+    }
+
+    function renderStatuses() {
+        const box = document.getElementById('status-list');
+        const countEl = document.getElementById('my-status-count');
+        if (!box) return;
+
+        const mine = state.statuses.filter(s => s.user_id === state.me.id);
+        if (countEl) {
+            countEl.textContent = mine.length ? `${mine.length} status aktif` : 'Ketuk untuk menambahkan';
+        }
+
+        const others = state.statuses.filter(s => s.user_id !== state.me.id);
+        if (!others.length) {
+            box.innerHTML = `<div class="empty"><svg class="icon icon-lg muted"><use href="#i-status"/></svg><p class="muted">Belum ada status terbaru.</p></div>`;
+            return;
+        }
+
+        const grouped = {};
+        others.forEach(s => {
+            const key = s.user_id;
+            if (!grouped[key] || new Date(s.created_at) > new Date(grouped[key].created_at)) {
+                grouped[key] = s;
+            }
+        });
+
+        box.innerHTML = Object.values(grouped).map(s => {
+            const u = s.user || {};
+            const name = escapeHtml(u.display_name || u.username || '—');
+            return `
+                <div class="status-item" data-id="${s.id}">
+                    <div class="status-ring">${avatarHTML(u)}</div>
+                    <div class="status-meta">
+                        <div class="strong">${name}</div>
+                        <div class="muted small">${timeAgo(s.created_at)}</div>
+                    </div>
+                </div>`;
+        }).join('');
+
+        box.querySelectorAll('.status-item').forEach(el => {
+            el.addEventListener('click', () => openStatus(el.dataset.id));
+        });
+    }
+
+    function openStatus(id) {
+        const s = state.statuses.find(x => x.id === id);
+        if (!s) return;
+        const modal = document.getElementById('modal-status');
+        if (!modal) return;
+
+        const av = document.getElementById('sv-avatar');
+        const u = s.user || {};
+        if (u.avatar_url) av.outerHTML = `<img id="sv-avatar" class="avatar sm" src="${u.avatar_url}" alt="" />`;
+        else av.outerHTML = `<span id="sv-avatar" class="avatar sm">${initials(u.display_name || u.username)}</span>`;
+
+        document.getElementById('sv-name').textContent = (u.display_name || u.username) || '—';
+        document.getElementById('sv-time').textContent = timeAgo(s.created_at);
+
+        const c = document.getElementById('sv-content');
+        if (s.type === 'image' && s.media_url) {
+            c.innerHTML = `<img src="${s.media_url}" alt="" />`;
+        } else if (s.type === 'video' && s.media_url) {
+            c.innerHTML = `<video src="${s.media_url}" controls autoplay playsinline></video>`;
+        } else {
+            c.innerHTML = `<div class="status-text">${escapeHtml(s.content || '')}</div>`;
+        }
+        modal.classList.remove('hidden');
+    }
+
+    function openStatusPicker() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <h3>Status baru</h3>
+                <p class="muted small">Pilih tipe status</p>
+                <div class="status-picker">
+                    <button class="btn picker-btn" data-type="text">
+                        <svg class="icon icon-sm"><use href="#i-chat"/></svg> Teks
+                    </button>
+                    <button class="btn picker-btn" data-type="image">
+                        <svg class="icon icon-sm"><use href="#i-image"/></svg> Foto
+                    </button>
+                    <button class="btn picker-btn" data-type="video">
+                        <svg class="icon icon-sm"><use href="#i-video"/></svg> Video
+                    </button>
+                </div>
+                <button class="btn" data-cancel style="width:100%;margin-top:4px">
+                    <svg class="icon icon-sm"><use href="#i-close"/></svg> Batal
+                </button>
+            </div>`;
+        document.body.appendChild(modal);
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal || e.target.closest('[data-cancel]')) { modal.remove(); return; }
+            const btn = e.target.closest('button[data-type]');
+            if (!btn) return;
+            const type = btn.dataset.type;
+            modal.remove();
+            if (type === 'text') openTextComposer();
+            else if (type === 'image') pickFileAndUpload('image/*', 'image');
+            else if (type === 'video') pickFileAndUpload('video/*', 'video');
+        });
+    }
+
+    function openTextComposer() {
+        const modal = document.createElement('div');
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <h3>Tulis status</h3>
+                <textarea id="status-text-input" rows="4"
+                    placeholder="Apa yang sedang kamu pikirkan?"
+                    style="width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:12px;font-size:15px;outline:none;resize:none;font-family:inherit;box-sizing:border-box"></textarea>
+                <div class="modal-actions">
+                    <button class="btn" data-cancel>
+                        <svg class="icon icon-sm"><use href="#i-close"/></svg> Batal
+                    </button>
+                    <button class="btn primary" data-submit>
+                        <svg class="icon icon-sm"><use href="#i-send"/></svg> Posting
+                    </button>
+                </div>
+            </div>`;
+        document.body.appendChild(modal);
+        const input = modal.querySelector('#status-text-input');
+        input.focus();
+
+        modal.addEventListener('click', async (e) => {
+            if (e.target === modal || e.target.closest('[data-cancel]')) { modal.remove(); return; }
+            if (e.target.closest('button[data-submit]')) {
+                const text = input.value.trim();
+                if (!text) return;
+                const btn = modal.querySelector('button[data-submit]');
+                btn.disabled = true;
+                try {
+                    await API.post('/api/chat/statuses', { type: 'text', content: text });
+                    modal.remove();
+                    loadStatuses();
+                    showToast('Status berhasil diposting.');
+                } catch (err) {
+                    showToast(err.message || 'Gagal memposting status.');
+                    btn.disabled = false;
+                }
+            }
+        });
+    }
+
+    function pickFileAndUpload(accept, type) {
+        const inp = document.createElement('input');
+        inp.type = 'file';
+        inp.accept = accept;
+        inp.onchange = async () => {
+            const f = inp.files && inp.files[0];
+            if (!f) return;
+            if (f.size > 50 * 1024 * 1024) {
+                showToast('File terlalu besar. Maksimal 50 MB.');
+                return;
+            }
+            const prog = showUploadToast('Mengunggah status...');
+            try {
+                const fd = new FormData();
+                fd.append('file', f);
+                const { url } = await API.upload('/api/chat/upload/status', fd);
+                await API.post('/api/chat/statuses', { type, media_url: url });
+                prog.remove();
+                loadStatuses();
+                showToast('Status berhasil diposting.');
+            } catch (err) {
+                prog.remove();
+                showToast(err.message || 'Gagal mengunggah status.');
+            }
+        };
+        inp.click();
+    }
+
+    function showUploadToast(text) {
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.innerHTML = `<svg class="icon icon-sm spin"><use href="#i-upload"/></svg> <span>${escapeHtml(text)}</span>`;
+        document.body.appendChild(el);
+        return el;
+    }
+
+    return { init, loadStatuses, openStatus };
+})();
+
+/* ============================================================
+   8. PROFILE MODULE
+   ============================================================ */
+const ProfileModule = (function () {
+    let state = null;
+    let bound = false;
+
+    function init(s) {
+        state = s;
+        const avatarInput = document.getElementById('avatar-input');
+        if (avatarInput) {
+            avatarInput.removeEventListener('change', uploadAvatar);
+            avatarInput.addEventListener('change', uploadAvatar);
+        }
+
+        if (bound) return;
+        bound = true;
+
+        document.addEventListener('click', (e) => {
+            const editLabel = e.target.closest('label.avatar-edit, label[for="avatar-input"]');
+            if (editLabel) {
+                e.preventDefault();
+                const inp = document.getElementById('avatar-input');
+                if (inp) inp.click();
+                return;
+            }
+            if (e.target.closest('#save-profile')) { e.preventDefault(); saveProfile(); return; }
+            if (e.target.closest('#logout-btn')) { e.preventDefault(); confirmLogout(); return; }
+
+            const overlay = e.target.closest('#pretv-logout-modal');
+            if (overlay) {
+                if (e.target.id === 'pretv-logout-modal') { overlay.remove(); return; }
+                if (e.target.closest('[data-cancel]')) { overlay.remove(); return; }
+                if (e.target.closest('[data-confirm]')) { overlay.remove(); doLogout(); return; }
+            }
+        });
+    }
+
+    async function loadProfile() {
+        let me = state.me;
+        try {
+            const res = await API.get('/api/chat/me');
+            if (res && res.user) {
+                me = res.user;
+                state.me = me;
+                try { localStorage.setItem('pretv_me', JSON.stringify(me)); } catch (_) {}
+            }
+        } catch (e) {
+            console.warn('[profile] load /me gagal:', e.message);
+            try {
+                const cached = JSON.parse(localStorage.getItem('pretv_me') || 'null');
+                if (cached) { me = cached; state.me = me; }
+            } catch (_) {}
+            if (!me) {
+                showToast('Sesi tidak valid. Silakan login ulang.');
+                setMsg('Gagal memuat profil: ' + (e.message || 'unknown'), true);
+                return;
+            }
+        }
+
+        const u = me || {};
+        renderAvatar('me-avatar', u.avatar_url, u.display_name || u.username, 'xl');
+        renderAvatar('me-avatar-status', u.avatar_url, u.display_name || u.username, '');
+
+        const nameF  = document.getElementById('field-display_name');
+        const userF  = document.getElementById('field-username');
+        const aboutF = document.getElementById('field-about');
+        if (nameF)  nameF.value  = u.display_name || u.username || '';
+        if (userF)  userF.value  = u.username ? ('@' + u.username) : '';
+        if (aboutF) aboutF.value = u.about || '';
+        setMsg('');
+    }
+
+    function renderAvatar(id, url, name, sizeClass) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const cls = ('avatar ' + (sizeClass || '')).trim();
+        const parent = el.parentNode;
+        if (!parent) return;
+
+        if (url) {
+            if (el.tagName === 'IMG') { el.src = url; el.className = cls; el.alt = ''; }
+            else {
+                const img = document.createElement('img');
+                img.id = id; img.className = cls; img.src = url; img.alt = '';
+                parent.replaceChild(img, el);
+            }
+        } else {
+            const initial = initials(name);
+            if (el.tagName === 'SPAN') { el.className = cls; el.textContent = initial; }
+            else {
+                const span = document.createElement('span');
+                span.id = id; span.className = cls; span.textContent = initial;
+                parent.replaceChild(span, el);
+            }
+        }
+    }
+
+    async function uploadAvatar(e) {
+        const f = e.target.files && e.target.files[0];
+        if (!f) return;
+        if (f.size > 5 * 1024 * 1024) {
+            setMsg('Foto terlalu besar. Maksimal 5 MB.', true);
+            showToast('Foto terlalu besar (maks 5 MB)');
+            e.target.value = '';
+            return;
+        }
+        if (!f.type.startsWith('image/')) {
+            setMsg('File harus berupa gambar.', true);
+            showToast('File harus berupa gambar');
+            e.target.value = '';
+            return;
+        }
+
+        setMsg('Mengunggah foto...', false);
+        const editLabel = document.querySelector('label.avatar-edit');
+        if (editLabel) editLabel.classList.add('uploading');
+
+        try {
+            const fd = new FormData();
+            fd.append('file', f);
+            const res = await API.upload('/api/chat/upload/avatar', fd);
+            if (res && res.user) {
+                state.me = res.user;
+                try { localStorage.setItem('pretv_me', JSON.stringify(res.user)); } catch (_) {}
+            } else if (res && res.avatar_url && state.me) {
+                state.me.avatar_url = res.avatar_url;
+                try { localStorage.setItem('pretv_me', JSON.stringify(state.me)); } catch (_) {}
+            }
+            await loadProfile();
+            setMsg('Foto profil berhasil diperbarui.');
+            showToast('Foto profil diperbarui');
+        } catch (err) {
+            console.error('[avatar]', err);
+            setMsg(err.message || 'Gagal mengunggah foto profil.', true);
+            showToast(err.message || 'Gagal upload foto');
+        } finally {
+            if (editLabel) editLabel.classList.remove('uploading');
+            e.target.value = '';
+        }
+    }
+
+    async function saveProfile() {
+        const nameF  = document.getElementById('field-display_name');
+        const aboutF = document.getElementById('field-about');
+        if (!nameF) return;
+
+        const display_name = String(nameF.value || '').trim();
+        const about = String(aboutF ? aboutF.value : '').trim();
+
+        if (!display_name) { setMsg('Nama tampilan tidak boleh kosong.', true); return; }
+        if (display_name.length > 60) { setMsg('Nama tampilan maksimal 60 karakter.', true); return; }
+        if (about.length > 300) { setMsg('Tentang maksimal 300 karakter.', true); return; }
+
+        const btn = document.getElementById('save-profile');
+        const original = btn ? btn.innerHTML : '';
+        if (btn) { btn.disabled = true; btn.innerHTML = 'Menyimpan...'; }
+        setMsg('Menyimpan perubahan...', false);
+
+        try {
+            const res = await API.put('/api/chat/profile', { display_name, about });
+            const user = res && res.user;
+            if (user) {
+                state.me = user;
+                try { localStorage.setItem('pretv_me', JSON.stringify(user)); } catch (_) {}
+            }
+            await loadProfile();
+            setMsg('Perubahan berhasil disimpan.');
+            showToast('Profil disimpan');
+        } catch (err) {
+            console.error('[profile save]', err);
+            setMsg(err.message || 'Gagal menyimpan perubahan.', true);
+            showToast(err.message || 'Gagal simpan profil');
+        } finally {
+            if (btn) { btn.disabled = false; btn.innerHTML = original || 'Simpan perubahan'; }
+        }
+    }
+
+    function confirmLogout() {
+        const existing = document.getElementById('pretv-logout-modal');
+        if (existing) existing.remove();
+
+        const overlay = document.createElement('div');
+        overlay.id = 'pretv-logout-modal';
+        overlay.style.cssText = [
+            'position:fixed', 'inset:0', 'z-index:99999',
+            'background:rgba(0,0,0,.5)',
+            'display:flex', 'align-items:center', 'justify-content:center',
+            'padding:20px', 'box-sizing:border-box'
+        ].join(';');
+
+        overlay.innerHTML = `
+            <div style="background:#fff;border-radius:16px;padding:20px;
+                        max-width:340px;width:100%;box-sizing:border-box;
+                        box-shadow:0 20px 60px rgba(0,0,0,.25);font-family:inherit;">
+                <h3 style="margin:0 0 8px;font-size:17px;font-weight:600;color:#111;">Keluar dari akun?</h3>
+                <p style="margin:0 0 18px;color:#666;font-size:14px;line-height:1.4;">
+                    Anda perlu login kembali untuk menggunakan chat.
+                </p>
+                <div style="display:flex;gap:8px;">
+                    <button type="button" data-cancel
+                        style="flex:1;padding:11px 14px;border:1px solid #ddd;border-radius:10px;
+                               background:#fff;color:#333;font-size:14px;font-weight:500;cursor:pointer;">
+                        Batal
+                    </button>
+                    <button type="button" data-confirm
+                        style="flex:1;padding:11px 14px;border:none;border-radius:10px;
+                               background:#e74c3c;color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
+                        Logout
+                    </button>
+                </div>
+            </div>`;
+        document.body.appendChild(overlay);
+    }
+
+    async function doLogout() {
+        const btn = document.getElementById('logout-btn');
+        if (btn) { btn.disabled = true; btn.textContent = 'Keluar...'; }
+        try { await API.post('/api/chat/logout', {}); } catch (_) {}
+        try { WSManager.close(); } catch (_) {}
+        API.token = null;
+        try {
+            localStorage.removeItem('pretv_token');
+            localStorage.removeItem('pretv_me');
+            sessionStorage.clear();
+        } catch (_) {}
+        // Kembali ke auth screen (single file, tidak reload)
+        AuthModule.showAuth();
+        if (btn) { btn.disabled = false; btn.innerHTML = '<svg class="icon icon-sm"><use href="#i-logout"/></svg> Logout'; }
+    }
+
+    function onPresenceUpdate() {}
+
+    function setMsg(text, isError) {
+        const el = document.getElementById('profile-msg');
+        if (!el) return;
+        if (!text) { el.textContent = ''; el.className = 'muted small'; return; }
+        el.textContent = text;
+        el.className = isError ? 'error small' : 'muted small';
+    }
+
+    return { init, loadProfile, onPresenceUpdate };
+})();
+
+/* ============================================================
+   9. APP — BOOT & NAVIGATION
+   ============================================================ */
+const App = (function () {
+    const state = {
+        me: null,
+        currentView: 'chat',
+        currentConversation: null,
+        currentOtherUser: null,
+        chatList: [],
+        messages: [],
+        statuses: [],
+        typingUsers: {},
+        onlineUsers: {}
+    };
+
+    let booted = false;
+
+    async function boot() {
+        if (booted) return;
+        booted = true;
+
+        if (!API.token) { AuthModule.showAuth(); return; }
+
+        try {
+            const { user } = await API.get('/api/chat/me');
+            state.me = user;
+            localStorage.setItem('pretv_me', JSON.stringify(user));
+        } catch (e) {
+            API.token = null;
+            AuthModule.showAuth();
+            return;
+        }
+
+        WSManager.connect();
+        bindNav();
+        bindGlobalWS();
+
+        ChatModule.init(state);
+        StatusModule.init(state);
+        ProfileModule.init(state);
+
+        switchView('chat');
+        ChatModule.loadConversations();
+    }
+
+    function bindNav() {
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.addEventListener('click', () => switchView(btn.dataset.view));
+        });
+    }
+
+    function switchView(view) {
+        state.currentView = view;
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+        const el = document.getElementById('view-' + view);
+        if (el) el.classList.add('active');
+        if (view === 'status') StatusModule.loadStatuses();
+        if (view === 'profile') ProfileModule.loadProfile();
+    }
+
+    function bindGlobalWS() {
+        WSManager.on('presence', (d) => {
+            state.onlineUsers[d.user_id] = d.online;
+            ChatModule.onPresenceUpdate(d);
+            ProfileModule.onPresenceUpdate(d);
+        });
+        WSManager.on('message:new', (d) => ChatModule.onNewMessage(d.message));
+        WSManager.on('message:read', (d) => ChatModule.onMessageRead(d));
+        WSManager.on('typing', (d) => ChatModule.onTyping(d));
+        WSManager.on('status:new', () => {
+            if (state.currentView === 'status') StatusModule.loadStatuses();
+        });
+    }
+
+    return { state, boot, switchView };
+})();
+
+/* ============================================================
+   10. START
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', () => {
+    AuthModule.init();
+    // Kalau token ada tapi auth.js tidak auto-showApp (misal error), paksa boot
+    if (API.token) {
+        // cek cepat: kalau view app masih hidden, coba boot
+        setTimeout(() => {
+            const appHidden = document.getElementById('app-screen').classList.contains('hidden');
+            if (appHidden && API.token) {
+                API.get('/api/chat/me').then(() => AuthModule.showApp()).catch(() => {});
+            }
+        }, 300);
+    }
+});
+</script>
 </body>
 </html>
